@@ -11,6 +11,14 @@
     "plugin:import/errors",
     "plugin:import/warnings"
   ],
+  "overrides": [
+    {
+      "files": ["webpack*"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ],
   "parser": "@typescript-eslint/parser",
   "settings": {
     "import/resolver": {
