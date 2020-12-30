@@ -1,4 +1,5 @@
 import * as React from "react";
+import { hot } from 'react-hot-loader';
 
 const App : React.FC = () => {
     return (
@@ -9,4 +10,4 @@ const App : React.FC = () => {
     );
 };
 
-export default App;
+export default hot(module)(App);
