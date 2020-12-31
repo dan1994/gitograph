@@ -1,8 +1,8 @@
 {
   "name": "gitograph",
   "productName": "gitograph",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "version": "0.0.1",
+  "description": "A git viewer and editor",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -11,7 +11,9 @@
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts ."
   },
-  "keywords": [],
+  "keywords": [
+    "git"
+  ],
   "author": {
     "name": "Dan Arad",
     "email": "dan1994@gmail.com"
