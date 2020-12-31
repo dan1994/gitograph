@@ -28,9 +28,10 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import './static/index.css';
 
-import App from "./App";
+import 'renderer/static/index.css';
+
+import App from "renderer/App";
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
