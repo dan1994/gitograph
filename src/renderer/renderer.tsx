@@ -31,7 +31,7 @@ import * as ReactDOM from "react-dom";
 
 import "renderer/static/index.css";
 
-import App from "renderer/App";
+import App from "renderer/app/App";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
