@@ -34,7 +34,3 @@ import "renderer/static/index.css";
 import App from "renderer/app/App";
 
 ReactDOM.render(<App />, document.getElementById("root"));
-
-console.log(
-    '👋 This message is being logged by "renderer.tsx", included via webpack'
-);
