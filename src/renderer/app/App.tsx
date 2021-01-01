@@ -5,6 +5,10 @@ import { Button, Typography } from "@material-ui/core";
 import { ipcRenderer } from "electron";
 import { IpcRendererEvent } from "electron/main";
 
+import DirectedAcyclicGraph from "renderer/app/graph/DirectedAcyclicGraph";
+import dummyRepository from "renderer/app/dummy";
+
+// Electron
 type IpcRendererCallback = (event: IpcRendererEvent, ...args: any[]) => void;
 
 type UseDirectoryResult = [string, () => void];
@@ -21,9 +25,9 @@ const useDirectory: () => UseDirectoryResult = () => {
     useEffect(() => {
         ipcRenderer.on("selectDirectory", eventCallback);
 
-        // return () => {
-        //     ipcRenderer.removeListener("selectDirectory", eventCallback);
-        // };
+        return () => {
+            ipcRenderer.removeListener("selectDirectory", eventCallback);
+        };
     });
 
     const selectDirectory: () => void = () => {
@@ -33,6 +37,7 @@ const useDirectory: () => UseDirectoryResult = () => {
     return [directory, selectDirectory];
 };
 
+// React
 const App: React.FC = () => {
     const [directory, selectDirectory] = useDirectory();
 
@@ -43,6 +48,7 @@ const App: React.FC = () => {
                     Select Repository
                 </Button>
                 <Typography>Selected: {directory}</Typography>
+                <DirectedAcyclicGraph graph={dummyRepository} />
             </React.StrictMode>
         </>
     );
