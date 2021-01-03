@@ -5,7 +5,7 @@ import { Button, Typography } from "@material-ui/core";
 import { ipcRenderer } from "electron";
 import { IpcRendererEvent } from "electron/main";
 
-import DirectedAcyclicGraph from "renderer/app/graph/DirectedAcyclicGraph";
+import DirectedGraph from "renderer/app/graph/DirectedGraph";
 import dummyRepository from "renderer/app/dummy";
 
 // Electron
@@ -48,7 +48,7 @@ const App: React.FC = () => {
                     Select Repository
                 </Button>
                 <Typography>Selected: {directory}</Typography>
-                <DirectedAcyclicGraph graph={dummyRepository} />
+                <DirectedGraph graph={dummyRepository} />
             </React.StrictMode>
         </>
     );

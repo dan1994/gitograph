@@ -19,7 +19,8 @@ export interface IEdge {
     to: IVertice;
 }
 
-export interface IDirectedAcyclicGraph {
-    vertices: IVertice[];
-    edges: IEdge[];
+export interface INode extends IVertice {
+    children: IVertice[];
 }
+
+export type IDirectedGraph = INode[];
