@@ -3,7 +3,7 @@ import Commit from "renderer/app/algorithm/Commit";
 
 class GraphGenerator {
     private commits: Commit[];
-    private activeBranches: Commit[];
+    private activeBranches: Array<Commit | null>;
     private mapping: { [oid: string]: IGridCell };
 
     private static COLORS = [
@@ -66,23 +66,39 @@ class GraphGenerator {
         commit: Commit,
         branchChildren: Commit[]
     ) => void = (commit, branchChildren) => {
+        let insertedCommit = false;
         const oids = branchChildren.map(({ oid }) => oid);
 
         for (const index in this.activeBranches) {
             const currentCommit = this.activeBranches[index];
 
+            if (currentCommit === null) {
+                continue;
+            }
+
             if (oids.includes(currentCommit.oid)) {
-                this.activeBranches[index] = commit;
-                this.mapping[commit.oid].column = Number(index);
-                break;
+                if (insertedCommit) {
+                    this.activeBranches[index] = null;
+                } else {
+                    this.activeBranches[index] = commit;
+                    this.mapping[commit.oid].column = Number(index);
+                    insertedCommit = true;
+                }
             }
         }
     };
 
     private insertCommit: (commit: Commit) => void = (commit) => {
         const { oid } = commit;
-        this.activeBranches.push(commit);
-        this.mapping[oid].column = this.activeBranches.length - 1;
+        const firstNullIndex = this.activeBranches.indexOf(null);
+
+        if (firstNullIndex === -1) {
+            this.activeBranches.push(commit);
+            this.mapping[oid].column = this.activeBranches.length - 1;
+        } else {
+            this.activeBranches[firstNullIndex] = commit;
+            this.mapping[oid].column = firstNullIndex;
+        }
     };
 
     private createGraphWithNoConnections: () => IDirectedGraph = () => {
