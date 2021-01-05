@@ -1,66 +1,37 @@
-import { IDirectedGraph } from "./graph/types";
+import Commit from "renderer/app/algorithm/Commit";
 
-const dummyRepository: IDirectedGraph = [
-    {
-        id: "5",
-        cell: {
-            row: 0,
-            column: 0,
-        },
-        color: "green",
-        children: [],
-    },
-    {
-        id: "3",
-        cell: {
-            row: 1,
-            column: 0,
-        },
-        color: "green",
-        children: [],
-    },
-    {
-        id: "2",
-        cell: {
-            row: 2,
-            column: 0,
-        },
-        color: "green",
-        children: [],
-    },
-    {
-        id: "1",
-        cell: {
-            row: 3,
-            column: 1,
-        },
-        color: "blue",
-        children: [],
-    },
-    {
-        id: "4",
-        cell: {
-            row: 4,
-            column: 2,
-        },
-        color: "red",
-        children: [],
-    },
-    {
-        id: "0",
-        cell: {
-            row: 5,
-            column: 0,
-        },
-        color: "green",
-        children: [],
-    },
+export const dummyCommits: Commit[] = [
+    new Commit("0", 0),
+    new Commit("3", 90),
+    new Commit("1", 80),
+    new Commit("2", 70),
+    new Commit("5", 100),
+    new Commit("4", 60),
+    new Commit("6", 120),
+    new Commit("7", 30),
 ];
 
-dummyRepository[0].children = [dummyRepository[1], dummyRepository[4]];
-dummyRepository[1].children = [dummyRepository[2]];
-dummyRepository[2].children = [dummyRepository[5]];
-dummyRepository[3].children = [dummyRepository[5]];
-dummyRepository[4].children = [dummyRepository[5]];
+dummyCommits[0].children = [
+    dummyCommits[2],
+    dummyCommits[3],
+    dummyCommits[5],
+    dummyCommits[6],
+    dummyCommits[7],
+];
 
-export default dummyRepository;
+dummyCommits[1].parents = [dummyCommits[3]];
+dummyCommits[1].children = [dummyCommits[4]];
+
+dummyCommits[2].parents = [dummyCommits[0]];
+
+dummyCommits[3].parents = [dummyCommits[0]];
+dummyCommits[3].children = [dummyCommits[1]];
+
+dummyCommits[4].parents = [dummyCommits[1], dummyCommits[5]];
+
+dummyCommits[5].parents = [dummyCommits[0]];
+dummyCommits[5].children = [dummyCommits[4]];
+
+dummyCommits[6].parents = [dummyCommits[0]];
+
+dummyCommits[7].parents = [dummyCommits[0]];
