@@ -16,11 +16,33 @@ export const getNodeEdges: (node: INode) => IEdge[] = (node) => {
     }));
 };
 
+const calculateWidth: (graph: IDirectedGraph) => number = (graph) => {
+    if (graph.length === 0) {
+        return 0;
+    }
+
+    const rightMostVerticeCenter = Math.max(
+        ...graph.map(({ cell }) => toPoint(cell).x)
+    );
+
+    return rightMostVerticeCenter + COLUMN_OFFSET;
+};
+
+const calculateHeight: (graph: IDirectedGraph) => number = (graph) => {
+    if (graph.length === 0) {
+        return 0;
+    }
+
+    const bottomMostVerticeCenter = Math.max(
+        ...graph.map(({ cell }) => toPoint(cell).y)
+    );
+
+    return bottomMostVerticeCenter + ROW_OFFSET;
+};
+
 const DirectedGraph: React.FC<DirectedGraphProps> = ({ graph }) => {
-    const width =
-        COLUMN_OFFSET + Math.max(...graph.map(({ cell }) => toPoint(cell).x));
-    const height =
-        ROW_OFFSET + Math.max(...graph.map(({ cell }) => toPoint(cell).y));
+    const width = calculateWidth(graph);
+    const height = calculateHeight(graph);
 
     const edges = graph.map(getNodeEdges).flat();
 

@@ -84,6 +84,7 @@
     "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-import": "^2.22.1",
     "fork-ts-checker-webpack-plugin": "^5.0.14",
+    "isomorphic-git": "^1.8.0",
     "node-loader": "^1.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
