@@ -51,13 +51,13 @@ const SplitEdge: React.FC<EdgeProps> = ({ edge }) => {
                 x1={fromX}
                 y1={belowVertice(fromY)}
                 x2={linkX}
-                y2={aboveVertice(linkY)}
+                y2={belowVertice(linkY)}
                 stroke={color}
                 strokeWidth={EDGE_THICKNESS}
             />
             <path
                 d={`
-                M${linkX},${aboveVertice(linkY)}
+                M${linkX},${belowVertice(linkY)}
                 C${linkX},${midpointY}
                 ${toX},${midpointY}
                 ${toX},${aboveVertice(toY)}
