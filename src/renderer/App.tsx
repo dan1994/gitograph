@@ -1,7 +1,7 @@
 import * as React from "react";
-import { hot } from 'react-hot-loader';
+import { hot } from "react-hot-loader";
 
-const App : React.FC = () => {
+const App: React.FC = () => {
     return (
         <>
             <h1>💖 Hello World!</h1>

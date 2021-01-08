@@ -26,12 +26,15 @@
  * ```
  */
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import './index.css';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
-import App from "./App";
+import "renderer/static/index.css";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from "renderer/App";
 
-console.log('👋 This message is being logged by "renderer.tsx", included via webpack');
+ReactDOM.render(<App />, document.getElementById("root"));
+
+console.log(
+    '👋 This message is being logged by "renderer.tsx", included via webpack'
+);
