@@ -15,7 +15,9 @@
             "main/*": ["src/main/*"],
             "renderer/*": ["src/renderer/*"]
         },
-        "jsx": "react"
+        "jsx": "react",
+        "target": "es5",
+        "lib": ["dom", "es2019"]
     },
     "include": ["src/**/*"]
 }
