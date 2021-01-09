@@ -4,8 +4,8 @@ import { IEdge } from "renderer/app/graph/types";
 import Vertice from "renderer/app/graph/Vertice";
 import Edge from "renderer/app/graph/Edge";
 import { COLUMN_OFFSET, ROW_OFFSET, toPoint } from "renderer/app/graph/utils";
-import { ICommits } from "renderer/app/store/types";
-import { useRepositoryContext } from "../store/Repository";
+import { ICommits } from "renderer/app/store/hooks/types";
+import { useRepositoryContext } from "renderer/app/store/Repository";
 
 type IEdges = { [id: string]: IEdge };
 

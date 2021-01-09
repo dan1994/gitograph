@@ -1,5 +1,5 @@
 import { ISha1 } from "renderer/app/git/types";
-import { ICommit, ICommits } from "renderer/app/store/types";
+import { ICommit, ICommits } from "renderer/app/store/hooks/types";
 
 class PlacementStrategy {
     private commits: ICommits;
