@@ -1,45 +1,44 @@
+import * as React from "react";
 import { useState, useEffect, createContext, useContext } from "react";
 
 import { objMap } from "renderer/app/utils";
-import { ICommits, ICommit } from "renderer/app/store/types";
+import { ICommits, ICommit, IRepository } from "renderer/app/store/types";
 import { ICommitContent, ICommitsContent } from "renderer/app/git/types";
 import { getRootDirectory, getCommits } from "renderer/app/git/Wrapper";
 import useDirectory from "renderer/app/store/Directory";
-import GraphGenerator from "../algorithm/GraphGenerator";
+import PlacementStrategy from "renderer/app/algorithm/PlacementStrategy";
 
 const useRepository = () => {
     const [directory, selectDirectory] = useDirectory();
 
-    const [rootDirectory, setRootDirectory] = useState<string>(null);
-    const [commits, setCommits] = useState<ICommits>({});
+    const [repository, setRepository] = useState<IRepository>({
+        rootDirectory: null,
+        commits: {},
+    });
 
-    const updateCommits: () => void = async () => {
+    const updateRepository: () => void = async () => {
+        const rootDirectory: string = await getRootDirectory(directory);
+
         const rawCommits: ICommitsContent = await getCommits(rootDirectory);
         const commits = toICommits(rawCommits);
-        const graphGenerator = new GraphGenerator(commits);
-        graphGenerator.generate();
-        setCommits(commits);
+        const placementStrategy = new PlacementStrategy(commits);
+        placementStrategy.apply();
+
+        setRepository({ rootDirectory, commits });
     };
 
     useEffect(() => {
-        (async () => {
-            setRootDirectory(await getRootDirectory(directory));
-        })();
+        updateRepository();
     }, [directory]);
 
-    useEffect(() => {
-        updateCommits();
-    }, [rootDirectory]);
-
     const inRepository: () => boolean = () => {
-        return rootDirectory !== null;
+        return repository.rootDirectory !== null;
     };
 
     return {
+        ...repository,
         selectDirectory,
-        rootDirectory,
         inRepository,
-        commits,
     };
 };
 
@@ -62,7 +61,6 @@ const toICommit: (commit: ICommitContent) => ICommit = (commit) => {
             column: -1,
         },
         color: "",
-        id: "", // REMOVE
     };
 };
 
@@ -75,4 +73,18 @@ const populateChildren: (commits: ICommits) => void = (commits) => {
     }
 };
 
-export default useRepository;
+const RepositoryContext = createContext(null);
+
+const RepositoryContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
+    children,
+}) => {
+    return (
+        <RepositoryContext.Provider value={useRepository()}>
+            {children}
+        </RepositoryContext.Provider>
+    );
+};
+
+const useRepositoryContext = () => useContext(RepositoryContext);
+
+export { RepositoryContextProvider, useRepositoryContext };

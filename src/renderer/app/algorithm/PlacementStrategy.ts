@@ -1,7 +1,7 @@
 import { ISha1 } from "renderer/app/git/types";
 import { ICommit, ICommits } from "renderer/app/store/types";
 
-class GraphGenerator {
+class PlacementStrategy {
     private commits: ICommits;
     private activeBranches: Array<ISha1>;
 
@@ -18,11 +18,7 @@ class GraphGenerator {
         this.activeBranches = [];
     }
 
-    generate: () => void = () => {
-        this.createMapping();
-    };
-
-    private createMapping: () => void = () => {
+    apply: () => void = () => {
         this.populateRows();
         this.populateColumns();
         this.populateColors();
@@ -30,7 +26,7 @@ class GraphGenerator {
 
     private populateRows: () => void = () => {
         Object.values(this.commits)
-            .sort(GraphGenerator.compareCommits)
+            .sort(PlacementStrategy.compareCommits)
             .map((commit, index) => {
                 commit.cell.row = index;
             });
@@ -108,12 +104,14 @@ class GraphGenerator {
 
     private populateColors: () => void = () => {
         for (const commit of Object.values(this.commits)) {
-            commit.color = GraphGenerator.chooseColor(commit.cell.column);
+            commit.color = PlacementStrategy.chooseColor(commit.cell.column);
         }
     };
 
     private static chooseColor: (column: number) => string = (column) => {
-        return GraphGenerator.COLORS[column % GraphGenerator.COLORS.length];
+        return PlacementStrategy.COLORS[
+            column % PlacementStrategy.COLORS.length
+        ];
     };
 
     private static compareCommits: (
@@ -124,4 +122,4 @@ class GraphGenerator {
     };
 }
 
-export default GraphGenerator;
+export default PlacementStrategy;
