@@ -17,7 +17,3 @@ export interface IEdge {
     from: IVertice;
     to: IVertice;
 }
-
-export interface INode extends IVertice {
-    children: IVertice[];
-}

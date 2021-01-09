@@ -6,13 +6,11 @@ import Main from "renderer/app/main";
 
 const App: React.FC = () => {
     return (
-        <>
-            <React.StrictMode>
-                <RepositoryContextProvider>
-                    <Main />
-                </RepositoryContextProvider>
-            </React.StrictMode>
-        </>
+        <React.StrictMode>
+            <RepositoryContextProvider>
+                <Main />
+            </RepositoryContextProvider>
+        </React.StrictMode>
     );
 };
 

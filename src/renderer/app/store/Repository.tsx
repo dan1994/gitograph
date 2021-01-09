@@ -1,17 +1,21 @@
 import * as React from "react";
 import { useState, useEffect, createContext, useContext } from "react";
 
-import { objMap } from "renderer/app/utils";
-import { ICommits, ICommit, IRepository } from "renderer/app/store/types";
+import {
+    ICommits,
+    ICommit,
+    IRepository,
+    IRepositoryState,
+} from "renderer/app/store/types";
 import { ICommitContent, ICommitsContent } from "renderer/app/git/types";
 import { getRootDirectory, getCommits } from "renderer/app/git/Wrapper";
 import useDirectory from "renderer/app/store/Directory";
 import PlacementStrategy from "renderer/app/algorithm/PlacementStrategy";
 
-const useRepository = () => {
+const useRepository: () => IRepository = () => {
     const [directory, selectDirectory] = useDirectory();
 
-    const [repository, setRepository] = useState<IRepository>({
+    const [repository, setRepository] = useState<IRepositoryState>({
         rootDirectory: null,
         commits: {},
     });
@@ -43,8 +47,12 @@ const useRepository = () => {
 };
 
 const toICommits: (commits: ICommitsContent) => ICommits = (commits) => {
-    const transformedCommits: ICommits = objMap(commits, (_, commit) =>
-        toICommit(commit)
+    const transformedCommits: ICommits = Object.entries(commits).reduce(
+        (result, [oid, commit]) => ({
+            ...result,
+            [oid]: toICommit(commit),
+        }),
+        {}
     );
 
     populateChildren(transformedCommits);
@@ -85,6 +93,7 @@ const RepositoryContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
     );
 };
 
-const useRepositoryContext = () => useContext(RepositoryContext);
+const useRepositoryContext: () => IRepository = () =>
+    useContext(RepositoryContext);
 
 export { RepositoryContextProvider, useRepositoryContext };
