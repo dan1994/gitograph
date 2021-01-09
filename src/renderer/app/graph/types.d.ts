@@ -9,7 +9,6 @@ export interface IGridCell {
 }
 
 export interface IVertice {
-    id: string;
     cell: IGridCell;
     color: string;
 }
@@ -22,5 +21,3 @@ export interface IEdge {
 export interface INode extends IVertice {
     children: IVertice[];
 }
-
-export type IDirectedGraph = INode[];
