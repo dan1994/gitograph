@@ -4,10 +4,11 @@ import { IpcRendererEvent } from "electron/main";
 
 type IpcRendererCallback = (event: IpcRendererEvent, ...args: any[]) => void;
 
-type IUseDirectory = () => [string, () => void];
+type IDirectory = [string, () => void];
+type IUseDirectory = () => IDirectory;
 
 const useDirectory: IUseDirectory = () => {
-    const [directory, setDirectory] = useState<string>("");
+    const [directory, setDirectory] = useState<string>(null);
 
     const eventCallback: IpcRendererCallback = (_, ...args) => {
         const directory = args[0];
