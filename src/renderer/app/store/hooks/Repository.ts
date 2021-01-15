@@ -22,6 +22,10 @@ const useRepository: () => IRepository = () => {
     const updateRepository: () => void = async () => {
         const rootDirectory: string = await getRootDirectory(directory);
 
+        if (rootDirectory === null) {
+            return;
+        }
+
         const rawCommits: ICommitsContent = await getCommits(rootDirectory);
         const commits = toICommits(rawCommits);
         const placementStrategy = new PlacementStrategy(commits);

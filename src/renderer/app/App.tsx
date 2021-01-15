@@ -4,7 +4,7 @@ import { hot } from "react-hot-loader";
 
 import { RepositoryContextProvider } from "renderer/app/store/Repository";
 import theme from "renderer/app/Theme";
-import Main from "renderer/app/main";
+import Main from "renderer/app/Main";
 
 const App: React.FC = () => {
     return (

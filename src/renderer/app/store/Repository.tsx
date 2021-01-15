@@ -6,9 +6,9 @@ import useRepository from "renderer/app/store/hooks/Repository";
 
 const RepositoryContext = createContext(null);
 
-const RepositoryContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
-    children,
-}) => {
+const RepositoryContextProvider: React.FC<{
+    children?: React.ReactNode;
+}> = ({ children }) => {
     return (
         <RepositoryContext.Provider value={useRepository()}>
             {children}
@@ -17,6 +17,6 @@ const RepositoryContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
 };
 
 const useRepositoryContext: () => IRepository = () =>
-    useContext(RepositoryContext);
+    useContext<IRepository>(RepositoryContext);
 
 export { RepositoryContextProvider, useRepositoryContext };
