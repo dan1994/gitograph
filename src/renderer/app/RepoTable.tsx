@@ -41,24 +41,16 @@ const RepoTable: React.FC = () => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                <TableRow className={classes.tableRow}>
-                    <TableCell rowSpan={Object.values(commits).length}>
-                        <CommitGraph />
-                    </TableCell>
-                    <TableCell className={classes.tableCell}>
-                        {Object.values(commits)[0].message.split("\n")[0]}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                        {Object.values(commits)[0].committer.name}
-                    </TableCell>
-                    <TableCell align="center" className={classes.tableCell}>
-                        {Object.values(commits)[0].committer.timestamp}
-                    </TableCell>
-                </TableRow>
-                {Object.entries(commits)
-                    .slice(1)
-                    .map(([oid, { message, committer }]) => (
+                {Object.entries(commits).map(
+                    ([oid, { message, committer }], index) => (
                         <TableRow key={oid} className={classes.tableRow}>
+                            {index === 0 && (
+                                <TableCell
+                                    rowSpan={Object.values(commits).length}
+                                >
+                                    <CommitGraph />
+                                </TableCell>
+                            )}
                             <TableCell className={classes.tableCell}>
                                 {message.split("\n")[0]}
                             </TableCell>
@@ -75,7 +67,8 @@ const RepoTable: React.FC = () => {
                                 {committer.timestamp}
                             </TableCell>
                         </TableRow>
-                    ))}
+                    )
+                )}
             </TableBody>
         </Table>
     );
