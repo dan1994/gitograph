@@ -14,6 +14,9 @@ import CommitGraph from "./graph/CommitGraph";
 const useStyles = makeStyles({
     tableRow: {
         height: 60,
+        "&:hover": {
+            background: "#000",
+        },
     },
     tableCell: {
         fontSize: 18,
