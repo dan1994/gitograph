@@ -1,79 +1,99 @@
 import * as React from "react";
-import {
-    Table,
-    TableCell,
-    TableRow,
-    TableHead,
-    TableBody,
-    makeStyles,
-} from "@material-ui/core";
+import { useMemo } from "react";
+import { makeStyles } from "@material-ui/core";
+import { Column, useTable, useResizeColumns, useFlexLayout } from "react-table";
 
-import { useRepositoryContext } from "./store/Repository";
-import CommitGraph from "./graph/CommitGraph";
+import { useRepositoryContext } from "renderer/app/store/Repository";
+import CommitGraph from "renderer/app/graph/CommitGraph";
+import { TableRecord } from "renderer/app/react-table/types";
+import Table from "renderer/app/react-table/Table";
 
 const useStyles = makeStyles({
-    tableRow: {
-        height: 60,
-        "&:hover": {
-            background: "#000",
-        },
+    top: {
+        display: "block",
+        overflow: "auto",
     },
-    tableCell: {
-        fontSize: 18,
+    graphContainer: {
+        position: "absolute",
+        zIndex: 2,
+        marginTop: "53.6px",
+        paddingTop: "20px",
     },
 });
 
 const RepoTable: React.FC = () => {
     const classes = useStyles();
-    const columns = ["Graph", "Message", "Commiter", "Time"];
-    const { inRepository, commits } = useRepositoryContext();
 
-    if (!inRepository()) {
-        return <></>;
-    }
+    const columns = useMemo<Column<TableRecord>[]>(
+        () => [
+            { Header: "Graph", accessor: "graph", width: 300 },
+            { Header: "Message", accessor: "message", width: 700 },
+            {
+                Header: "Committer",
+                accessor: "committer",
+                width: 200,
+                center: true,
+            },
+            { Header: "Time", accessor: "time", width: 80, center: true },
+            { Header: "Hash", accessor: "hash", width: 80, center: true },
+        ],
+        []
+    );
+    const { commits } = useRepositoryContext();
+
+    const data = useMemo<TableRecord[]>(
+        () =>
+            Object.entries(commits)
+                // TODO - Partial load
+                .slice(0, 30)
+                .map(([oid, commit]) => ({
+                    graph: "",
+                    message: commit.message.split("\n")[0],
+                    committer: commit.committer.name,
+                    time: commit.committer.timestamp,
+                    hash: oid,
+                })),
+        [commits]
+    );
+
+    const defaultColumn = useMemo(
+        () => ({
+            minWidth: 150,
+            maxWidth: 5000,
+        }),
+        []
+    );
+
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+    } = useTable<TableRecord>(
+        {
+            columns,
+            data,
+            defaultColumn,
+        },
+        useResizeColumns,
+        useFlexLayout
+    );
 
     return (
-        <Table stickyHeader>
-            <TableHead>
-                <TableRow>
-                    {columns.map((column) => (
-                        <TableCell key={column} align="center">
-                            {column}
-                        </TableCell>
-                    ))}
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {Object.entries(commits).map(
-                    ([oid, { message, committer }], index) => (
-                        <TableRow key={oid} className={classes.tableRow}>
-                            {index === 0 && (
-                                <TableCell
-                                    rowSpan={Object.values(commits).length}
-                                >
-                                    <CommitGraph />
-                                </TableCell>
-                            )}
-                            <TableCell className={classes.tableCell}>
-                                {message.split("\n")[0]}
-                            </TableCell>
-                            <TableCell
-                                align="center"
-                                className={classes.tableCell}
-                            >
-                                {committer.name}
-                            </TableCell>
-                            <TableCell
-                                align="center"
-                                className={classes.tableCell}
-                            >
-                                {committer.timestamp}
-                            </TableCell>
-                        </TableRow>
-                    )
-                )}
-            </TableBody>
-        </Table>
+        <div className={classes.top}>
+            <div className={classes.graphContainer}>
+                {/* TODO - Dynamic setting of width */}
+                <CommitGraph commits={commits} maxWidth={150} />
+            </div>
+            <Table
+                getTableProps={getTableProps}
+                getTableBodyProps={getTableBodyProps}
+                headerGroups={headerGroups}
+                rows={rows}
+                prepareRow={prepareRow}
+            />
+        </div>
     );
 };
 
