@@ -35,10 +35,10 @@ class PlacementStrategy {
     private populateColumns: () => void = () => {
         const sortedByRows: ISha1[] = Object.entries(this.commits)
             .sort(
-                ([_1, commit1], [_2, commit2]) =>
+                ([, commit1], [, commit2]) =>
                     commit1.cell.row - commit2.cell.row
             )
-            .map(([oid, _]) => oid);
+            .map(([oid]) => oid);
 
         for (const oid of sortedByRows) {
             this.populateColumn(oid);
@@ -70,11 +70,9 @@ class PlacementStrategy {
 
         let insertedCommit = false;
 
-        for (const index in this.activeBranches) {
-            const currentCommitOid = this.activeBranches[index];
-
+        this.activeBranches.forEach((currentCommitOid, index) => {
             if (currentCommitOid === null) {
-                continue;
+                return;
             }
 
             if (branchChildrenOids.includes(currentCommitOid)) {
@@ -86,7 +84,7 @@ class PlacementStrategy {
                     insertedCommit = true;
                 }
             }
-        }
+        });
     };
 
     private insertCommit: (oid: ISha1) => void = (oid) => {

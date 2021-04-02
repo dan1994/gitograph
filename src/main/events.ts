@@ -3,14 +3,19 @@ import { ipcMain, dialog, BrowserWindow } from "electron";
 type EventFunction = (window: BrowserWindow) => void;
 
 const selectDirectory: EventFunction = (window) => {
-    ipcMain.on("selectDirectory", async (event, _) => {
-        const { canceled, filePaths } = await dialog.showOpenDialog(window, {
-            properties: ["openDirectory"],
-        });
+    ipcMain.on("selectDirectory", (event: Electron.IpcMainEvent) => {
+        void (async () => {
+            const { canceled, filePaths } = await dialog.showOpenDialog(
+                window,
+                {
+                    properties: ["openDirectory"],
+                }
+            );
 
-        const directory = canceled ? "" : filePaths[0];
+            const directory = canceled ? "" : filePaths[0];
 
-        event.reply("selectDirectory", directory);
+            event.reply("selectDirectory", directory);
+        })();
     });
 };
 

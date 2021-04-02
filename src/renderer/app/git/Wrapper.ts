@@ -24,7 +24,9 @@ const getCommits: (directory: string) => Promise<ICommitsContent> = async (
 
     try {
         commits = await log({ fs, dir: directory });
-    } catch (error) {}
+    } catch (error) {
+        console.error("Failed getting commit list: ", error);
+    }
 
     const transformedCommits: ICommitsContent = {};
     for (const commit of commits) {
