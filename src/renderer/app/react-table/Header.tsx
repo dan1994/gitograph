@@ -21,8 +21,8 @@ const Header: React.FC<HeaderProps> = ({ headerGroups, ...rest }) => {
 
     return (
         <div className={header} {...rest}>
-            {headerGroups.map((headerGroup) => (
-                <HeaderRow key={headerGroup.id} headerGroup={headerGroup} />
+            {headerGroups.map((headerGroup, index) => (
+                <HeaderRow key={index} headerGroup={headerGroup} />
             ))}
         </div>
     );
