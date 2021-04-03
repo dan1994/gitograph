@@ -1,7 +1,7 @@
 import { findRoot, log, ReadCommitResult } from "isomorphic-git";
 import * as fs from "fs";
 
-import { ICommitContent, ICommitsContent, IUserAction } from "./types";
+import { ICommitContent, IUserAction } from "./types";
 
 const getRootDirectory: (directory: string) => Promise<string> = async (
     directory
@@ -17,33 +17,26 @@ const getRootDirectory: (directory: string) => Promise<string> = async (
     }
 };
 
-const getCommits: (directory: string) => Promise<ICommitsContent> = async (
+const getCommits: (directory: string) => Promise<ICommitContent[]> = async (
     directory
 ) => {
-    let commits: ReadCommitResult[] = [];
-
     try {
-        commits = await log({ fs, dir: directory });
+        const commits = await log({ fs, dir: directory });
+        return commits.map((commit) => transformCommit(commit));
     } catch (error) {
         console.error("Failed getting commit list: ", error);
+        return [];
     }
-
-    const transformedCommits: ICommitsContent = {};
-    for (const commit of commits) {
-        const { oid } = commit;
-        transformedCommits[oid] = transformCommit(commit);
-    }
-
-    return transformedCommits;
 };
 
 const transformCommit: (commit: ReadCommitResult) => ICommitContent = (
     commit
 ) => {
-    const { commit: internal } = commit;
+    const { oid, commit: internal } = commit;
     const { tree, parent, author, committer, gpgsig, message } = internal;
 
     return {
+        oid,
         tree,
         parents: parent,
         author: transformUserAction(author),

@@ -1,8 +1,9 @@
 import { ISha1 } from "renderer/app/git/types";
-import { ICommit, ICommits } from "renderer/app/store/hooks/types";
+import { ICommit } from "renderer/app/store/hooks/types";
+import Commits from "renderer/app/store/hooks/Commits";
 
 class PlacementStrategy {
-    private commits: ICommits;
+    private commits: Commits;
     private activeBranches: Array<ISha1>;
 
     private static COLORS = [
@@ -13,7 +14,7 @@ class PlacementStrategy {
         "DarkGoldenRod".toLowerCase(),
     ];
 
-    constructor(commits: ICommits) {
+    constructor(commits: Commits) {
         this.commits = commits;
         this.activeBranches = [];
     }
@@ -25,7 +26,7 @@ class PlacementStrategy {
     };
 
     private populateRows: () => void = () => {
-        Object.values(this.commits)
+        this.commits.commits
             .sort(PlacementStrategy.compareCommits)
             .map((commit, index) => {
                 commit.cell.row = index;
@@ -33,16 +34,13 @@ class PlacementStrategy {
     };
 
     private populateColumns: () => void = () => {
-        const sortedByRows: ISha1[] = Object.entries(this.commits)
-            .sort(
-                ([, commit1], [, commit2]) =>
-                    commit1.cell.row - commit2.cell.row
-            )
-            .map(([oid]) => oid);
+        const sortedByRows: ISha1[] = this.commits.commits.map(
+            ({ oid }) => oid
+        );
 
-        for (const oid of sortedByRows) {
+        sortedByRows.forEach((oid) => {
             this.populateColumn(oid);
-        }
+        });
     };
 
     private populateColumn: (oid: ISha1) => void = (oid) => {
@@ -56,9 +54,9 @@ class PlacementStrategy {
     };
 
     private getBranchChildrenOids: (oid: ISha1) => ISha1[] = (oid) => {
-        const commit = this.commits[oid];
+        const commit = this.commits.byHash(oid);
         return commit.children.filter(
-            (childOid) => this.commits[childOid].parents[0] === oid
+            (childOid) => this.commits.byHash(childOid).parents[0] === oid
         );
     };
 
@@ -66,7 +64,7 @@ class PlacementStrategy {
         oid: ISha1,
         branchChildrenOids: ISha1[]
     ) => void = (oid, branchChildrenOids) => {
-        const commit = this.commits[oid];
+        const commit = this.commits.byHash(oid);
 
         let insertedCommit = false;
 
@@ -88,7 +86,7 @@ class PlacementStrategy {
     };
 
     private insertCommit: (oid: ISha1) => void = (oid) => {
-        const commit = this.commits[oid];
+        const commit = this.commits.byHash(oid);
         const firstNullIndex = this.activeBranches.indexOf(null);
 
         if (firstNullIndex === -1) {
@@ -101,9 +99,9 @@ class PlacementStrategy {
     };
 
     private populateColors: () => void = () => {
-        for (const commit of Object.values(this.commits)) {
+        this.commits.commits.forEach((commit) => {
             commit.color = PlacementStrategy.chooseColor(commit.cell.column);
-        }
+        });
     };
 
     private static chooseColor: (column: number) => string = (column) => {

@@ -5,37 +5,37 @@ import { IEdge } from "renderer/app/graph/types";
 import Vertice from "renderer/app/graph/Vertice";
 import Edge from "renderer/app/graph/Edge";
 import { COLUMN_OFFSET, ROW_OFFSET, toPoint } from "renderer/app/graph/utils";
-import { ICommits } from "renderer/app/store/hooks/types";
+import Commits from "renderer/app/store/hooks/Commits";
 
 type IEdges = { [id: string]: IEdge };
 
-const getEdges: (commits: ICommits) => IEdges = (commits) => {
+const getEdges: (commits: Commits) => IEdges = (commits) => {
     const edges: IEdges = {};
-    for (const [oid, commit] of Object.entries(commits)) {
-        for (const parentOid of commit.parents) {
-            const parent = commits[parentOid];
-            edges[`${oid}_${parentOid}`] = {
+    commits.commits.forEach((commit) => {
+        commit.parents.forEach((parentOid) => {
+            const parent = commits.byHash(parentOid);
+            edges[`${commit.oid}_${parentOid}`] = {
                 from: commit,
                 to: parent,
             };
-        }
-    }
+        });
+    });
 
     return edges;
 };
 
-const calculateWidth: (nodes: ICommits) => number = (nodes) => {
+const calculateWidth: (commits: Commits) => number = (commits) => {
     const rightMostVerticeCenter = Math.max(
-        ...Object.values(nodes).map(({ cell }) => toPoint(cell).x),
+        ...commits.commits.map(({ cell }) => toPoint(cell).x),
         -COLUMN_OFFSET
     );
 
     return rightMostVerticeCenter + COLUMN_OFFSET;
 };
 
-const calculateHeight: (nodes: ICommits) => number = (nodes) => {
+const calculateHeight: (commits: Commits) => number = (commits) => {
     const bottomMostVerticeCenter = Math.max(
-        ...Object.values(nodes).map(({ cell }) => toPoint(cell).y),
+        ...commits.commits.map(({ cell }) => toPoint(cell).y),
         -ROW_OFFSET
     );
 
@@ -43,7 +43,7 @@ const calculateHeight: (nodes: ICommits) => number = (nodes) => {
 };
 
 interface CommitGraphProps {
-    commits: ICommits;
+    commits: Commits;
     maxWidth: number;
 }
 
@@ -60,8 +60,8 @@ const CommitGraph: React.FC<CommitGraphProps> = ({ commits, maxWidth }) => {
             {Object.entries(edges).map(([id, edge]) => {
                 return <Edge key={id} edge={edge} />;
             })}
-            {Object.entries(commits).map(([oid, commit]) => (
-                <Vertice key={oid} vertice={commit} />
+            {commits.commits.map((commit) => (
+                <Vertice key={commit.oid} vertice={commit} />
             ))}
         </svg>
     );

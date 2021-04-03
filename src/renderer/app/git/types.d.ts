@@ -8,14 +8,11 @@ export interface IUserAction {
 }
 
 export interface ICommitContent {
+    oid: string;
     tree: ISha1;
     parents: ISha1[];
     author: IUserAction;
     committer: IUserAction;
     pgpsig?: string;
     message: string;
-}
-
-export interface ICommitsContent {
-    [oid: string]: ICommitContent;
 }
