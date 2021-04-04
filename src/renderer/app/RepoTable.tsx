@@ -43,14 +43,14 @@ const RepoTable: React.FC = () => {
 
     const data = useMemo<TableRecord[]>(
         () =>
-            Object.entries(commits)
+            commits.commits
                 // TODO - Partial load
                 .slice(0, 30)
-                .map(([oid, commit]) => ({
+                .map(({ oid, message, committer }) => ({
                     graph: "",
-                    message: commit.message.split("\n")[0],
-                    committer: commit.committer.name,
-                    time: commit.committer.timestamp,
+                    message: message.split("\n")[0],
+                    committer: committer.name,
+                    time: committer.timestamp,
                     hash: oid,
                 })),
         [commits]

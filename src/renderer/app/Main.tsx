@@ -33,6 +33,7 @@ const Main: React.FC = () => {
         selectDirectory,
         rootDirectory,
         inRepository,
+        isLoading,
     } = useRepositoryContext();
 
     return (
@@ -48,13 +49,13 @@ const Main: React.FC = () => {
                     Select Repository
                 </Button>
                 <Typography variant="h5">
-                    {inRepository()
+                    {inRepository
                         ? `Repository: ${rootDirectory}`
                         : "No Repository Selected"}
                 </Typography>
-                {inRepository() || <CircularProgress />}
+                {isLoading && <CircularProgress />}
             </div>
-            {inRepository() && <RepoTable />}
+            {inRepository && !isLoading && <RepoTable />}
         </>
     );
 };

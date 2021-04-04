@@ -1,5 +1,6 @@
 import { ISha1, ICommitContent } from "renderer/app/git/types";
 import { IVertice } from "renderer/app/graph/types";
+import Commits from "renderer/app/store/hooks/Commits";
 
 export interface IComputedCommitProperties {
     children: ISha1[];
@@ -7,16 +8,13 @@ export interface IComputedCommitProperties {
 
 export type ICommit = ICommitContent & IComputedCommitProperties & IVertice;
 
-export interface ICommits {
-    [oid: string]: ICommit;
-}
-
 export interface IRepositoryState {
     rootDirectory: string;
-    commits: ICommits;
+    commits: Commits;
+    isLoading: boolean;
 }
 
 export interface IRepository extends IRepositoryState {
-    inRepository: () => boolean;
+    inRepository: boolean;
     selectDirectory: () => void;
 }
