@@ -7,6 +7,7 @@ import { useRepositoryContext } from "renderer/app/store/Repository";
 import CommitGraph from "renderer/app/graph/CommitGraph";
 import { TableRecord } from "renderer/app/react-table/types";
 import Table from "renderer/app/react-table/Table";
+import Commits from "./store/hooks/Commits";
 
 const useStyles = makeStyles({
     top: {
@@ -51,7 +52,7 @@ const RepoTable: React.FC = () => {
                     message: message.split("\n")[0],
                     committer: committer.name,
                     time: committer.timestamp,
-                    hash: oid,
+                    hash: Commits.abbreviate(oid),
                 })),
         [commits]
     );
