@@ -37,6 +37,9 @@ class Commits {
         return this.commits[this.lookupTable[oid]];
     };
 
+    public static abbreviate: (oid: string) => string = (oid) =>
+        oid.substring(0, 8);
+
     private toICommits: (commits: ICommitContent[]) => void = (commits) => {
         this.commits = commits.map((commit) => this.toICommit(commit));
         this.populateChildren();
