@@ -10,7 +10,7 @@ interface TableRecord {
     graph: string;
     message: string;
     committer: string;
-    time: number;
+    time: string;
     hash: string;
 }
 
