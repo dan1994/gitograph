@@ -1,6 +1,7 @@
 import PlacementStrategy from "renderer/app/algorithm/PlacementStrategy";
 import { ICommitContent } from "renderer/app/git/types";
 import { ICommit } from "renderer/app/store/hooks/types";
+import { toDateString } from "renderer/app/utils/date";
 
 interface ILookupTable {
     [oid: string]: number;
@@ -39,6 +40,11 @@ class Commits {
 
     public static abbreviate: (oid: string) => string = (oid) =>
         oid.substring(0, 8);
+
+    public static getFormattedDate: (commit: ICommit) => string = (commit) => {
+        const date = new Date(commit.committer.timestamp * 1000);
+        return toDateString(date);
+    };
 
     private toICommits: (commits: ICommitContent[]) => void = (commits) => {
         this.commits = commits.map((commit) => this.toICommit(commit));

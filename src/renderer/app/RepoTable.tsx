@@ -47,12 +47,12 @@ const RepoTable: React.FC = () => {
             commits.commits
                 // TODO - Partial load
                 .slice(0, 30)
-                .map(({ oid, message, committer }) => ({
+                .map((commit) => ({
                     graph: "",
-                    message: message.split("\n")[0],
-                    committer: committer.name,
-                    time: committer.timestamp,
-                    hash: Commits.abbreviate(oid),
+                    message: commit.message.split("\n")[0],
+                    committer: commit.committer.name,
+                    time: Commits.getFormattedDate(commit),
+                    hash: Commits.abbreviate(commit.oid),
                 })),
         [commits]
     );
