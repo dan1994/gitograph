@@ -50,15 +50,6 @@ export const useResizeable: UseResizeableHook = (onDrag) => {
                 ? Math.max(delta, -parentWidth)
                 : Math.min(delta, parentSiblingWidth);
 
-        console.log(parent, parentSibling);
-        console.log(`${delta} -> ${correctedDelta},
-            ${
-                parentWidth + correctedDelta
-            } = ${parentWidth} + ${correctedDelta},
-            ${
-                parentSiblingWidth - correctedDelta
-            } = ${parentSiblingWidth} - ${correctedDelta}`);
-
         onDrag(
             parentWidth + correctedDelta,
             parentSiblingWidth - correctedDelta
