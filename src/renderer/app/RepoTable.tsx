@@ -119,11 +119,6 @@ const RepoTable: React.FC = () => {
 
     return (
         <div className={classes.top}>
-            <div style={{ display: "flex", justifyContent: "space-around" }}>
-                {widths.map((width, index) => (
-                    <span key={index}>{width}</span>
-                ))}
-            </div>
             <div className={classes.graphContainer}>
                 {/* TODO - Dynamic setting of width */}
                 <CommitGraph commits={commits} maxWidth={150} />
