@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Column, useTable } from "react-table";
 
@@ -22,6 +22,11 @@ const useStyles = makeStyles({
         paddingTop: "20px",
     },
 });
+
+const getGraphColumnWidth = () => {
+    const cellElement = document.querySelectorAll('[role="columnheader"]')[0];
+    return cellElement.getBoundingClientRect().width;
+};
 
 const RepoTable: React.FC = () => {
     const classes = useStyles();
@@ -117,11 +122,16 @@ const RepoTable: React.FC = () => {
         setWidths(newWidths);
     };
 
+    const [graphWidth, setGraphWidth] = useState<number>(0);
+    useEffect(() => {
+        setGraphWidth(getGraphColumnWidth());
+    }, [widths]);
+
     return (
         <div className={classes.top}>
             <div className={classes.graphContainer}>
                 {/* TODO - Dynamic setting of width */}
-                <CommitGraph commits={commits} maxWidth={150} />
+                <CommitGraph commits={commits} maxWidth={graphWidth} />
             </div>
             <Table
                 getTableProps={getTableProps}
