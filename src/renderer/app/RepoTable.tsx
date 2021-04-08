@@ -1,13 +1,14 @@
 import * as React from "react";
 import { useMemo } from "react";
 import { makeStyles } from "@material-ui/core";
-import { Column, useTable, useResizeColumns, useFlexLayout } from "react-table";
+import { Column, useTable, useResizeColumns } from "react-table";
 
 import { useRepositoryContext } from "renderer/app/store/Repository";
 import CommitGraph from "renderer/app/graph/CommitGraph";
 import { TableRecord } from "renderer/app/react-table/types";
 import Table from "renderer/app/react-table/Table";
 import Commits from "./store/hooks/Commits";
+import { useFullWidthLayout } from "./react-table/useFullWidthLayout";
 
 const useStyles = makeStyles({
     top: {
@@ -27,16 +28,34 @@ const RepoTable: React.FC = () => {
 
     const columns = useMemo<Column<TableRecord>[]>(
         () => [
-            { Header: "Graph", accessor: "graph", width: 300 },
-            { Header: "Message", accessor: "message", width: 700 },
+            {
+                Header: "Graph",
+                accessor: "graph",
+                widthPrecentage: 20,
+            },
+            {
+                Header: "Message",
+                accessor: "message",
+                widthPrecentage: 40,
+            },
             {
                 Header: "Committer",
                 accessor: "committer",
-                width: 200,
+                widthPrecentage: 15,
                 center: true,
             },
-            { Header: "Time", accessor: "time", width: 80, center: true },
-            { Header: "Hash", accessor: "hash", width: 80, center: true },
+            {
+                Header: "Time",
+                accessor: "time",
+                widthPrecentage: 15,
+                center: true,
+            },
+            {
+                Header: "Hash",
+                accessor: "hash",
+                widthPrecentage: 10,
+                center: true,
+            },
         ],
         []
     );
@@ -77,8 +96,8 @@ const RepoTable: React.FC = () => {
             data,
             defaultColumn,
         },
-        useResizeColumns,
-        useFlexLayout
+        useFullWidthLayout,
+        useResizeColumns
     );
 
     return (
