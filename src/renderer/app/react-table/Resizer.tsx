@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import { TableHeaderGroup } from "renderer/app/react-table/types";
+import { useResizeable, OnDragFunc } from "./useResizeable";
 
 const useStyles = makeStyles({
     resizer: {
@@ -19,13 +19,15 @@ const useStyles = makeStyles({
 });
 
 interface ResizerProps {
-    column: TableHeaderGroup;
+    onDrag: OnDragFunc;
 }
 
-const Resizer: React.FC<ResizerProps> = ({ column, ...rest }) => {
+const Resizer: React.FC<ResizerProps> = ({ onDrag, ...rest }) => {
     const { resizer } = useStyles();
 
-    return <div {...column.getResizerProps()} className={resizer} {...rest} />;
+    const resizerProps = useResizeable(onDrag);
+
+    return <div {...resizerProps} className={resizer} {...rest} />;
 };
 
 export default Resizer;

@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 
 import { TableHeaderGroup } from "renderer/app/react-table/types";
 import Resizer from "renderer/app/react-table/Resizer";
+import { OnDragFunc } from "./useResizeable";
 
 const useStyles = makeStyles({
     headerCell: {
@@ -18,20 +19,33 @@ const useStyles = makeStyles({
         fontWeight: "bold",
         textAlign: "center",
         background: "#383631",
+        boxSizing: "border-box",
     },
 });
 
 interface HeaderCellProps {
     column: TableHeaderGroup;
+    width: string;
+    isResizeable: boolean;
+    onDrag: OnDragFunc;
 }
 
-const HeaderCell: React.FC<HeaderCellProps> = ({ column, ...rest }) => {
+const HeaderCell: React.FC<HeaderCellProps> = ({
+    column,
+    width,
+    isResizeable,
+    onDrag,
+    ...rest
+}) => {
     const { headerCell } = useStyles();
 
+    const { style, ...other } = column.getHeaderProps();
+    style.width = width;
+
     return (
-        <div {...column.getHeaderProps()} className={headerCell} {...rest}>
+        <div {...other} style={style} className={headerCell} {...rest}>
             {column.render("Header")}
-            {column.canResize && <Resizer column={column} />}
+            {isResizeable && <Resizer onDrag={onDrag} />}
         </div>
     );
 };

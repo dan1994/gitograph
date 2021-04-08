@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
-import { Column, useTable, useResizeColumns } from "react-table";
+import { Column, useTable } from "react-table";
 
 import { useRepositoryContext } from "renderer/app/store/Repository";
 import CommitGraph from "renderer/app/graph/CommitGraph";
@@ -65,7 +65,7 @@ const RepoTable: React.FC = () => {
         () =>
             commits.commits
                 // TODO - Partial load
-                .slice(0, 30)
+                .slice(0, 10)
                 .map((commit) => ({
                     graph: "",
                     message: commit.message.split("\n")[0],
@@ -96,12 +96,34 @@ const RepoTable: React.FC = () => {
             data,
             defaultColumn,
         },
-        useFullWidthLayout,
-        useResizeColumns
+        useFullWidthLayout
     );
+
+    const [widths, setWidths] = useState<string[]>(
+        columns.map((column) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+            const widthPrecentage: number | undefined = (column as any)
+                .widthPrecentage;
+            return widthPrecentage
+                ? `${widthPrecentage}%`
+                : `${100 / columns.length}%`;
+        })
+    );
+
+    const onDrag = (index: number) => (width1: number, width2: number) => {
+        const newWidths = [...widths];
+        newWidths[index] = `${width1}px`;
+        newWidths[index + 1] = `${width2}px`;
+        setWidths(newWidths);
+    };
 
     return (
         <div className={classes.top}>
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+                {widths.map((width, index) => (
+                    <span key={index}>{width}</span>
+                ))}
+            </div>
             <div className={classes.graphContainer}>
                 {/* TODO - Dynamic setting of width */}
                 <CommitGraph commits={commits} maxWidth={150} />
@@ -112,6 +134,8 @@ const RepoTable: React.FC = () => {
                 headerGroups={headerGroups}
                 rows={rows}
                 prepareRow={prepareRow}
+                widths={widths}
+                onDrag={onDrag}
             />
         </div>
     );
