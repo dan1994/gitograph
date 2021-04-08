@@ -7,12 +7,14 @@ const useStyles = makeStyles({
         position: "absolute",
         right: 0,
         top: 0,
+        transform: "translateX(5px)",
         width: "10px",
         height: "100%",
         zIndex: 1,
         /* prevents from scrolling while dragging on touch devices */
         touchAction: "none",
         cursor: "col-resize",
+        caretColor: "transparent",
     },
 });
 
