@@ -22,6 +22,7 @@ const useStyles = makeStyles({
 
 interface DataCellProps {
     cell: TableCell;
+    width: string;
 }
 
 const cellProps: CellPropGetter<TableRecord> = (props, { cell }) => {
@@ -37,16 +38,20 @@ const cellProps: CellPropGetter<TableRecord> = (props, { cell }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: center ? "center" : "flex-start",
+                boxSizing: "border-box",
             },
         },
     ];
 };
 
-const DataCell: React.FC<DataCellProps> = ({ cell, ...rest }) => {
+const DataCell: React.FC<DataCellProps> = ({ cell, width, ...rest }) => {
     const { dataCell } = useStyles();
 
+    const { style, ...other } = cell.getCellProps(cellProps);
+    style.width = width;
+
     return (
-        <div {...cell.getCellProps(cellProps)} className={dataCell} {...rest}>
+        <div {...other} style={style} className={dataCell} {...rest}>
             {cell.render("Cell")}
         </div>
     );

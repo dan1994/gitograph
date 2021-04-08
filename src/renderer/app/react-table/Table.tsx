@@ -9,6 +9,7 @@ import {
 } from "renderer/app/react-table/types";
 import Header from "renderer/app/react-table/Header";
 import Body from "renderer/app/react-table/Body";
+import { OnDragFunc } from "./useResizeable";
 
 const useStyles = makeStyles({
     table: {},
@@ -20,6 +21,8 @@ interface TableProps {
     headerGroups: TableHeaderGroup[];
     rows: TableRow[];
     prepareRow: (row: TableRow) => void;
+    widths: string[];
+    onDrag: (index: number) => OnDragFunc;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -28,15 +31,22 @@ const Table: React.FC<TableProps> = ({
     headerGroups,
     rows,
     prepareRow,
+    widths,
+    onDrag,
     ...rest
 }) => {
     const { table } = useStyles();
 
     return (
         <div className={table} {...getTableProps()} {...rest}>
-            <Header headerGroups={headerGroups} />
+            <Header
+                headerGroups={headerGroups}
+                widths={widths}
+                onDrag={onDrag}
+            />
             <Body
                 getTableBodyProps={getTableBodyProps}
+                widths={widths}
                 rows={rows}
                 prepareRow={prepareRow}
             />

@@ -21,12 +21,14 @@ const useStyles = makeStyles({
 interface BodyProps {
     getTableBodyProps: GetTableBodyPropsFunction;
     rows: TableRow[];
+    widths: string[];
     prepareRow: (row: TableRow) => void;
 }
 
 const Body: React.FC<BodyProps> = ({
     getTableBodyProps,
     rows,
+    widths,
     prepareRow,
     ...rest
 }) => {
@@ -36,7 +38,7 @@ const Body: React.FC<BodyProps> = ({
         <div className={body} {...getTableBodyProps()} {...rest}>
             {rows.map((row) => {
                 prepareRow(row);
-                return <DataRow key={row.id} row={row} />;
+                return <DataRow key={row.id} row={row} widths={widths} />;
             })}
         </div>
     );

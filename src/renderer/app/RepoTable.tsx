@@ -1,13 +1,14 @@
 import * as React from "react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
-import { Column, useTable, useResizeColumns, useFlexLayout } from "react-table";
+import { Column, useTable } from "react-table";
 
 import { useRepositoryContext } from "renderer/app/store/Repository";
 import CommitGraph from "renderer/app/graph/CommitGraph";
 import { TableRecord } from "renderer/app/react-table/types";
 import Table from "renderer/app/react-table/Table";
 import Commits from "./store/hooks/Commits";
+import { useFullWidthLayout } from "./react-table/useFullWidthLayout";
 
 const useStyles = makeStyles({
     top: {
@@ -27,16 +28,34 @@ const RepoTable: React.FC = () => {
 
     const columns = useMemo<Column<TableRecord>[]>(
         () => [
-            { Header: "Graph", accessor: "graph", width: 300 },
-            { Header: "Message", accessor: "message", width: 700 },
+            {
+                Header: "Graph",
+                accessor: "graph",
+                widthPrecentage: 20,
+            },
+            {
+                Header: "Message",
+                accessor: "message",
+                widthPrecentage: 40,
+            },
             {
                 Header: "Committer",
                 accessor: "committer",
-                width: 200,
+                widthPrecentage: 15,
                 center: true,
             },
-            { Header: "Time", accessor: "time", width: 80, center: true },
-            { Header: "Hash", accessor: "hash", width: 80, center: true },
+            {
+                Header: "Time",
+                accessor: "time",
+                widthPrecentage: 15,
+                center: true,
+            },
+            {
+                Header: "Hash",
+                accessor: "hash",
+                widthPrecentage: 10,
+                center: true,
+            },
         ],
         []
     );
@@ -46,7 +65,7 @@ const RepoTable: React.FC = () => {
         () =>
             commits.commits
                 // TODO - Partial load
-                .slice(0, 30)
+                .slice(0, 10)
                 .map((commit) => ({
                     graph: "",
                     message: commit.message.split("\n")[0],
@@ -77,9 +96,26 @@ const RepoTable: React.FC = () => {
             data,
             defaultColumn,
         },
-        useResizeColumns,
-        useFlexLayout
+        useFullWidthLayout
     );
+
+    const [widths, setWidths] = useState<string[]>(
+        columns.map((column) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+            const widthPrecentage: number | undefined = (column as any)
+                .widthPrecentage;
+            return widthPrecentage
+                ? `${widthPrecentage}%`
+                : `${100 / columns.length}%`;
+        })
+    );
+
+    const onDrag = (index: number) => (width1: number, width2: number) => {
+        const newWidths = [...widths];
+        newWidths[index] = `${width1}px`;
+        newWidths[index + 1] = `${width2}px`;
+        setWidths(newWidths);
+    };
 
     return (
         <div className={classes.top}>
@@ -93,6 +129,8 @@ const RepoTable: React.FC = () => {
                 headerGroups={headerGroups}
                 rows={rows}
                 prepareRow={prepareRow}
+                widths={widths}
+                onDrag={onDrag}
             />
         </div>
     );
