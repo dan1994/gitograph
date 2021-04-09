@@ -61,7 +61,7 @@ export const useResizeable: UseResizeableHook = (onDrag) => {
         window.removeEventListener("mouseup", mouseUp);
     };
 
-    const mouseDown: MouseEventFunc = (e) => {
+    const mouseDown: React.MouseEventHandler = (e) => {
         prevX.current = e.clientX;
 
         window.addEventListener("mousemove", mouseMove);
@@ -70,6 +70,6 @@ export const useResizeable: UseResizeableHook = (onDrag) => {
 
     return {
         ref: resizer,
-        onMouseDown: (mouseDown as unknown) as React.MouseEventHandler,
+        onMouseDown: mouseDown,
     };
 };
