@@ -2,7 +2,7 @@ import React, { createContext, useContext, useRef, useState } from "react";
 
 type MouseEventFunc = (e: MouseEvent) => void;
 
-interface Column {
+interface ColumnOptions {
     widthPrecentage?: number;
 }
 
@@ -29,7 +29,7 @@ interface ResizeableColumnsState {
 
 type UseResizeableColumnsHook = (
     id: string,
-    columns: Column[]
+    columns: ColumnOptions[]
 ) => ResizeableColumnsState;
 
 const useResizeableColumns: UseResizeableColumnsHook = (id, columns) => {
@@ -123,7 +123,7 @@ const ResizeableColumnsContext = createContext(null);
 
 const ResizeableColumnsContextProvider: React.FC<{
     id: string;
-    columns: Column[];
+    columns: ColumnOptions[];
     children?: React.ReactNode;
 }> = ({ id, columns, children }) => {
     return (
@@ -140,7 +140,7 @@ const useResizeableColumnsContext: () => ResizeableColumnsState = () => {
 };
 
 export {
-    Column,
+    ColumnOptions,
     useResizeableColumnsContext,
     ResizeableColumnsContextProvider,
 };

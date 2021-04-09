@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
-import { Column, useTable } from "react-table";
+import { Column } from "react-table";
 
 import { useRepositoryContext } from "renderer/app/store/Repository";
 
@@ -25,42 +25,49 @@ const useStyles = makeStyles({
     },
 });
 
+interface ColumnOptions {
+    widthPrecentage?: number;
+    center?: boolean;
+}
+
+const columns: (Column<TableRecord> & ColumnOptions)[] = [
+    {
+        Header: "Graph",
+        accessor: "graph",
+        widthPrecentage: 20,
+    },
+    {
+        Header: "Message",
+        accessor: "message",
+        widthPrecentage: 40,
+    },
+    {
+        Header: "Committer",
+        accessor: "committer",
+        widthPrecentage: 15,
+        center: true,
+    },
+    {
+        Header: "Time",
+        accessor: "time",
+        widthPrecentage: 15,
+        center: true,
+    },
+    {
+        Header: "Hash",
+        accessor: "hash",
+        widthPrecentage: 10,
+        center: true,
+    },
+];
+
+const defaultColumn = {
+    minWidth: 150,
+    maxWidth: 5000,
+};
+
 const RepoTable: React.FC = () => {
     const classes = useStyles();
-
-    const columns = useMemo<Column<TableRecord>[]>(
-        () => [
-            {
-                Header: "Graph",
-                accessor: "graph",
-                widthPrecentage: 20,
-            },
-            {
-                Header: "Message",
-                accessor: "message",
-                widthPrecentage: 40,
-            },
-            {
-                Header: "Committer",
-                accessor: "committer",
-                widthPrecentage: 15,
-                center: true,
-            },
-            {
-                Header: "Time",
-                accessor: "time",
-                widthPrecentage: 15,
-                center: true,
-            },
-            {
-                Header: "Hash",
-                accessor: "hash",
-                widthPrecentage: 10,
-                center: true,
-            },
-        ],
-        []
-    );
 
     const { commits } = useRepositoryContext();
     const data = useMemo<TableRecord[]>(
@@ -78,29 +85,6 @@ const RepoTable: React.FC = () => {
         [commits]
     );
 
-    const defaultColumn = useMemo(
-        () => ({
-            minWidth: 150,
-            maxWidth: 5000,
-        }),
-        []
-    );
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable<TableRecord>(
-        {
-            columns,
-            data,
-            defaultColumn,
-        },
-        useFullWidthLayout
-    );
-
     const [graphWidth, setGraphWidth] = useState<number>(150);
 
     return (
@@ -111,11 +95,10 @@ const RepoTable: React.FC = () => {
             </div>
             <Table
                 id="repoTable"
-                getTableProps={getTableProps}
-                getTableBodyProps={getTableBodyProps}
-                headerGroups={headerGroups}
-                rows={rows}
-                prepareRow={prepareRow}
+                columns={columns}
+                data={data}
+                defaultColumn={defaultColumn}
+                plugins={[useFullWidthLayout]}
             />
         </div>
     );

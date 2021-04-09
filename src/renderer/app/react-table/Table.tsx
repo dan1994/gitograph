@@ -1,14 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
+import { Column, useTable, PluginHook } from "react-table";
 
+import { TableRecord } from "renderer/app/react-table/types";
 import {
-    GetTableBodyPropsFunction,
-    GetTablePropsFunction,
-    TableHeaderGroup,
-    TableRow,
-} from "renderer/app/react-table/types";
-import {
-    Column,
+    ColumnOptions,
     ResizeableColumnsContextProvider,
 } from "renderer/app/react-table/useResizeableColumns";
 import Header from "renderer/app/react-table/Header";
@@ -20,27 +16,40 @@ const useStyles = makeStyles({
 
 interface TableProps {
     id: string;
-    getTableProps: GetTablePropsFunction;
-    getTableBodyProps: GetTableBodyPropsFunction;
-    headerGroups: TableHeaderGroup[];
-    rows: TableRow[];
-    prepareRow: (row: TableRow) => void;
+    columns: Column<TableRecord>[];
+    data: TableRecord[];
+    defaultColumn: Partial<Column<TableRecord>>;
+    plugins: PluginHook<TableRecord>[];
 }
 
 const Table: React.FC<TableProps> = ({
     id,
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
+    columns,
+    data,
+    defaultColumn,
+    plugins,
 }) => {
     const { table } = useStyles();
 
-    const columns = headerGroups[0].headers as Column[];
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+    } = useTable<TableRecord>(
+        {
+            columns,
+            data,
+            defaultColumn,
+        },
+        ...plugins
+    );
+
+    const columnsOptions = headerGroups[0].headers as ColumnOptions[];
 
     return (
-        <ResizeableColumnsContextProvider id={id} columns={columns}>
+        <ResizeableColumnsContextProvider id={id} columns={columnsOptions}>
             <div id={id} className={table} {...getTableProps()}>
                 <Header headerGroups={headerGroups} />
                 <Body
