@@ -32,12 +32,6 @@ type UseResizeableColumnsHook = (
     columns: Column[]
 ) => ResizeableColumnsState;
 
-const getTableColumnWidths = (id: string) => {
-    const table = document.getElementById(id);
-    const cells = table.querySelectorAll('[role="header-cell"]');
-    return Array.from(cells).map((cell) => cell.getBoundingClientRect().width);
-};
-
 const useResizeableColumns: UseResizeableColumnsHook = (id, columns) => {
     const [widths, setWidths] = useState<string[]>(
         columns.map(
@@ -141,8 +135,12 @@ const ResizeableColumnsContextProvider: React.FC<{
     );
 };
 
-const useResizeableColumnsContext: () => UseResizeableColumnsHook = () => {
-    return useContext<UseResizeableColumnsHook>(ResizeableColumnsContext);
+const useResizeableColumnsContext: () => ResizeableColumnsState = () => {
+    return useContext<ResizeableColumnsState>(ResizeableColumnsContext);
 };
 
-export { useResizeableColumnsContext, ResizeableColumnsContextProvider };
+export {
+    Column,
+    useResizeableColumnsContext,
+    ResizeableColumnsContextProvider,
+};

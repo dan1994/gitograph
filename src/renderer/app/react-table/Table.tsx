@@ -7,50 +7,49 @@ import {
     TableHeaderGroup,
     TableRow,
 } from "renderer/app/react-table/types";
+import {
+    Column,
+    ResizeableColumnsContextProvider,
+} from "renderer/app/react-table/useResizeableColumns";
 import Header from "renderer/app/react-table/Header";
 import Body from "renderer/app/react-table/Body";
-import { OnDragFunc } from "./useResizeable";
 
 const useStyles = makeStyles({
     table: {},
 });
 
 interface TableProps {
+    id: string;
     getTableProps: GetTablePropsFunction;
     getTableBodyProps: GetTableBodyPropsFunction;
     headerGroups: TableHeaderGroup[];
     rows: TableRow[];
     prepareRow: (row: TableRow) => void;
-    widths: string[];
-    onDrag: (index: number) => OnDragFunc;
 }
 
 const Table: React.FC<TableProps> = ({
+    id,
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-    widths,
-    onDrag,
-    ...rest
 }) => {
     const { table } = useStyles();
 
+    const columns = headerGroups[0].headers as Column[];
+
     return (
-        <div className={table} {...getTableProps()} {...rest}>
-            <Header
-                headerGroups={headerGroups}
-                widths={widths}
-                onDrag={onDrag}
-            />
-            <Body
-                getTableBodyProps={getTableBodyProps}
-                widths={widths}
-                rows={rows}
-                prepareRow={prepareRow}
-            />
-        </div>
+        <ResizeableColumnsContextProvider id={id} columns={columns}>
+            <div id={id} className={table} {...getTableProps()}>
+                <Header headerGroups={headerGroups} />
+                <Body
+                    getTableBodyProps={getTableBodyProps}
+                    rows={rows}
+                    prepareRow={prepareRow}
+                />
+            </div>
+        </ResizeableColumnsContextProvider>
     );
 };
 

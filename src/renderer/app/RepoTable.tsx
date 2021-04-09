@@ -1,14 +1,16 @@
 import * as React from "react";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Column, useTable } from "react-table";
 
 import { useRepositoryContext } from "renderer/app/store/Repository";
-import CommitGraph from "renderer/app/graph/CommitGraph";
+
+import { useFullWidthLayout } from "renderer/app/react-table/useFullWidthLayout";
 import { TableRecord } from "renderer/app/react-table/types";
 import Table from "renderer/app/react-table/Table";
-import Commits from "./store/hooks/Commits";
-import { useFullWidthLayout } from "./react-table/useFullWidthLayout";
+
+import CommitGraph from "renderer/app/graph/CommitGraph";
+import Commits from "renderer/app/store/hooks/Commits";
 
 const useStyles = makeStyles({
     top: {
@@ -22,11 +24,6 @@ const useStyles = makeStyles({
         paddingTop: "20px",
     },
 });
-
-const getGraphColumnWidth = () => {
-    const cellElement = document.querySelectorAll('[role="columnheader"]')[0];
-    return cellElement.getBoundingClientRect().width;
-};
 
 const RepoTable: React.FC = () => {
     const classes = useStyles();
@@ -64,8 +61,8 @@ const RepoTable: React.FC = () => {
         ],
         []
     );
-    const { commits } = useRepositoryContext();
 
+    const { commits } = useRepositoryContext();
     const data = useMemo<TableRecord[]>(
         () =>
             commits.commits
@@ -104,28 +101,7 @@ const RepoTable: React.FC = () => {
         useFullWidthLayout
     );
 
-    const [widths, setWidths] = useState<string[]>(
-        columns.map((column) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-            const widthPrecentage: number | undefined = (column as any)
-                .widthPrecentage;
-            return widthPrecentage
-                ? `${widthPrecentage}%`
-                : `${100 / columns.length}%`;
-        })
-    );
-
-    const onDrag = (index: number) => (width1: number, width2: number) => {
-        const newWidths = [...widths];
-        newWidths[index] = `${width1}px`;
-        newWidths[index + 1] = `${width2}px`;
-        setWidths(newWidths);
-    };
-
-    const [graphWidth, setGraphWidth] = useState<number>(0);
-    useEffect(() => {
-        setGraphWidth(getGraphColumnWidth());
-    }, [widths]);
+    const [graphWidth, setGraphWidth] = useState<number>(150);
 
     return (
         <div className={classes.top}>
@@ -134,13 +110,12 @@ const RepoTable: React.FC = () => {
                 <CommitGraph commits={commits} maxWidth={graphWidth} />
             </div>
             <Table
+                id="repoTable"
                 getTableProps={getTableProps}
                 getTableBodyProps={getTableBodyProps}
                 headerGroups={headerGroups}
                 rows={rows}
                 prepareRow={prepareRow}
-                widths={widths}
-                onDrag={onDrag}
             />
         </div>
     );
