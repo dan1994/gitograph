@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-
 import { TableHeaderGroup } from "renderer/app/react-table/types";
+
+import { useResizeableColumnsContext } from "./useResizeableColumns";
 import Resizer from "renderer/app/react-table/Resizer";
-import { OnDragFunc } from "./useResizeable";
 
 const useStyles = makeStyles({
     headerCell: {
@@ -25,27 +25,22 @@ const useStyles = makeStyles({
 
 interface HeaderCellProps {
     column: TableHeaderGroup;
-    width: string;
-    isResizeable: boolean;
-    onDrag: OnDragFunc;
+    columnIndex: number;
 }
 
-const HeaderCell: React.FC<HeaderCellProps> = ({
-    column,
-    width,
-    isResizeable,
-    onDrag,
-    ...rest
-}) => {
+const HeaderCell: React.FC<HeaderCellProps> = ({ column, columnIndex }) => {
     const { headerCell } = useStyles();
 
-    const { style, ...other } = column.getHeaderProps();
-    style.width = width;
+    const { getCellProps } = useResizeableColumnsContext();
+
+    const { style: style1, ...extraProps } = column.getHeaderProps();
+    const { style: style2, isResizeable } = getCellProps(columnIndex);
+    const style = { ...style1, ...style2 };
 
     return (
-        <div {...other} style={style} className={headerCell} {...rest}>
+        <div {...extraProps} style={style} className={headerCell}>
             {column.render("Header")}
-            {isResizeable && <Resizer onDrag={onDrag} />}
+            {isResizeable && <Resizer columnIndex={columnIndex} />}
         </div>
     );
 };

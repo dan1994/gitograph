@@ -14,19 +14,18 @@ const useStyles = makeStyles({
 
 interface DataRowProps {
     row: TableRow;
-    widths: string[];
 }
 
-const DataRow: React.FC<DataRowProps> = ({ row, widths, ...rest }) => {
+const DataRow: React.FC<DataRowProps> = ({ row }) => {
     const { dataRow } = useStyles();
 
     return (
-        <div {...row.getRowProps()} className={dataRow} {...rest}>
+        <div {...row.getRowProps()} className={dataRow}>
             {row.cells.map((cell, index) => (
                 <DataCell
                     key={cell.column.id}
                     cell={cell}
-                    width={widths[index]}
+                    columnIndex={index}
                 />
             ))}
         </div>

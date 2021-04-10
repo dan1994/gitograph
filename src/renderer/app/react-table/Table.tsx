@@ -1,56 +1,70 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
+import { Column, useTable, PluginHook } from "react-table";
 
+import { TableRecord } from "renderer/app/react-table/types";
 import {
-    GetTableBodyPropsFunction,
-    GetTablePropsFunction,
-    TableHeaderGroup,
-    TableRow,
-} from "renderer/app/react-table/types";
+    ColumnOptions,
+    ResizeableColumnsContextProvider,
+} from "renderer/app/react-table/useResizeableColumns";
 import Header from "renderer/app/react-table/Header";
 import Body from "renderer/app/react-table/Body";
-import { OnDragFunc } from "./useResizeable";
 
 const useStyles = makeStyles({
     table: {},
 });
 
 interface TableProps {
-    getTableProps: GetTablePropsFunction;
-    getTableBodyProps: GetTableBodyPropsFunction;
-    headerGroups: TableHeaderGroup[];
-    rows: TableRow[];
-    prepareRow: (row: TableRow) => void;
-    widths: string[];
-    onDrag: (index: number) => OnDragFunc;
+    id: string;
+    columns: Column<TableRecord>[];
+    data: TableRecord[];
+    defaultColumn: Partial<Column<TableRecord>>;
+    plugins: PluginHook<TableRecord>[];
+    onResize: (widths: number[]) => void;
 }
 
 const Table: React.FC<TableProps> = ({
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    widths,
-    onDrag,
-    ...rest
+    id,
+    columns,
+    data,
+    defaultColumn,
+    plugins,
+    onResize,
 }) => {
     const { table } = useStyles();
 
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+    } = useTable<TableRecord>(
+        {
+            columns,
+            data,
+            defaultColumn,
+        },
+        ...plugins
+    );
+
+    const columnsOptions = headerGroups[0].headers as ColumnOptions[];
+
     return (
-        <div className={table} {...getTableProps()} {...rest}>
-            <Header
-                headerGroups={headerGroups}
-                widths={widths}
-                onDrag={onDrag}
-            />
-            <Body
-                getTableBodyProps={getTableBodyProps}
-                widths={widths}
-                rows={rows}
-                prepareRow={prepareRow}
-            />
-        </div>
+        <ResizeableColumnsContextProvider
+            id={id}
+            columnsOptions={columnsOptions}
+            onResize={onResize}
+        >
+            <div id={id} className={table} {...getTableProps()}>
+                <Header headerGroups={headerGroups} />
+                <Body
+                    getTableBodyProps={getTableBodyProps}
+                    rows={rows}
+                    prepareRow={prepareRow}
+                />
+            </div>
+        </ResizeableColumnsContextProvider>
     );
 };
 

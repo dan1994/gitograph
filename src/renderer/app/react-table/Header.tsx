@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core";
 
 import { TableHeaderGroup } from "renderer/app/react-table/types";
 import HeaderRow from "renderer/app/react-table/HeaderRow";
-import { OnDragFunc } from "./useResizeable";
 
 const useStyles = makeStyles({
     header: {
@@ -15,27 +14,15 @@ const useStyles = makeStyles({
 
 interface HeaderProps {
     headerGroups: TableHeaderGroup[];
-    widths: string[];
-    onDrag: (index: number) => OnDragFunc;
 }
 
-const Header: React.FC<HeaderProps> = ({
-    headerGroups,
-    widths,
-    onDrag,
-    ...rest
-}) => {
+const Header: React.FC<HeaderProps> = ({ headerGroups }) => {
     const { header } = useStyles();
 
     return (
-        <div className={header} {...rest}>
+        <div className={header}>
             {headerGroups.map((headerGroup, index) => (
-                <HeaderRow
-                    key={index}
-                    headerGroup={headerGroup}
-                    widths={widths}
-                    onDrag={onDrag}
-                />
+                <HeaderRow key={index} headerGroup={headerGroup} />
             ))}
         </div>
     );

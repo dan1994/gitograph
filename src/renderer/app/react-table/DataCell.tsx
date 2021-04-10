@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 import { CellPropGetter } from "react-table";
 
 import { TableCell, TableRecord } from "renderer/app/react-table/types";
+import { useResizeableColumnsContext } from "renderer/app/react-table/useResizeableColumns";
 
 const useStyles = makeStyles({
     dataCell: {
@@ -20,16 +21,12 @@ const useStyles = makeStyles({
     },
 });
 
-interface DataCellProps {
-    cell: TableCell;
-    width: string;
+interface Cell {
+    center?: boolean;
 }
 
 const cellProps: CellPropGetter<TableRecord> = (props, { cell }) => {
-    // Ugly hack to make typescript believe this conversion is legit
-    const { center } = (cell.column as unknown) as {
-        center: boolean | undefined;
-    };
+    const { center } = (cell.column as unknown) as Cell;
 
     return [
         props,
@@ -44,14 +41,22 @@ const cellProps: CellPropGetter<TableRecord> = (props, { cell }) => {
     ];
 };
 
-const DataCell: React.FC<DataCellProps> = ({ cell, width, ...rest }) => {
+interface DataCellProps {
+    cell: TableCell;
+    columnIndex: number;
+}
+
+const DataCell: React.FC<DataCellProps> = ({ cell, columnIndex }) => {
     const { dataCell } = useStyles();
 
-    const { style, ...other } = cell.getCellProps(cellProps);
-    style.width = width;
+    const { getCellProps } = useResizeableColumnsContext();
+
+    const { style: style1, ...extraProps } = cell.getCellProps(cellProps);
+    const { style: style2 } = getCellProps(columnIndex);
+    const style = { ...style1, ...style2 };
 
     return (
-        <div {...other} style={style} className={dataCell} {...rest}>
+        <div {...extraProps} style={style} className={dataCell}>
             {cell.render("Cell")}
         </div>
     );

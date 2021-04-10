@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import { useResizeable, OnDragFunc } from "./useResizeable";
+
+import { useResizeableColumnsContext } from "./useResizeableColumns";
 
 const useStyles = makeStyles({
     resizer: {
@@ -19,15 +20,15 @@ const useStyles = makeStyles({
 });
 
 interface ResizerProps {
-    onDrag: OnDragFunc;
+    columnIndex: number;
 }
 
-const Resizer: React.FC<ResizerProps> = ({ onDrag, ...rest }) => {
+const Resizer: React.FC<ResizerProps> = ({ columnIndex }) => {
     const { resizer } = useStyles();
 
-    const resizerProps = useResizeable(onDrag);
+    const { getResizerProps } = useResizeableColumnsContext();
 
-    return <div {...resizerProps} className={resizer} {...rest} />;
+    return <div {...getResizerProps(columnIndex)} className={resizer} />;
 };
 
 export default Resizer;
