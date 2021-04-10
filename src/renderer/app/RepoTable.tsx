@@ -95,7 +95,6 @@ const RepoTable: React.FC = () => {
     return (
         <div className={classes.top}>
             <div className={classes.graphContainer}>
-                {/* TODO - Dynamic setting of width */}
                 <CommitGraph commits={commits} maxWidth={graphWidth} />
             </div>
             <Table
