@@ -39,34 +39,13 @@ type UseResizeableColumnsHook = (
     onResize: (widths: number[]) => void
 ) => ResizeableColumnsState;
 
-const getTableElementsByRole: (
-    id: string,
-    role: string
-) => NodeListOf<Element> = (id, role) => {
-    const table = document.getElementById(id);
-    return table.querySelectorAll(`[role="${role}"]`);
-};
-
-const getTableColumnWidths = (id: string) => {
-    const cells = getTableElementsByRole(id, "columnheader");
-    return Array.from(cells).map((cell) => cell.getBoundingClientRect().width);
-};
-
-const getTableRowWidth = (id: string) => {
-    const headerRow = getTableElementsByRole(id, "row")[0];
-    return headerRow.getBoundingClientRect().width;
-};
-
 const useResizeableColumns: UseResizeableColumnsHook = (
     id,
     columnsOptions,
     onResize
 ) => {
     const [widths, setWidths] = useState<string[]>(
-        columnsOptions.map(
-            (column) =>
-                `${column.widthPrecentage || 100 / columnsOptions.length}%`
-        )
+        getInitialWidths(columnsOptions)
     );
 
     const getCellProps: GetCellPropsFunc = (index) => {
@@ -176,6 +155,47 @@ const ResizeableColumnsContextProvider: React.FC<{
 
 const useResizeableColumnsContext: () => ResizeableColumnsState = () => {
     return useContext<ResizeableColumnsState>(ResizeableColumnsContext);
+};
+
+const getInitialWidths: (columnsOptions: ColumnOptions[]) => string[] = (
+    columnsOptions
+) => {
+    let accumulatedPrecentage = 0;
+    let numberOfColumnsWithNoDefault = 0;
+
+    columnsOptions.forEach(({ widthPrecentage }) => {
+        if (widthPrecentage) {
+            accumulatedPrecentage += widthPrecentage;
+        } else {
+            numberOfColumnsWithNoDefault += 1;
+        }
+    });
+
+    return columnsOptions.map(
+        ({ widthPrecentage }) =>
+            `${
+                widthPrecentage ||
+                (100 - accumulatedPrecentage) / numberOfColumnsWithNoDefault
+            }%`
+    );
+};
+
+const getTableElementsByRole: (
+    id: string,
+    role: string
+) => NodeListOf<Element> = (id, role) => {
+    const table = document.getElementById(id);
+    return table.querySelectorAll(`[role="${role}"]`);
+};
+
+const getTableColumnWidths = (id: string) => {
+    const cells = getTableElementsByRole(id, "columnheader");
+    return Array.from(cells).map((cell) => cell.getBoundingClientRect().width);
+};
+
+const getTableRowWidth = (id: string) => {
+    const headerRow = getTableElementsByRole(id, "row")[0];
+    return headerRow.getBoundingClientRect().width;
 };
 
 export {
