@@ -39,10 +39,22 @@ type UseResizeableColumnsHook = (
     onResize: (widths: number[]) => void
 ) => ResizeableColumnsState;
 
-const getTableColumnWidths = (id: string) => {
+const getTableElementsByRole: (
+    id: string,
+    role: string
+) => NodeListOf<Element> = (id, role) => {
     const table = document.getElementById(id);
-    const cells = table.querySelectorAll('[role="columnheader"]');
+    return table.querySelectorAll(`[role="${role}"]`);
+};
+
+const getTableColumnWidths = (id: string) => {
+    const cells = getTableElementsByRole(id, "columnheader");
     return Array.from(cells).map((cell) => cell.getBoundingClientRect().width);
+};
+
+const getTableRowWidth = (id: string) => {
+    const headerRow = getTableElementsByRole(id, "row")[0];
+    return headerRow.getBoundingClientRect().width;
 };
 
 const useResizeableColumns: UseResizeableColumnsHook = (
@@ -104,12 +116,16 @@ const useResizeableColumns: UseResizeableColumnsHook = (
                     ? Math.max(delta, -parentWidth)
                     : Math.min(delta, parentSiblingWidth);
 
-            const newParentWidth = parentWidth + correctedDelta;
-            const newParentSiblingWidth = parentSiblingWidth - correctedDelta;
+            const rowWidth = getTableRowWidth(id);
+
+            const newParentWidth =
+                ((parentWidth + correctedDelta) * 100) / rowWidth;
+            const newParentSiblingWidth =
+                ((parentSiblingWidth - correctedDelta) * 100) / rowWidth;
 
             const newWidths = [...widths];
-            newWidths[index] = `${newParentWidth}px`;
-            newWidths[index + 1] = `${newParentSiblingWidth}px`;
+            newWidths[index] = `${newParentWidth}%`;
+            newWidths[index + 1] = `${newParentSiblingWidth}%`;
             setWidths(newWidths);
         };
 
