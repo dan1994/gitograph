@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useRef, useState } from "react";
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 
 type MouseEventFunc = (e: MouseEvent) => void;
 
@@ -29,13 +35,25 @@ interface ResizeableColumnsState {
 
 type UseResizeableColumnsHook = (
     id: string,
-    columns: ColumnOptions[]
+    columnsOptions: ColumnOptions[],
+    onResize: (widths: number[]) => void
 ) => ResizeableColumnsState;
 
-const useResizeableColumns: UseResizeableColumnsHook = (id, columns) => {
+const getTableColumnWidths = (id: string) => {
+    const table = document.getElementById(id);
+    const cells = table.querySelectorAll('[role="columnheader"]');
+    return Array.from(cells).map((cell) => cell.getBoundingClientRect().width);
+};
+
+const useResizeableColumns: UseResizeableColumnsHook = (
+    id,
+    columnsOptions,
+    onResize
+) => {
     const [widths, setWidths] = useState<string[]>(
-        columns.map(
-            (column) => `${column.widthPrecentage || 100 / columns.length}%`
+        columnsOptions.map(
+            (column) =>
+                `${column.widthPrecentage || 100 / columnsOptions.length}%`
         )
     );
 
@@ -44,7 +62,7 @@ const useResizeableColumns: UseResizeableColumnsHook = (id, columns) => {
             style: {
                 width: widths[index],
             },
-            isResizeable: index !== columns.length - 1,
+            isResizeable: index !== columnsOptions.length - 1,
         };
     };
 
@@ -113,6 +131,10 @@ const useResizeableColumns: UseResizeableColumnsHook = (id, columns) => {
         };
     };
 
+    useEffect(() => {
+        onResize(getTableColumnWidths(id));
+    }, [widths]);
+
     return {
         getCellProps,
         getResizerProps,
@@ -123,12 +145,13 @@ const ResizeableColumnsContext = createContext(null);
 
 const ResizeableColumnsContextProvider: React.FC<{
     id: string;
-    columns: ColumnOptions[];
+    columnsOptions: ColumnOptions[];
+    onResize: (widths: number[]) => void;
     children?: React.ReactNode;
-}> = ({ id, columns, children }) => {
+}> = ({ id, columnsOptions, onResize, children }) => {
     return (
         <ResizeableColumnsContext.Provider
-            value={useResizeableColumns(id, columns)}
+            value={useResizeableColumns(id, columnsOptions, onResize)}
         >
             {children}
         </ResizeableColumnsContext.Provider>

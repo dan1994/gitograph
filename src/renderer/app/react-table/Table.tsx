@@ -20,6 +20,7 @@ interface TableProps {
     data: TableRecord[];
     defaultColumn: Partial<Column<TableRecord>>;
     plugins: PluginHook<TableRecord>[];
+    onResize: (widths: number[]) => void;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -28,6 +29,7 @@ const Table: React.FC<TableProps> = ({
     data,
     defaultColumn,
     plugins,
+    onResize,
 }) => {
     const { table } = useStyles();
 
@@ -49,7 +51,11 @@ const Table: React.FC<TableProps> = ({
     const columnsOptions = headerGroups[0].headers as ColumnOptions[];
 
     return (
-        <ResizeableColumnsContextProvider id={id} columns={columnsOptions}>
+        <ResizeableColumnsContextProvider
+            id={id}
+            columnsOptions={columnsOptions}
+            onResize={onResize}
+        >
             <div id={id} className={table} {...getTableProps()}>
                 <Header headerGroups={headerGroups} />
                 <Body

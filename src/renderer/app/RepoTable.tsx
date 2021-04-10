@@ -86,6 +86,11 @@ const RepoTable: React.FC = () => {
     );
 
     const [graphWidth, setGraphWidth] = useState<number>(150);
+    const onResize: (widths: number[]) => void = (widths) => {
+        if (graphWidth !== widths[0]) {
+            setGraphWidth(widths[0]);
+        }
+    };
 
     return (
         <div className={classes.top}>
@@ -99,6 +104,7 @@ const RepoTable: React.FC = () => {
                 data={data}
                 defaultColumn={defaultColumn}
                 plugins={[useFullWidthLayout]}
+                onResize={onResize}
             />
         </div>
     );
