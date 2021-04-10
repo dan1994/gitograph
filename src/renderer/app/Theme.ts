@@ -18,6 +18,21 @@ const theme = createMuiTheme({
                 "#root": {
                     width: "100vw",
                 },
+                "::-webkit-scrollbar": {
+                    width: "10px",
+                    background: "#252526",
+                },
+                "::-webkit-scrollbar-track": {
+                    borderRadius: "5px",
+                    boxShadow: "inset 0 0 10px rgba(0, 0, 0, 0.5)",
+                },
+                "::-webkit-scrollbar-thumb": {
+                    borderRadius: "5px",
+                    background: "#606060",
+                },
+                "::-webkit-scrollbar-thumb:hover": {
+                    background: "#707070",
+                },
             },
         },
     },
