@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ThemeProvider } from "@material-ui/core";
+import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { hot } from "react-hot-loader";
 
 import { RepositoryContextProvider } from "renderer/app/store/Repository";
@@ -10,6 +10,7 @@ const App: React.FC = () => {
     return (
         <React.StrictMode>
             <ThemeProvider theme={theme}>
+                <CssBaseline />
                 <RepositoryContextProvider>
                     <Main />
                 </RepositoryContextProvider>
