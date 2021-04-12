@@ -39,7 +39,7 @@ const columns: (Column<TableRecord> & ColumnOptions)[] = [
     {
         Header: "Message",
         accessor: "message",
-        widthPrecentage: 40,
+        widthPrecentage: 45,
     },
     {
         Header: "Committer",
@@ -50,13 +50,13 @@ const columns: (Column<TableRecord> & ColumnOptions)[] = [
     {
         Header: "Time",
         accessor: "time",
-        widthPrecentage: 15,
+        widthPrecentage: 12,
         center: true,
     },
     {
         Header: "Hash",
         accessor: "hash",
-        widthPrecentage: 10,
+        widthPrecentage: 8,
         center: true,
     },
 ];

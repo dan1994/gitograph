@@ -3,14 +3,15 @@ import { makeStyles } from "@material-ui/core";
 
 import { TableRow } from "renderer/app/react-table/types";
 import DataCell from "renderer/app/react-table/DataCell";
+import { ITheme } from "renderer/app/Theme";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: ITheme) => ({
     dataRow: {
         "&:hover": {
-            backgroundColor: "#4a4741",
+            backgroundColor: theme.vscode.background.hover,
         },
     },
-});
+}));
 
 interface DataRowProps {
     row: TableRow;

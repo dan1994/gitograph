@@ -4,13 +4,14 @@ import { TableHeaderGroup } from "renderer/app/react-table/types";
 
 import { useResizeableColumnsContext } from "./useResizeableColumns";
 import Resizer from "renderer/app/react-table/Resizer";
+import { ITheme } from "renderer/app/Theme";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: ITheme) => ({
     headerCell: {
         margin: 0,
         padding: "0.5rem",
         position: "relative",
-        borderRight: "1px solid #4a4741",
+        borderRight: theme.vscode.border,
         "&:last-child": {
             borderRight: 0,
         },
@@ -18,10 +19,10 @@ const useStyles = makeStyles({
         fontSize: "1.75rem",
         fontWeight: "bold",
         textAlign: "center",
-        background: "#383631",
+        background: theme.vscode.background.secondary,
         boxSizing: "border-box",
     },
-});
+}));
 
 interface HeaderCellProps {
     column: TableHeaderGroup;

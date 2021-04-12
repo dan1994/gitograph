@@ -3,8 +3,9 @@ import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { hot } from "react-hot-loader";
 
 import { RepositoryContextProvider } from "renderer/app/store/Repository";
-import theme from "renderer/app/Theme";
+import { theme } from "renderer/app/Theme";
 import Main from "renderer/app/Main";
+import WindowFrame from "renderer/app/WindowFrame";
 
 const App: React.FC = () => {
     return (
@@ -12,7 +13,9 @@ const App: React.FC = () => {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <RepositoryContextProvider>
-                    <Main />
+                    <WindowFrame>
+                        <Main />
+                    </WindowFrame>
                 </RepositoryContextProvider>
             </ThemeProvider>
         </React.StrictMode>

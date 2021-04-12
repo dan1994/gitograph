@@ -4,12 +4,13 @@ import { CellPropGetter } from "react-table";
 
 import { TableCell, TableRecord } from "renderer/app/react-table/types";
 import { useResizeableColumnsContext } from "renderer/app/react-table/useResizeableColumns";
+import { ITheme } from "renderer/app/Theme";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: ITheme) => ({
     dataCell: {
         margin: 0,
         padding: "0.5rem",
-        borderRight: "1px solid #4a4741",
+        borderRight: theme.vscode.border,
         "&:last-child": {
             borderRight: 0,
         },
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
         fontSize: "1.25rem",
         height: 70,
     },
-});
+}));
 
 interface Cell {
     center?: boolean;
