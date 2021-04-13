@@ -76,6 +76,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ title, submenus }) => {
                 <Button onClick={openMenu}>{title}</Button>
                 <Menu
                     anchorEl={anchorEl}
+                    getContentAnchorEl={null}
                     anchorOrigin={{
                         vertical: "bottom",
                         horizontal: "center",
