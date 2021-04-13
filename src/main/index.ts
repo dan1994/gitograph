@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from "electron";
 
-import applyEventsTo from "main/events";
+import registerIpcChannels from "main/ipc/IpcChannelRegisterer";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
@@ -15,6 +15,7 @@ const createWindow = (): void => {
     const mainWindow = new BrowserWindow({
         height: 600,
         width: 800,
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
         },
@@ -23,7 +24,7 @@ const createWindow = (): void => {
     // and load the index.html of the app.
     void mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-    applyEventsTo(mainWindow);
+    registerIpcChannels(mainWindow);
 };
 
 // This method will be called when Electron has finished
