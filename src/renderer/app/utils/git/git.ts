@@ -11,6 +11,11 @@ const getRootDirectory: (directory: string) => Promise<string> = async (
             fs,
             filepath: directory,
         });
+
+        if (newRootDirectory === ".") {
+            return null;
+        }
+
         return newRootDirectory;
     } catch (error) {
         return null;
