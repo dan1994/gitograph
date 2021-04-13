@@ -8,8 +8,8 @@ import {
     makeStyles,
 } from "@material-ui/core";
 
-import Button from "renderer/app/Button";
-import { ITheme } from "renderer/app/Theme";
+import Button from "renderer/app/components/Button";
+import { ITheme } from "renderer/app/global/Theme";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     menu: {},

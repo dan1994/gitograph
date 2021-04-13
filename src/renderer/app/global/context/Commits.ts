@@ -1,7 +1,7 @@
-import PlacementStrategy from "renderer/app/algorithm/PlacementStrategy";
-import { ICommitContent } from "renderer/app/git/types";
-import { ICommit } from "renderer/app/store/hooks/types";
-import { toDateString } from "renderer/app/utils/date";
+import PlacementStrategy from "renderer/app/global/context/PlacementStrategy";
+import { ICommitContent } from "renderer/app/utils/git/types";
+import { ICommit } from "renderer/app/global/context/types";
+import { toDateString } from "renderer/app/utils/misc/date";
 
 interface ILookupTable {
     [oid: string]: number;

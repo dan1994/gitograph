@@ -2,10 +2,10 @@ import * as React from "react";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { hot } from "react-hot-loader";
 
-import { RepositoryContextProvider } from "renderer/app/store/Repository";
-import { theme } from "renderer/app/Theme";
-import Main from "renderer/app/Main";
-import WindowFrame from "renderer/app/WindowFrame";
+import { RepositoryContextProvider } from "renderer/app/global/context/Repository";
+import { theme } from "renderer/app/global/Theme";
+import Router from "renderer/app/global/components/Router";
+import WindowFrame from "renderer/app/global/components/WindowFrame";
 
 const App: React.FC = () => {
     return (
@@ -14,7 +14,7 @@ const App: React.FC = () => {
                 <CssBaseline />
                 <RepositoryContextProvider>
                     <WindowFrame>
-                        <Main />
+                        <Router />
                     </WindowFrame>
                 </RepositoryContextProvider>
             </ThemeProvider>

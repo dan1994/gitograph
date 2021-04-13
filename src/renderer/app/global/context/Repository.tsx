@@ -1,8 +1,8 @@
 import * as React from "react";
 import { createContext, useContext } from "react";
 
-import { IRepository } from "renderer/app/store/hooks/types";
-import useRepository from "renderer/app/store/hooks/Repository";
+import { IRepository } from "renderer/app/global/context/types";
+import useRepository from "renderer/app/global/context/useRepository";
 
 const RepositoryContext = createContext(null);
 

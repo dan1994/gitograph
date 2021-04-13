@@ -1,6 +1,6 @@
-import { ISha1, ICommitContent } from "renderer/app/git/types";
-import { IVertice } from "renderer/app/graph/types";
-import Commits from "renderer/app/store/hooks/Commits";
+import { ISha1, ICommitContent } from "renderer/app/utils/git/types";
+import { IVertice } from "renderer/app/pages/repoTable/graph/types";
+import Commits from "renderer/app/global/context/Commits";
 
 export interface IComputedCommitProperties {
     children: ISha1[];

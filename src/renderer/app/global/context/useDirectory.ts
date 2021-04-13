@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { IpcRendererEvent } from "electron";
-import IpcRendererGuard from "renderer/ipc/IpcRendererGuard";
+
+import IpcRendererGuard from "renderer/app/utils/ipc/IpcRendererGuard";
 
 /*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
 type IpcRendererCallback = (event: IpcRendererEvent, ...args: any[]) => void;

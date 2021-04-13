@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 
-import { IRepository, IRepositoryState } from "renderer/app/store/hooks/types";
-import useDirectory from "renderer/app/store/hooks/Directory";
-import { getRootDirectory, getCommits } from "renderer/app/git/Wrapper";
-import Commits from "./Commits";
+import {
+    IRepository,
+    IRepositoryState,
+} from "renderer/app/global/context/types";
+import useDirectory from "renderer/app/global/context/useDirectory";
+import { getRootDirectory, getCommits } from "renderer/app/utils/git/Wrapper";
+import Commits from "renderer/app/global/context/Commits";
 
 const useRepository: () => IRepository = () => {
     const [directory, selectDirectory] = useDirectory();

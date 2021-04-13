@@ -1,8 +1,8 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 
-import { ITheme } from "renderer/app/Theme";
-import Toolbar from "renderer/app/Toolbar";
+import { ITheme } from "renderer/app/global/Theme";
+import Toolbar from "renderer/app/global/components/Toolbar";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     root: {

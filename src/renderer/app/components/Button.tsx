@@ -1,7 +1,7 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 
-import { ITheme } from "renderer/app/Theme";
+import { ITheme } from "renderer/app/global/Theme";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     button: {

@@ -1,11 +1,15 @@
 import * as React from "react";
 import { useMemo } from "react";
 
-import { IEdge } from "renderer/app/graph/types";
-import Vertice from "renderer/app/graph/Vertice";
-import Edge from "renderer/app/graph/Edge";
-import { COLUMN_OFFSET, ROW_OFFSET, toPoint } from "renderer/app/graph/utils";
-import Commits from "renderer/app/store/hooks/Commits";
+import { IEdge } from "renderer/app/pages/repoTable/graph/types";
+import Vertice from "renderer/app/pages/repoTable/graph/Vertice";
+import Edge from "renderer/app/pages/repoTable/graph/Edge";
+import {
+    COLUMN_OFFSET,
+    ROW_OFFSET,
+    toPoint,
+} from "renderer/app/pages/repoTable/graph/utils";
+import Commits from "renderer/app/global/context/Commits";
 
 type IEdges = { [id: string]: IEdge };
 

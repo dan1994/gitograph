@@ -2,9 +2,12 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { CellPropGetter } from "react-table";
 
-import { TableCell, TableRecord } from "renderer/app/react-table/types";
-import { useResizeableColumnsContext } from "renderer/app/react-table/useResizeableColumns";
-import { ITheme } from "renderer/app/Theme";
+import {
+    TableCell,
+    TableRecord,
+} from "renderer/app/pages/repoTable/react-table/types";
+import { useResizeableColumnsContext } from "renderer/app/pages/repoTable/react-table/useResizeableColumns";
+import { ITheme } from "renderer/app/global/Theme";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     dataCell: {

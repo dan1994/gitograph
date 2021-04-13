@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 
-import { TableHeaderGroup } from "renderer/app/react-table/types";
-import HeaderCell from "renderer/app/react-table/HeaderCell";
+import { TableHeaderGroup } from "renderer/app/pages/repoTable/react-table/types";
+import HeaderCell from "renderer/app/pages/repoTable/react-table/HeaderCell";
 
 const useStyles = makeStyles({
     headerRow: {},
