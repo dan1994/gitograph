@@ -58,11 +58,11 @@ const Toolbar: React.FC = () => {
     } = useRepositoryContext();
 
     const minimizeApp = () => {
-        ipcRenderer.send("minimize");
+        ipcRenderer.send("minimizeWindow");
     };
 
     const exitApp = () => {
-        ipcRenderer.send("exit");
+        ipcRenderer.send("exitApp");
     };
 
     return (

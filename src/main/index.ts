@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from "electron";
 
-import applyEventsTo from "main/events";
+import createMainWindowIpc from "main/ipc/MainWindow";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
@@ -24,7 +24,7 @@ const createWindow = (): void => {
     // and load the index.html of the app.
     void mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-    applyEventsTo(mainWindow);
+    createMainWindowIpc(mainWindow);
 };
 
 // This method will be called when Electron has finished
