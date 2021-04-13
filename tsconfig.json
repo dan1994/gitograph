@@ -13,7 +13,8 @@
         "paths": {
             "*": ["node_modules/*"],
             "main/*": ["src/main/*"],
-            "renderer/*": ["src/renderer/*"]
+            "renderer/*": ["src/renderer/*"],
+            "shared/*": ["src/shared/*"]
         },
         "jsx": "react",
         "target": "es5",

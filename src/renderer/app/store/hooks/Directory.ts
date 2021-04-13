@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { ipcRenderer, IpcRendererEvent } from "electron";
+import { IpcRendererEvent } from "electron";
+import IpcRendererGuard from "renderer/ipc/IpcRendererGuard";
 
 /*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
 type IpcRendererCallback = (event: IpcRendererEvent, ...args: any[]) => void;
@@ -20,15 +21,15 @@ const useDirectory: IUseDirectory = () => {
     };
 
     useEffect(() => {
-        ipcRenderer.on("selectDirectory", eventCallback);
+        IpcRendererGuard.on("selectDirectory", eventCallback);
 
         return () => {
-            ipcRenderer.removeListener("selectDirectory", eventCallback);
+            IpcRendererGuard.removeListener("selectDirectory", eventCallback);
         };
     }, []);
 
     const selectDirectory = () => {
-        ipcRenderer.send("selectDirectory");
+        IpcRendererGuard.send("selectDirectory");
     };
 
     return [directory, selectDirectory];

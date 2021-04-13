@@ -2,12 +2,12 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import MinimizeIcon from "@material-ui/icons/Minimize";
-import { ipcRenderer } from "electron";
 
 import { useRepositoryContext } from "renderer/app/store/Repository";
 import { ITheme } from "renderer/app/Theme";
 import Button from "renderer/app/Button";
 import MenuButton from "renderer/app/MenuButton";
+import IpcRendererGuard from "renderer/ipc/IpcRendererGuard";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     toolbar: {
@@ -58,11 +58,11 @@ const Toolbar: React.FC = () => {
     } = useRepositoryContext();
 
     const minimizeApp = () => {
-        ipcRenderer.send("minimizeWindow");
+        IpcRendererGuard.send("minimizeWindow");
     };
 
     const exitApp = () => {
-        ipcRenderer.send("exitApp");
+        IpcRendererGuard.send("exitApp");
     };
 
     return (
