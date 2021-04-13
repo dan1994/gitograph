@@ -7,7 +7,7 @@ import {
     TableRecord,
 } from "renderer/app/pages/repoTable/react-table/types";
 import { useResizeableColumnsContext } from "renderer/app/pages/repoTable/react-table/useResizeableColumns";
-import { ITheme } from "renderer/app/global/Theme";
+import { ITheme } from "renderer/app/global";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     dataCell: {

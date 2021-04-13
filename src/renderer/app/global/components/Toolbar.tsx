@@ -3,11 +3,10 @@ import { makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import MinimizeIcon from "@material-ui/icons/Minimize";
 
-import { useRepositoryContext } from "renderer/app/global/context/Repository";
-import { ITheme } from "renderer/app/global/Theme";
-import Button from "renderer/app/components/Button";
+import { useRepositoryContext, ITheme } from "renderer/app/global";
+import { Button } from "renderer/app/components";
 import MenuButton from "renderer/app/global/components/MenuButton";
-import IpcRendererGuard from "renderer/app/utils/ipc/IpcRendererGuard";
+import { IpcRendererGuard } from "renderer/app/utils/ipc";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     toolbar: {

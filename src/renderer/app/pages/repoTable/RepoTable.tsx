@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Column } from "react-table";
 
-import { useRepositoryContext } from "renderer/app/global/context/Repository";
+import { useRepositoryContext } from "renderer/app/global";
 
 import { useFullWidthLayout } from "renderer/app/pages/repoTable/react-table/useFullWidthLayout";
 import { TableRecord } from "renderer/app/pages/repoTable/react-table/types";

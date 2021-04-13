@@ -4,7 +4,7 @@ import { TableHeaderGroup } from "renderer/app/pages/repoTable/react-table/types
 
 import { useResizeableColumnsContext } from "./useResizeableColumns";
 import Resizer from "renderer/app/pages/repoTable/react-table/Resizer";
-import { ITheme } from "renderer/app/global/Theme";
+import { ITheme } from "renderer/app/global";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     headerCell: {

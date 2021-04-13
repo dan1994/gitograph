@@ -2,10 +2,8 @@ import * as React from "react";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { hot } from "react-hot-loader";
 
-import { RepositoryContextProvider } from "renderer/app/global/context/Repository";
-import { theme } from "renderer/app/global/Theme";
-import Router from "renderer/app/global/components/Router";
-import WindowFrame from "renderer/app/global/components/WindowFrame";
+import { RepositoryContextProvider, theme } from "renderer/app/global";
+import { Router, WindowFrame } from "renderer/app/global/components";
 
 const App: React.FC = () => {
     return (

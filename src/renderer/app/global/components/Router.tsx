@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { useRepositoryContext } from "renderer/app/global/context/Repository";
-import RepoTable from "renderer/app/pages/repoTable/RepoTable";
+import { useRepositoryContext } from "renderer/app/global";
+import { RepoTable } from "renderer/app/pages";
 
 const Router: React.FC = () => {
     const { inRepository, isLoading } = useRepositoryContext();

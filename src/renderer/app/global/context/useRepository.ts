@@ -5,7 +5,7 @@ import {
     IRepositoryState,
 } from "renderer/app/global/context/types";
 import useDirectory from "renderer/app/global/context/useDirectory";
-import { getRootDirectory, getCommits } from "renderer/app/utils/git/Wrapper";
+import { getRootDirectory, getCommits } from "renderer/app/utils/git";
 import Commits from "renderer/app/global/context/Commits";
 
 const useRepository: () => IRepository = () => {
