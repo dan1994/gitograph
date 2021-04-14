@@ -1,13 +1,13 @@
 import * as React from "react";
 
 import { useRepositoryContext } from "renderer/app/global";
-import { RepositoryPage } from "renderer/app/pages";
+import { LandingPage, RepositoryPage } from "renderer/app/pages";
 
 const Router: React.FC = () => {
-    const { inRepository } = useRepositoryContext();
+    const { inRepository, isLoading } = useRepositoryContext();
 
-    if (!inRepository) {
-        return <></>;
+    if (!inRepository && !isLoading) {
+        return <LandingPage />;
     }
 
     return <RepositoryPage />;
