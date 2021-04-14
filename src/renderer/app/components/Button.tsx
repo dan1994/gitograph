@@ -6,6 +6,7 @@ import { ITheme } from "renderer/app/global";
 const useStyles = makeStyles((theme: ITheme) => ({
     button: {
         "-webkit-user-select": "none",
+        cursor: "pointer",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

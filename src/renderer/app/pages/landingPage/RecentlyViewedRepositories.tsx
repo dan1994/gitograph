@@ -2,6 +2,7 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 import { ITheme } from "renderer/app/global";
 import { RepositoryIcon } from "renderer/app/components/icons";
+import { Button } from "renderer/app/components";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     recentRepos: {
@@ -18,10 +19,7 @@ const useStyles = makeStyles((theme: ITheme) => ({
         display: "flex",
         flexDirection: "column",
         padding: "0.5em",
-        borderRadius: 2,
-        "&:hover": {
-            background: theme.vscode.background.hover,
-        },
+        borderRadius: 10,
     },
     recentRepoIcon: {
         background: theme.vscode.background.hover,
@@ -39,7 +37,7 @@ const RecentlyViewedRepositories: React.FC = () => {
     return (
         <div className={classes.recentRepos}>
             {Array(10).fill(
-                <div className={classes.recentRepo}>
+                <Button className={classes.recentRepo}>
                     <RepositoryIcon
                         className={classes.recentRepoIcon}
                         size={80}
@@ -47,7 +45,7 @@ const RecentlyViewedRepositories: React.FC = () => {
                         style={{}}
                     />
                     <span className={classes.repoText}>Repo Name</span>
-                </div>
+                </Button>
             )}
         </div>
     );

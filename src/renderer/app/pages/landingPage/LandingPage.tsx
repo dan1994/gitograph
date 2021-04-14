@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: ITheme) => ({
     button: {
         fontSize: "2em",
         boxShadow: `0.1rem 0.1rem ${theme.vscode.background.hover}`,
+        backgroundColor: theme.vscode.background.secondary,
     },
 }));
 
