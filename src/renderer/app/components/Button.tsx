@@ -5,6 +5,7 @@ import { ITheme } from "renderer/app/global";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     button: {
+        "-webkit-user-select": "none",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme: ITheme) => ({
     },
 }));
 
-interface ButtonProps {
+interface ButtonProps extends React.HTMLProps<HTMLSpanElement> {
     children?: React.ReactNode;
     className?: string;
     onClick?: React.MouseEventHandler<HTMLSpanElement>;
@@ -27,10 +28,12 @@ const Button: React.FC<ButtonProps> = ({
     className,
     onClick,
     ref,
+    ...rest
 }) => {
     const classes = useStyles();
     return (
         <span
+            {...rest}
             className={`${classes.button} ${className}`}
             onClick={onClick}
             ref={ref}
