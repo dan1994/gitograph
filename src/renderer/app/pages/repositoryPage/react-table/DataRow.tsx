@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 
-import { TableRow } from "renderer/app/pages/repoTable/react-table/types";
-import DataCell from "renderer/app/pages/repoTable/react-table/DataCell";
+import { TableRow } from "renderer/app/pages/repositoryPage/react-table/types";
+import DataCell from "renderer/app/pages/repositoryPage/react-table/DataCell";
 import { ITheme } from "renderer/app/global";
 
 const useStyles = makeStyles((theme: ITheme) => ({

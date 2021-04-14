@@ -5,11 +5,11 @@ import { Column } from "react-table";
 
 import { useRepositoryContext } from "renderer/app/global";
 
-import { useFullWidthLayout } from "renderer/app/pages/repoTable/react-table/useFullWidthLayout";
-import { TableRecord } from "renderer/app/pages/repoTable/react-table/types";
-import Table from "renderer/app/pages/repoTable/react-table/Table";
+import { useFullWidthLayout } from "renderer/app/pages/repositoryPage/react-table/useFullWidthLayout";
+import { TableRecord } from "renderer/app/pages/repositoryPage/react-table/types";
+import Table from "renderer/app/pages/repositoryPage/react-table/Table";
 
-import CommitGraph from "renderer/app/pages/repoTable/graph/CommitGraph";
+import CommitGraph from "renderer/app/pages/repositoryPage/graph/CommitGraph";
 import Commits from "renderer/app/global/context/Commits";
 
 const useStyles = makeStyles({

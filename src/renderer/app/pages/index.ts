@@ -1,1 +1,1 @@
-export { default as RepoTable } from "renderer/app/pages/repoTable/RepoTable";
+export { default as RepositoryPage } from "renderer/app/pages/repositoryPage/RepositoryPage";

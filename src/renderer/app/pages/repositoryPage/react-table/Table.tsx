@@ -2,13 +2,13 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { Column, useTable, PluginHook } from "react-table";
 
-import { TableRecord } from "renderer/app/pages/repoTable/react-table/types";
+import { TableRecord } from "renderer/app/pages/repositoryPage/react-table/types";
 import {
     ColumnOptions,
     ResizeableColumnsContextProvider,
-} from "renderer/app/pages/repoTable/react-table/useResizeableColumns";
-import Header from "renderer/app/pages/repoTable/react-table/Header";
-import Body from "renderer/app/pages/repoTable/react-table/Body";
+} from "renderer/app/pages/repositoryPage/react-table/useResizeableColumns";
+import Header from "renderer/app/pages/repositoryPage/react-table/Header";
+import Body from "renderer/app/pages/repositoryPage/react-table/Body";
 
 const useStyles = makeStyles({
     table: {},

@@ -1,12 +1,16 @@
 import * as React from "react";
 
 import { useRepositoryContext } from "renderer/app/global";
-import { RepoTable } from "renderer/app/pages";
+import { RepositoryPage } from "renderer/app/pages";
 
 const Router: React.FC = () => {
-    const { inRepository, isLoading } = useRepositoryContext();
+    const { inRepository } = useRepositoryContext();
 
-    return inRepository && !isLoading && <RepoTable />;
+    if (!inRepository) {
+        return <></>;
+    }
+
+    return <RepositoryPage />;
 };
 
 export default Router;
