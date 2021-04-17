@@ -13,6 +13,7 @@ const useStyles = makeStyles({
         gridTemplateRows: "1fr 1fr",
         gridTemplateColumns: "repeat(5, 1fr)",
         rowGap: "2em",
+        columnGap: "0.5em",
         width: "50%",
     },
 });
