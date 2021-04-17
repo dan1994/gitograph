@@ -1,8 +1,9 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core";
-import { Button } from "renderer/app/components";
-import RecentlyViewedRepositories from "./RecentlyViewedRepositories";
+
 import { ITheme, useRepositoryContext } from "renderer/app/global";
+import { Button } from "renderer/app/components";
+import RecentRepositories from "renderer/app/pages/landingPage/RecentRepositories";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     root: {
@@ -38,7 +39,7 @@ const LandingPage: React.FC = () => {
         <div className={classes.root}>
             <div className={classes.title}>Git O' Graph</div>
             <div className={classes.subtitle}>Open a recent repository</div>
-            <RecentlyViewedRepositories />
+            <RecentRepositories />
             <div className={classes.subtitle}>Or...</div>
             <Button className={classes.button} onClick={selectDirectory}>
                 Select a different repository
