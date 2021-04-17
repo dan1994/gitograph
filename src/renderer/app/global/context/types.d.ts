@@ -16,5 +16,5 @@ export interface IRepositoryState {
 
 export interface IRepository extends IRepositoryState {
     inRepository: boolean;
-    selectDirectory: () => void;
+    selectDirectory: (directory?: string) => void;
 }

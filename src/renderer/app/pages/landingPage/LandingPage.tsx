@@ -41,7 +41,12 @@ const LandingPage: React.FC = () => {
             <div className={classes.subtitle}>Open a recent repository</div>
             <RecentRepositories />
             <div className={classes.subtitle}>Or...</div>
-            <Button className={classes.button} onClick={selectDirectory}>
+            <Button
+                className={classes.button}
+                onClick={() => {
+                    selectDirectory();
+                }}
+            >
                 Select a different repository
             </Button>
         </div>
