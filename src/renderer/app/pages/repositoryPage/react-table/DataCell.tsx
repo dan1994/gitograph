@@ -5,8 +5,8 @@ import { CellPropGetter } from "react-table";
 import {
     TableCell,
     TableRecord,
-} from "renderer/app/pages/repoTable/react-table/types";
-import { useResizeableColumnsContext } from "renderer/app/pages/repoTable/react-table/useResizeableColumns";
+} from "renderer/app/pages/repositoryPage/react-table/types";
+import { useResizeableColumnsContext } from "renderer/app/pages/repositoryPage/react-table/useResizeableColumns";
 import { ITheme } from "renderer/app/global";
 
 const useStyles = makeStyles((theme: ITheme) => ({

@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import { TableHeaderGroup } from "renderer/app/pages/repoTable/react-table/types";
+import { TableHeaderGroup } from "renderer/app/pages/repositoryPage/react-table/types";
 
 import { useResizeableColumnsContext } from "./useResizeableColumns";
-import Resizer from "renderer/app/pages/repoTable/react-table/Resizer";
+import Resizer from "renderer/app/pages/repositoryPage/react-table/Resizer";
 import { ITheme } from "renderer/app/global";
 
 const useStyles = makeStyles((theme: ITheme) => ({

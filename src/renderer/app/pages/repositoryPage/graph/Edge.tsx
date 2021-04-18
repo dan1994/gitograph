@@ -1,11 +1,14 @@
 import * as React from "react";
 
-import { IEdge, IGridCell } from "renderer/app/pages/repoTable/graph/types";
+import {
+    IEdge,
+    IGridCell,
+} from "renderer/app/pages/repositoryPage/graph/types";
 import {
     EDGE_THICKNESS,
     toPoint,
     VERTICE_RADIUS,
-} from "renderer/app/pages/repoTable/graph/utils";
+} from "renderer/app/pages/repositoryPage/graph/utils";
 
 const belowVertice: (y: number) => number = (y) => y + VERTICE_RADIUS;
 const aboveVertice: (y: number) => number = (y) => y - VERTICE_RADIUS;

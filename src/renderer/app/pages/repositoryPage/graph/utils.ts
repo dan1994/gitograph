@@ -1,4 +1,7 @@
-import { IGridCell, IPoint } from "renderer/app/pages/repoTable/graph/types";
+import {
+    IGridCell,
+    IPoint,
+} from "renderer/app/pages/repositoryPage/graph/types";
 
 export const VERTICE_RADIUS = 10;
 export const EDGE_THICKNESS: number = VERTICE_RADIUS / 2;

@@ -4,8 +4,8 @@ import { makeStyles } from "@material-ui/core";
 import {
     GetTableBodyPropsFunction,
     TableRow,
-} from "renderer/app/pages/repoTable/react-table/types";
-import DataRow from "renderer/app/pages/repoTable/react-table/DataRow";
+} from "renderer/app/pages/repositoryPage/react-table/types";
+import DataRow from "renderer/app/pages/repositoryPage/react-table/DataRow";
 
 const useStyles = makeStyles({
     body: {

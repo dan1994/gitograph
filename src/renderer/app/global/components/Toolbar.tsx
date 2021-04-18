@@ -89,8 +89,12 @@ const Toolbar: React.FC = () => {
                 Git O' Graph{inRepository && ` - ${rootDirectory}`}
             </span>
             <span className={classes.windowActions}>
-                <Button children={<MinimizeIcon onClick={minimizeApp} />} />
                 <Button
+                    style={{ cursor: "initial" }}
+                    children={<MinimizeIcon onClick={minimizeApp} />}
+                />
+                <Button
+                    style={{ cursor: "initial" }}
                     className={classes.closeButton}
                     children={<CloseIcon onClick={exitApp} />}
                 />

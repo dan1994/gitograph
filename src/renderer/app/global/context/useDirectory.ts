@@ -29,8 +29,12 @@ const useDirectory: IUseDirectory = () => {
         };
     }, []);
 
-    const selectDirectory = () => {
-        IpcRendererGuard.send("selectDirectory");
+    const selectDirectory: (directory?: string) => void = (directory) => {
+        if (directory !== undefined) {
+            setDirectory(directory);
+        } else {
+            IpcRendererGuard.send("selectDirectory");
+        }
     };
 
     return [directory, selectDirectory];

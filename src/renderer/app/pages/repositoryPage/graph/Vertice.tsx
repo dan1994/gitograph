@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { IVertice } from "renderer/app/pages/repoTable/graph/types";
+import { IVertice } from "renderer/app/pages/repositoryPage/graph/types";
 import {
     toPoint,
     VERTICE_RADIUS,
-} from "renderer/app/pages/repoTable/graph/utils";
+} from "renderer/app/pages/repositoryPage/graph/utils";
 
 interface VerticeProps {
     vertice: IVertice;

@@ -73,7 +73,9 @@ const MenuButton: React.FC<MenuButtonProps> = ({ title, submenus }) => {
             }}
         >
             <>
-                <Button onClick={openMenu}>{title}</Button>
+                <Button onClick={openMenu} style={{ cursor: "initial" }}>
+                    {title}
+                </Button>
                 <Menu
                     anchorEl={anchorEl}
                     getContentAnchorEl={null}

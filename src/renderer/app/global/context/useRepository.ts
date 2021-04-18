@@ -7,6 +7,7 @@ import {
 import useDirectory from "renderer/app/global/context/useDirectory";
 import { getRootDirectory, getCommits } from "renderer/app/utils/git";
 import Commits from "renderer/app/global/context/Commits";
+import useRecentRepositories from "renderer/app/pages/landingPage/useRecentRepositories";
 
 const useRepository: () => IRepository = () => {
     const [directory, selectDirectory] = useDirectory();
@@ -17,11 +18,15 @@ const useRepository: () => IRepository = () => {
         isLoading: false,
     });
 
+    const { addRecentRepository } = useRecentRepositories();
+
     const updateRepository: () => void = async () => {
         const rootDirectory = await getRootDirectory(directory);
         if (rootDirectory === null) {
             return;
         }
+
+        addRecentRepository(rootDirectory);
 
         setRepository({ ...repository, isLoading: true });
 

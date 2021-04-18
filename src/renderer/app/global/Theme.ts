@@ -1,4 +1,5 @@
 import { createMuiTheme, Theme, ThemeOptions } from "@material-ui/core";
+import "renderer/static/fonts.css";
 
 interface IVscodeStyles {
     background: {
@@ -57,7 +58,7 @@ const theme = createMuiTheme({
             "@global": {
                 body: {
                     fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                        'Rubik, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
                     backgroundColor: vscodeStyles.background.primary,
                     display: "flex",
                     justifyContent: "center",
@@ -76,6 +77,6 @@ const theme = createMuiTheme({
             },
         },
     },
-} as IThemeOptions);
+} as IThemeOptions) as ITheme;
 
 export { theme, ITheme };
