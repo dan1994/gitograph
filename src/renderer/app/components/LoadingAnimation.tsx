@@ -1,7 +1,7 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 
-import { ITheme, theme } from "renderer/app/global";
+import { theme } from "renderer/app/global";
 import { CommitIcon } from "renderer/app/components/icons";
 
 const useStyles = makeStyles({
@@ -23,12 +23,11 @@ const useStyles = makeStyles({
 
 const LoadingAnimation: React.FC = () => {
     const classes = useStyles();
-    const actualTheme = theme as ITheme;
 
     return (
         <CommitIcon
             className={classes.icon}
-            color={actualTheme.vscode.background.hover}
+            color={theme.vscode.background.hover}
             size={200}
         />
     );

@@ -77,6 +77,6 @@ const theme = createMuiTheme({
             },
         },
     },
-} as IThemeOptions);
+} as IThemeOptions) as ITheme;
 
 export { theme, ITheme };

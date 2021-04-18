@@ -6,15 +6,9 @@ import RecentRepository from "renderer/app/pages/landingPage/RecentRepository";
 
 const useStyles = makeStyles({
     recentRepos: {
-        display: "grid",
+        display: "flex",
+        flexFlow: "row wrap",
         justifyContent: "center",
-        justifyItems: "center",
-        alignItems: "center",
-        gridTemplateRows: "1fr 1fr",
-        gridTemplateColumns: "repeat(5, 1fr)",
-        rowGap: "2em",
-        columnGap: "0.5em",
-        width: "50%",
     },
 });
 
@@ -28,7 +22,7 @@ const RecentRepositories: React.FC = () => {
 
     return (
         <div className={classes.recentRepos}>
-            {recentRepositories.map((repositoryPath) => (
+            {recentRepositories.slice(0, 8).map((repositoryPath) => (
                 <RecentRepository
                     key={repositoryPath}
                     repositoryPath={repositoryPath}

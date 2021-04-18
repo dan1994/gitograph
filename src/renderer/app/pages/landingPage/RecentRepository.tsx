@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme: ITheme) => ({
         justifyContent: "space-between",
         padding: "0.5em",
         borderRadius: 10,
-        height: "100%",
-        width: "100%",
+        height: "10em",
+        width: "10em",
 
         "& .removeIcon": {
             visibility: "hidden",
@@ -31,6 +31,8 @@ const useStyles = makeStyles((theme: ITheme) => ({
         marginBottom: "0.5em",
     },
     repoText: {
+        position: "absolute",
+        bottom: "0.5em",
         textAlign: "center",
         fontSize: "1.1em",
     },
@@ -65,7 +67,7 @@ const RecentRepository: React.FC<RecentRepositoryProps> = ({
 
     return (
         <Button className={classes.recentRepo} onClick={openRepository}>
-            <RepositoryIcon className={classes.recentRepoIcon} size={80} />
+            <RepositoryIcon className={classes.recentRepoIcon} size={"5.5em"} />
             <span className={classes.repoText}>
                 {repositoryPath.split(/[\\/]/).pop()}
             </span>

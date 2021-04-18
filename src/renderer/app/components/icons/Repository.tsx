@@ -3,7 +3,7 @@ import * as React from "react";
 interface RepositoryIconProps extends React.SVGProps<SVGSVGElement> {
     className?: string;
     color?: string;
-    size?: number;
+    size?: number | string;
 }
 
 const RepositoryIcon: React.FC<RepositoryIconProps> = ({
