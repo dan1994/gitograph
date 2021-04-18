@@ -19,7 +19,6 @@ const useRecentRepositories: () => IRecentRepositories = () => {
             (recentRepository) => recentRepository !== repositoryPath
         );
         newRecentRepositories.unshift(repositoryPath);
-        console.log(newRecentRepositories);
         updateRecentRepositories(newRecentRepositories);
     };
 

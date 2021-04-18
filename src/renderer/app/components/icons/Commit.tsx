@@ -27,7 +27,7 @@ const CommitIcon: React.FC<CommitIconProps> = ({
                     x2="15"
                     y2="15"
                     stroke={color}
-                    stroke-width="8"
+                    strokeWidth="8"
                 />
                 <line
                     x1="35"
@@ -35,7 +35,7 @@ const CommitIcon: React.FC<CommitIconProps> = ({
                     x2="50"
                     y2="15"
                     stroke={color}
-                    stroke-width="8"
+                    strokeWidth="8"
                 />
                 <circle
                     r="10"
@@ -43,7 +43,7 @@ const CommitIcon: React.FC<CommitIconProps> = ({
                     cy="15"
                     fill="none"
                     stroke={color}
-                    stroke-width="8"
+                    strokeWidth="8"
                 />
             </g>
         </svg>
