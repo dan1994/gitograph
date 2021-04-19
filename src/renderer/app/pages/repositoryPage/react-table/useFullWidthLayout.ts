@@ -10,7 +10,7 @@ import {
     TablePropGetter,
     TableRowProps,
 } from "react-table";
-import { TableRecord } from "./types";
+import { TableRecord } from "renderer/app/pages/repositoryPage/react-table/types";
 
 const maxWidth: TablePropGetter<TableRecord> = (props) => [
     props,

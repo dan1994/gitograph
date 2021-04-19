@@ -6,10 +6,12 @@ import { Column } from "react-table";
 import { useRepositoryContext } from "renderer/app/global";
 
 import { useFullWidthLayout } from "renderer/app/pages/repositoryPage/react-table/useFullWidthLayout";
+import { useSyncSizeWithGraph } from "renderer/app/pages/repositoryPage/react-table/useSyncSizesWithGraph";
 import { TableRecord } from "renderer/app/pages/repositoryPage/react-table/types";
 import Table from "renderer/app/pages/repositoryPage/react-table/Table";
 
 import CommitGraph from "renderer/app/pages/repositoryPage/graph/CommitGraph";
+import { ROW_HEIGHT } from "renderer/app/pages/repositoryPage/graph/utils";
 import Commits from "renderer/app/global/context/Commits";
 
 const useStyles = makeStyles({
@@ -20,7 +22,7 @@ const useStyles = makeStyles({
     graphContainer: {
         position: "absolute",
         zIndex: 2,
-        marginTop: "49.6px",
+        marginTop: 1.2 * ROW_HEIGHT,
     },
 });
 
@@ -98,7 +100,7 @@ const RepoTable: React.FC = () => {
                 columns={columns}
                 data={data}
                 defaultColumn={defaultColumn}
-                plugins={[useFullWidthLayout]}
+                plugins={[useFullWidthLayout, useSyncSizeWithGraph]}
                 onResize={onResize}
             />
         </div>
