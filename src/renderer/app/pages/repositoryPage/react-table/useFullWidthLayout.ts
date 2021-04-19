@@ -16,7 +16,7 @@ const maxWidth: TablePropGetter<TableRecord> = (props) => [
     props,
     {
         style: {
-            display: "table",
+            display: "block",
             width: "100%",
             boxSizing: "border-box",
         },
