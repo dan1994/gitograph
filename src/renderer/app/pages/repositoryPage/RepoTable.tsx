@@ -20,8 +20,7 @@ const useStyles = makeStyles({
     graphContainer: {
         position: "absolute",
         zIndex: 2,
-        marginTop: "53.6px",
-        paddingTop: "20px",
+        marginTop: "49.6px",
     },
 });
 
@@ -72,16 +71,13 @@ const RepoTable: React.FC = () => {
     const { commits } = useRepositoryContext();
     const data = useMemo<TableRecord[]>(
         () =>
-            commits.commits
-                // TODO - Partial load
-                .slice(0, 10)
-                .map((commit) => ({
-                    graph: "",
-                    message: commit.message.split("\n")[0],
-                    committer: commit.committer.name,
-                    time: Commits.getFormattedDate(commit),
-                    hash: Commits.abbreviate(commit.oid),
-                })),
+            commits.commits.map((commit) => ({
+                graph: "",
+                message: commit.message.split("\n")[0],
+                committer: commit.committer.name,
+                time: Commits.getFormattedDate(commit),
+                hash: Commits.abbreviate(commit.oid),
+            })),
         [commits]
     );
 
