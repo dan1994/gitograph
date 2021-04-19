@@ -26,17 +26,29 @@ class PlacementStrategy {
     };
 
     private populateRows: () => void = () => {
-        this.commits.commits
-            .sort(PlacementStrategy.compareCommits)
-            .map((commit, index) => {
-                commit.cell.row = index;
-            });
+        const latestCommits = this.commits.commits.filter(
+            (commit) => commit.children.length === 0
+        );
+
+        let row = 0;
+        while (latestCommits.length > 0) {
+            latestCommits.sort(PlacementStrategy.compareCommits);
+            const latestCommit = latestCommits.shift();
+
+            latestCommits.push(
+                ...latestCommit.parents
+                    .map((oid) => this.commits.byHash(oid))
+                    .filter((commit) => !latestCommits.includes(commit))
+            );
+            latestCommit.cell.row = row;
+            row += 1;
+        }
     };
 
     private populateColumns: () => void = () => {
-        const sortedByRows: ISha1[] = this.commits.commits.map(
-            ({ oid }) => oid
-        );
+        const sortedByRows: ISha1[] = this.commits.commits
+            .sort((commit1, commit2) => commit1.cell.row - commit2.cell.row)
+            .map(({ oid }) => oid);
 
         sortedByRows.forEach((oid) => {
             this.populateColumn(oid);
