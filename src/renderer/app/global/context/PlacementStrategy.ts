@@ -26,46 +26,56 @@ class PlacementStrategy {
     };
 
     private populateRows: () => void = () => {
-        this.commits.commits
-            .sort(PlacementStrategy.compareCommits)
-            .map((commit, index) => {
-                commit.cell.row = index;
-            });
-    };
-
-    private populateColumns: () => void = () => {
-        const sortedByRows: ISha1[] = this.commits.commits.map(
-            ({ oid }) => oid
+        const latestCommits = this.commits.commits.filter(
+            (commit) => commit.children.length === 0
         );
 
-        sortedByRows.forEach((oid) => {
-            this.populateColumn(oid);
-        });
-    };
+        let row = 0;
+        while (latestCommits.length > 0) {
+            latestCommits.sort(PlacementStrategy.compareCommits);
+            const latestCommit = latestCommits.shift();
 
-    private populateColumn: (oid: ISha1) => void = (oid) => {
-        const branchChildrenOids = this.getBranchChildrenOids(oid);
-
-        if (branchChildrenOids.length > 0) {
-            this.replaceChildrenWithCommit(oid, branchChildrenOids);
-        } else {
-            this.insertCommit(oid);
+            latestCommits.push(
+                ...latestCommit.parents
+                    .map((oid) => this.commits.byHash(oid))
+                    .filter((commit) => !latestCommits.includes(commit))
+            );
+            latestCommit.cell.row = row;
+            row += 1;
         }
     };
 
-    private getBranchChildrenOids: (oid: ISha1) => ISha1[] = (oid) => {
-        const commit = this.commits.byHash(oid);
+    private populateColumns: () => void = () => {
+        this.commits.commits.sort(
+            (commit1, commit2) => commit1.cell.row - commit2.cell.row
+        );
+
+        this.commits.commits.forEach((commit) => {
+            this.populateColumn(commit);
+        });
+    };
+
+    private populateColumn: (commit: ICommit) => void = (commit) => {
+        const branchChildrenOids = this.getBranchChildrenOids(commit);
+
+        if (branchChildrenOids.length > 0) {
+            this.replaceChildrenWithCommit(commit, branchChildrenOids);
+        } else {
+            this.insertCommit(commit);
+        }
+    };
+
+    private getBranchChildrenOids: (commit: ICommit) => ISha1[] = (commit) => {
         return commit.children.filter(
-            (childOid) => this.commits.byHash(childOid).parents[0] === oid
+            (childOid) =>
+                this.commits.byHash(childOid).parents[0] === commit.oid
         );
     };
 
     private replaceChildrenWithCommit: (
-        oid: ISha1,
+        commit: ICommit,
         branchChildrenOids: ISha1[]
-    ) => void = (oid, branchChildrenOids) => {
-        const commit = this.commits.byHash(oid);
-
+    ) => void = (commit, branchChildrenOids) => {
         let insertedCommit = false;
 
         this.activeBranches.forEach((currentCommitOid, index) => {
@@ -77,7 +87,7 @@ class PlacementStrategy {
                 if (insertedCommit) {
                     this.activeBranches[index] = null;
                 } else {
-                    this.activeBranches[index] = oid;
+                    this.activeBranches[index] = commit.oid;
                     commit.cell.column = Number(index);
                     insertedCommit = true;
                 }
@@ -85,15 +95,14 @@ class PlacementStrategy {
         });
     };
 
-    private insertCommit: (oid: ISha1) => void = (oid) => {
-        const commit = this.commits.byHash(oid);
+    private insertCommit: (commit: ICommit) => void = (commit) => {
         const firstNullIndex = this.activeBranches.indexOf(null);
 
         if (firstNullIndex === -1) {
-            this.activeBranches.push(oid);
+            this.activeBranches.push(commit.oid);
             commit.cell.column = this.activeBranches.length - 1;
         } else {
-            this.activeBranches[firstNullIndex] = oid;
+            this.activeBranches[firstNullIndex] = commit.oid;
             commit.cell.column = firstNullIndex;
         }
     };

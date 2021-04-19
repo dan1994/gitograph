@@ -15,6 +15,7 @@ class Commits {
         this.lookupTable = {};
 
         this.toICommits(commits);
+        this.removeDuplicates();
         const placementStrategy = new PlacementStrategy(this);
         placementStrategy.apply();
     }
@@ -51,6 +52,23 @@ class Commits {
         this.populateChildren();
     };
 
+    private removeDuplicates: () => void = () => {
+        this.commits.sort((commit1, commit2) => {
+            if (commit1.oid < commit2.oid) return -1;
+            if (commit1.oid > commit2.oid) return 1;
+            return 0;
+        });
+
+        let i = 0;
+        while (i < this.commits.length - 1) {
+            if (this.commits[i].oid === this.commits[i + 1].oid) {
+                this.commits.splice(i + 1, 1);
+            } else {
+                i += 1;
+            }
+        }
+    };
+
     private toICommit: (commit: ICommitContent) => ICommit = (commit) => {
         return {
             ...commit,
@@ -78,7 +96,6 @@ class Commits {
         );
 
         if (this.lookupTable[oid] === -1) {
-            console.table(this.commits);
             throw Error(`${oid} cannot be found in commits`);
         }
     };

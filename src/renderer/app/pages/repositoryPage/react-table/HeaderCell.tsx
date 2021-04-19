@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: ITheme) => ({
             borderRight: 0,
         },
 
-        fontSize: "1.75rem",
+        fontSize: "1.5rem",
         fontWeight: "bold",
         textAlign: "center",
         background: theme.vscode.background.secondary,

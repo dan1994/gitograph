@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: ITheme) => ({
         width: "100%",
         background: theme.vscode.background.secondary,
         zIndex: 10,
-        fontSize: "1.25em",
+        fontSize: "1.1em",
         padding: "0 0.5em",
     },
     menuArea: {

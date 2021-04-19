@@ -20,8 +20,7 @@ const useStyles = makeStyles((theme: ITheme) => ({
 
         overflow: "hidden",
         whiteSpace: "nowrap",
-        fontSize: "1.25rem",
-        height: 70,
+        fontSize: "1.1rem",
     },
 }));
 

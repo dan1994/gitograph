@@ -10,13 +10,13 @@ import {
     TablePropGetter,
     TableRowProps,
 } from "react-table";
-import { TableRecord } from "./types";
+import { TableRecord } from "renderer/app/pages/repositoryPage/react-table/types";
 
 const maxWidth: TablePropGetter<TableRecord> = (props) => [
     props,
     {
         style: {
-            display: "table",
+            display: "block",
             width: "100%",
             boxSizing: "border-box",
         },
