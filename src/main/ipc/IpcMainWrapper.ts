@@ -2,22 +2,17 @@ import { BrowserWindow, ipcMain } from "electron";
 
 import { ChannelName } from "shared/ipc/channels";
 
-export type IpcMainCallback<T = void, Args extends Array<unknown> = []> = (
+export type IpcMainCallback<Args extends unknown[] = [], Ret = void> = (
     window: BrowserWindow,
-    event: Electron.IpcMainEvent,
     ...args: Args
-) => T | Promise<T>;
+) => Ret | Promise<Ret>;
 
 class IpcMainWrapper {
-    public static register: <T, Args extends Array<unknown> = []>(
+    public static register: <Args extends unknown[] = [], Ret = void>(
         window: BrowserWindow,
         channel: ChannelName,
-        callback: IpcMainCallback<T, Args>
-    ) => void = <T, Args extends Array<unknown> = []>(
-        window: BrowserWindow,
-        channel: ChannelName,
-        callback: IpcMainCallback<T, Args>
-    ) => {
+        callback: IpcMainCallback<Args, Ret>
+    ) => void = (window, channel, callback) => {
         ipcMain.on(channel, (event, ...args) => {
             const channelWrapper = new IpcMainEventChannelWrapper(
                 event,
@@ -45,38 +40,38 @@ class IpcMainEventChannelWrapper {
         this.window = window;
     }
 
-    public execute: <T, Args extends Array<unknown>>(
-        callback: IpcMainCallback<T, Args>,
+    public execute: <Args extends unknown[], Ret>(
+        callback: IpcMainCallback<Args, Ret>,
         ...args: unknown[]
-    ) => void = async <T, Args extends Array<unknown>>(
-        callback: IpcMainCallback<T, Args>,
+    ) => void = async <Args extends unknown[], Ret>(
+        callback: IpcMainCallback<Args, Ret>,
         ...args: unknown[]
     ) => {
         let [success, result] = this.guardCallback(callback, ...args);
 
         if (IpcMainEventChannelWrapper.isAsync(result)) {
             [success, result] = await IpcMainEventChannelWrapper.guardAwait(
-                result as Promise<T>
+                result as Promise<Ret>
             );
         }
 
         this.replyIfNecessary(success, result);
     };
 
-    private guardCallback: <T, Args extends Array<unknown>>(
-        callback: IpcMainCallback<T, Args>,
+    private guardCallback: <Args extends unknown[], Ret>(
+        callback: IpcMainCallback<Args, Ret>,
         ...args: Args
-    ) => [true, T | Promise<T>] | [false, string] = (callback, ...args) => {
+    ) => [true, Ret | Promise<Ret>] | [false, Error] = (callback, ...args) => {
         try {
-            return [true, callback(this.window, this.event, ...args)];
+            return [true, callback(this.window, ...args)];
         } catch (error) {
             return [false, error];
         }
     };
 
-    private static guardAwait: <T>(
-        promise: Promise<T>
-    ) => Promise<[true, T] | [false, string]> = async (promise) => {
+    private static guardAwait: <Ret>(
+        promise: Promise<Ret>
+    ) => Promise<[true, Ret] | [false, Error]> = async (promise) => {
         try {
             return [true, await promise];
         } catch (error) {
@@ -84,9 +79,9 @@ class IpcMainEventChannelWrapper {
         }
     };
 
-    private replyIfNecessary: <T>(
+    private replyIfNecessary: <Ret>(
         success: boolean,
-        result: T | string
+        result: Ret | Error
     ) => void = (success, result) => {
         if (!success || result !== undefined) {
             this.event.reply(this.channel, success, result);

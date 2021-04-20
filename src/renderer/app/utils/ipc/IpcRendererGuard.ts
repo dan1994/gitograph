@@ -4,11 +4,11 @@ import { ChannelName } from "shared/ipc/channels";
 type RendererIpcCallback = (
     event: Electron.IpcRendererEvent,
     success: boolean,
-    ...args: unknown[]
+    resultsOrError: unknown
 ) => void;
 
-export type RendererIpcSuccessCallback<Args extends Array<unknown> = []> = (
-    ...args: Args
+export type RendererIpcSuccessCallback<Args extends unknown[] = []> = (
+    ...results: Args
 ) => void;
 
 export type RendererIpcErrorCallback = (
@@ -25,20 +25,27 @@ interface RegisteredCallbacks {
 class IpcRendererGuard {
     private static registeredCallbacks: RegisteredCallbacks = {};
 
-    public static on: <Args extends Array<unknown> = []>(
+    public static on: <Args extends unknown[] = []>(
         channel: ChannelName,
         successCallback: RendererIpcSuccessCallback<Args>,
         errorCallback?: RendererIpcErrorCallback
-    ) => void = <Args extends Array<unknown> = []>(
+    ) => void = <Args extends unknown[] = []>(
         channel: ChannelName,
         successCallback: RendererIpcSuccessCallback<Args>,
         errorCallback: RendererIpcErrorCallback = IpcRendererGuard.defaultErrorHandler
     ) => {
-        const callback: RendererIpcCallback = (_event, success, ...args) => {
+        const callback: RendererIpcCallback = (
+            _event,
+            success,
+            resultsOrError
+        ) => {
             if (success) {
-                successCallback(...(args as Args));
+                const resultsAsArray = Array.isArray(resultsOrError)
+                    ? resultsOrError
+                    : [resultsOrError];
+                successCallback(...(resultsAsArray as Args));
             } else {
-                errorCallback(args[0] as Error, channel);
+                errorCallback(resultsOrError as Error, channel);
             }
         };
 
@@ -56,7 +63,7 @@ class IpcRendererGuard {
         }
     };
 
-    public static removeListener: <Args extends Array<unknown> = []>(
+    public static removeListener: <Args extends unknown[] = []>(
         channel: ChannelName,
         successCallback: RendererIpcSuccessCallback<Args>
     ) => void = (channel, successCallback) => {
@@ -72,14 +79,14 @@ class IpcRendererGuard {
         ipcRenderer.removeListener(channel, callbacks[0]);
     };
 
-    public static send: <Args extends Array<unknown> = []>(
+    public static send: <Args extends unknown[] = []>(
         channel: ChannelName,
         ...args: Args
     ) => void = (channel, ...args) => {
         ipcRenderer.send(channel, ...args);
     };
 
-    private static defaultErrorHandler: RendererIpcErrorCallback = (
+    public static defaultErrorHandler: RendererIpcErrorCallback = (
         error,
         channel
     ) => {
