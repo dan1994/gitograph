@@ -21,6 +21,10 @@ const useRepository: () => IRepository = () => {
     const { addRecentRepository } = useRecentRepositories();
 
     const updateRepository: () => void = async () => {
+        if (directory === null || directory.length === 0) {
+            return;
+        }
+
         const rootDirectory = await getRootDirectory(directory);
         if (rootDirectory === null) {
             return;

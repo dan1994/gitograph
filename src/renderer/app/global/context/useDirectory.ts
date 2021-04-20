@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
-import { IpcRendererEvent } from "electron";
 
 import { IpcRendererGuard } from "renderer/app/utils/ipc";
-
-/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
-type IpcRendererCallback = (event: IpcRendererEvent, ...args: any[]) => void;
+import { RendererIpcSuccessCallback } from "renderer/app/utils/ipc/IpcRendererGuard";
 
 type IDirectory = [string, () => void];
 type IUseDirectory = () => IDirectory;
@@ -12,12 +9,7 @@ type IUseDirectory = () => IDirectory;
 const useDirectory: IUseDirectory = () => {
     const [directory, setDirectory] = useState<string>(null);
 
-    const eventCallback: IpcRendererCallback = (_, ...args) => {
-        if (typeof args[0] !== "string") {
-            return;
-        }
-
-        const directory = args[0];
+    const eventCallback: RendererIpcSuccessCallback<[string]> = (directory) => {
         setDirectory(directory);
     };
 
