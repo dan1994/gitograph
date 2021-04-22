@@ -74,6 +74,9 @@ const theme = createMuiTheme({
                     color: vscodeStyles.color.primary,
                     backgroundColor: vscodeStyles.background.primary,
                 },
+                code: {
+                    color: "#D7BA7D",
+                },
             },
         },
     },
