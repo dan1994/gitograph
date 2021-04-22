@@ -13,6 +13,7 @@ export interface ICommitContent {
     parents: ISha1[];
     author: IUserAction;
     committer: IUserAction;
-    pgpsig?: string;
     message: string;
+    refs: string[];
+    isHead: boolean;
 }

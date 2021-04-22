@@ -30,12 +30,14 @@ const getCommits: (directory: string) => Promise<ICommitContent[]> = async (
             "%ce",
             "%ct",
             "%s",
+            "%D",
         ].join("%x10")}`
     );
 
     return logString.split("\n").map((commitInfo) => {
         const fields = commitInfo.split("\x10");
         const parents = fields[2].length > 0 ? fields[2].split(" ") : [];
+        const [refs, isHead] = parseRefs(fields[10]);
 
         return {
             oid: fields[0],
@@ -54,8 +56,28 @@ const getCommits: (directory: string) => Promise<ICommitContent[]> = async (
                 timezone: 0,
             },
             message: fields[9],
+            refs,
+            isHead,
         };
     });
+};
+
+const parseRefs: (refsAsString: string) => [string[], boolean] = (
+    refsAsString
+) => {
+    if (refsAsString.length === 0) {
+        return [[], false];
+    }
+
+    let isHead = false;
+    const refs = refsAsString.split(", ").map((ref) => {
+        if (ref.startsWith("HEAD -> ")) {
+            isHead = true;
+            return ref.substring("HEAD -> ".length);
+        }
+        return ref;
+    });
+    return [refs, isHead];
 };
 
 export { getCommits, getRootDirectory };

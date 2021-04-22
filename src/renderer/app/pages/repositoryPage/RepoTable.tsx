@@ -15,6 +15,7 @@ import Table from "renderer/app/pages/repositoryPage/react-table/Table";
 import CommitGraph from "renderer/app/pages/repositoryPage/graph/CommitGraph";
 import { ROW_HEIGHT } from "renderer/app/pages/repositoryPage/graph/utils";
 import Commits from "renderer/app/global/context/Commits";
+import BranchBadges from "renderer/app/pages/repositoryPage/BranchBadges";
 
 const useStyles = makeStyles({
     top: {
@@ -78,9 +79,12 @@ const RepoTable: React.FC = () => {
             commits.commits.map((commit) => ({
                 graph: "",
                 message: (
-                    <ReactMarkdown>
-                        {emoji.emojify(commit.message.split("\n")[0])}
-                    </ReactMarkdown>
+                    <>
+                        <BranchBadges refs={commit.refs} color={commit.color} />
+                        <ReactMarkdown>
+                            {`${emoji.emojify(commit.message.split("\n")[0])}`}
+                        </ReactMarkdown>
+                    </>
                 ),
                 committer: commit.committer.name,
                 time: Commits.getFormattedDate(commit),
