@@ -5,7 +5,6 @@ import { promisify } from "util";
 const execAsync = promisify(exec);
 
 import IpcMainWrapper, { IpcMainCallback } from "main/ipc/IpcMainWrapper";
-import { CommandRunnerError } from "shared/commandRunner/customError";
 
 const registerIpcChannels: (window: BrowserWindow) => void = (window) => {
     IpcMainWrapper.register(window, "exitApp", exitApp);
@@ -35,17 +34,12 @@ const selectDirectory: IpcMainCallback<[], string> = async (window) => {
     return directory;
 };
 
-const runCommand: IpcMainCallback<[string], [string, string]> = async (
+const runCommand: IpcMainCallback<[string], string> = async (
     _window,
     command
 ) => {
-    try {
-        const { stdout } = await execAsync(command);
-        return [command, stdout];
-    } catch (error) {
-        (error as CommandRunnerError).command = command;
-        throw error;
-    }
+    const { stdout } = await execAsync(command);
+    return stdout;
 };
 
 export default registerIpcChannels;
