@@ -2,6 +2,8 @@ import * as React from "react";
 import { useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Column } from "react-table";
+import ReactMarkdown from "react-markdown";
+import emoji from "node-emoji";
 
 import { useRepositoryContext } from "renderer/app/global";
 
@@ -75,7 +77,11 @@ const RepoTable: React.FC = () => {
         () =>
             commits.commits.map((commit) => ({
                 graph: "",
-                message: commit.message.split("\n")[0],
+                message: (
+                    <ReactMarkdown>
+                        {emoji.emojify(commit.message.split("\n")[0])}
+                    </ReactMarkdown>
+                ),
                 committer: commit.committer.name,
                 time: Commits.getFormattedDate(commit),
                 hash: Commits.abbreviate(commit.oid),
