@@ -6,7 +6,7 @@ import MinimizeIcon from "@material-ui/icons/Minimize";
 import { useRepositoryContext, ITheme } from "renderer/app/global";
 import { Button } from "renderer/app/components";
 import MenuButton from "renderer/app/global/components/MenuButton";
-import { IpcRendererGuard } from "renderer/app/utils/ipc";
+import { IpcRendererWrapper } from "renderer/app/utils/ipc";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     toolbar: {
@@ -57,11 +57,11 @@ const Toolbar: React.FC = () => {
     } = useRepositoryContext();
 
     const minimizeApp = () => {
-        void IpcRendererGuard.send("minimizeWindow");
+        void IpcRendererWrapper.send("minimizeWindow");
     };
 
     const exitApp = () => {
-        void IpcRendererGuard.send("exitApp");
+        void IpcRendererWrapper.send("exitApp");
     };
 
     return (

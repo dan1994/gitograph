@@ -1,13 +1,13 @@
 import { ipcRenderer } from "electron";
 import { ChannelName } from "shared/ipc/channels";
 
-type RendererIpcCallback<Ret> = (
+type IpcRendererCallback<Ret> = (
     event: Electron.IpcRendererEvent,
     success: boolean,
     resultsOrError: Ret | Error
 ) => void;
 
-class IpcRendererGuard {
+class IpcRendererWrapper {
     public static send: <Args extends unknown[] = [], Ret = void>(
         channel: ChannelName,
         ...args: Args
@@ -16,7 +16,7 @@ class IpcRendererGuard {
         ...args: Args
     ) => {
         return new Promise<Ret>((resolve, reject) => {
-            const callback: RendererIpcCallback<Ret> = (
+            const callback: IpcRendererCallback<Ret> = (
                 _event,
                 success,
                 resultsOrError
@@ -34,4 +34,4 @@ class IpcRendererGuard {
     };
 }
 
-export default IpcRendererGuard;
+export default IpcRendererWrapper;

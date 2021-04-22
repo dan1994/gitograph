@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { IpcRendererGuard } from "renderer/app/utils/ipc";
+import { IpcRendererWrapper } from "renderer/app/utils/ipc";
 
 type IDirectory = [string, () => void];
 type IUseDirectory = () => IDirectory;
@@ -12,9 +12,7 @@ const useDirectory: IUseDirectory = () => {
         if (directory !== undefined) {
             setDirectory(directory);
         } else {
-            setDirectory(
-                await IpcRendererGuard.send<[], string>("selectDirectory")
-            );
+            setDirectory(await IpcRendererWrapper.send("selectDirectory"));
         }
     };
 
