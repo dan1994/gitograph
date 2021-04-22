@@ -1,22 +1,16 @@
-import { findRoot, log, ReadCommitResult } from "isomorphic-git";
+import { log, ReadCommitResult } from "isomorphic-git";
 import * as fs from "fs";
 
-import { ICommitContent, IUserAction } from "./types";
+import { ICommitContent, IUserAction } from "renderer/app/utils/git/types";
+import CommandRunner from "renderer/app/utils/commandRunner/CommandRunner";
 
 const getRootDirectory: (directory: string) => Promise<string> = async (
     directory
 ) => {
     try {
-        const newRootDirectory = await findRoot({
-            fs,
-            filepath: directory,
-        });
-
-        if (newRootDirectory === ".") {
-            return null;
-        }
-
-        return newRootDirectory;
+        return await CommandRunner.run(
+            `git -C "${directory}" rev-parse --show-toplevel`
+        );
     } catch (error) {
         return null;
     }
