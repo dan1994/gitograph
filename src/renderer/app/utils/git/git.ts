@@ -81,7 +81,7 @@ const getBranchesPerCommit: (
 ) => Promise<{ [oid: string]: IRef[] }> = async (directory) => {
     const branches = (
         await CommandRunner.run(
-            `git -C "${directory}" branch --all --format="%(HEAD):%(objectname):%(refname:lstrip=1)"`
+            `git -C "${directory}" for-each-ref --format="%(HEAD):%(objectname):%(refname:lstrip=1)"`
         )
     ).trim();
 
