@@ -7,6 +7,12 @@ export interface IUserAction {
     timezone: number;
 }
 
+export interface IRef {
+    name: string;
+    isLocal: boolean;
+    isHead: boolean;
+}
+
 export interface ICommitContent {
     oid: string;
     tree: ISha1;
@@ -14,6 +20,5 @@ export interface ICommitContent {
     author: IUserAction;
     committer: IUserAction;
     message: string;
-    refs: string[];
-    isHead: boolean;
+    refs: IRef[];
 }
