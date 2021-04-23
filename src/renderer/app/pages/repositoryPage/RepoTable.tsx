@@ -73,14 +73,17 @@ const defaultColumn = {
 const RepoTable: React.FC = () => {
     const classes = useStyles();
 
-    const { commits } = useRepositoryContext();
+    const { commits, refs } = useRepositoryContext();
     const data = useMemo<TableRecord[]>(
         () =>
             commits.commits.map((commit) => ({
                 graph: "",
                 message: (
                     <>
-                        <BranchBadges refs={commit.refs} color={commit.color} />
+                        <BranchBadges
+                            refs={refs.filter((ref) => ref.oid === commit.oid)}
+                            color={commit.color}
+                        />
                         <ReactMarkdown>
                             {`${emoji.emojify(commit.message.split("\n")[0])}`}
                         </ReactMarkdown>

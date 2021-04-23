@@ -8,6 +8,7 @@ import useDirectory from "renderer/app/global/context/useDirectory";
 import { getRootDirectory, getCommits } from "renderer/app/utils/git";
 import Commits from "renderer/app/global/context/Commits";
 import useRecentRepositories from "renderer/app/pages/landingPage/useRecentRepositories";
+import { getRefs } from "renderer/app/utils/git/git";
 
 const useRepository: () => IRepository = () => {
     const [directory, selectDirectory] = useDirectory();
@@ -15,6 +16,7 @@ const useRepository: () => IRepository = () => {
     const [repository, setRepository] = useState<IRepositoryState>({
         rootDirectory: null,
         commits: new Commits([]),
+        refs: [],
         isLoading: false,
     });
 
@@ -37,9 +39,12 @@ const useRepository: () => IRepository = () => {
         const rawCommits = await getCommits(rootDirectory);
         const commits = new Commits(rawCommits);
 
+        const refs = await getRefs(rootDirectory);
+
         setRepository({
             rootDirectory,
             commits,
+            refs,
             isLoading: false,
         });
     };

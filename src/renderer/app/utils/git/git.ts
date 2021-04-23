@@ -33,8 +33,6 @@ const getCommits: (directory: string) => Promise<ICommitContent[]> = async (
         ].join("%x10")}`
     );
 
-    const branchRefs = await getBranchesPerCommit(directory);
-
     return logString.split("\n").map((commitInfo) => {
         const [
             oid,
@@ -51,8 +49,6 @@ const getCommits: (directory: string) => Promise<ICommitContent[]> = async (
 
         const parents =
             parentsString.length > 0 ? parentsString.split(" ") : [];
-
-        const refs = branchRefs[oid] || [];
 
         return {
             oid,
@@ -71,26 +67,20 @@ const getCommits: (directory: string) => Promise<ICommitContent[]> = async (
                 timezone: 0,
             },
             message,
-            refs,
         };
     });
 };
 
-const getBranchesPerCommit: (
-    directory: string
-) => Promise<{ [oid: string]: IRef[] }> = async (directory) => {
-    const branches = (
+const getRefs: (directory: string) => Promise<IRef[]> = async (directory) => {
+    const refsAsString = (
         await CommandRunner.run(
             `git -C "${directory}" for-each-ref --format="%(HEAD):%(objectname):%(refname:lstrip=1)"`
         )
     ).trim();
 
-    const branchRefs: {
-        [oid: string]: IRef[];
-    } = {};
+    return refsAsString.split("\n").map((ref) => {
+        const [headMarker, oid, refName] = ref.split(":", 3);
 
-    branches.split("\n").forEach((branch) => {
-        const [headMarker, oid, refName] = branch.split(":", 3);
         const isHead = headMarker === "*";
         const isLocal = refName.startsWith("heads") || isHead;
         const name =
@@ -98,14 +88,8 @@ const getBranchesPerCommit: (
                 ? ""
                 : refName.substring(refName.indexOf("/") + 1);
 
-        if (branchRefs[oid]) {
-            branchRefs[oid].push({ name, isLocal, isHead });
-        } else {
-            branchRefs[oid] = [{ name, isLocal, isHead }];
-        }
+        return { name, oid, isLocal, isHead };
     });
-
-    return branchRefs;
 };
 
-export { getCommits, getRootDirectory };
+export { getCommits, getRefs, getRootDirectory };

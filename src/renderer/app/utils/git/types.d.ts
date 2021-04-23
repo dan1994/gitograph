@@ -11,6 +11,7 @@ export interface IRef {
     name: string;
     isLocal: boolean;
     isHead: boolean;
+    oid: string;
 }
 
 export interface ICommitContent {
@@ -20,5 +21,4 @@ export interface ICommitContent {
     author: IUserAction;
     committer: IUserAction;
     message: string;
-    refs: IRef[];
 }

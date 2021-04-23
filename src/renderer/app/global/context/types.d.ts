@@ -1,4 +1,4 @@
-import { ISha1, ICommitContent } from "renderer/app/utils/git/types";
+import { ISha1, ICommitContent, IRef } from "renderer/app/utils/git/types";
 import { IVertice } from "renderer/app/pages/repositoryPage/graph/types";
 import Commits from "renderer/app/global/context/Commits";
 
@@ -11,6 +11,7 @@ export type ICommit = ICommitContent & IComputedCommitProperties & IVertice;
 export interface IRepositoryState {
     rootDirectory: string;
     commits: Commits;
+    refs: IRef[];
     isLoading: boolean;
 }
 
