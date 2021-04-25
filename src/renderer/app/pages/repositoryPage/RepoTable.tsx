@@ -14,7 +14,7 @@ import Table from "renderer/app/pages/repositoryPage/react-table/Table";
 
 import CommitGraph from "renderer/app/pages/repositoryPage/graph/CommitGraph";
 import { ROW_HEIGHT } from "renderer/app/pages/repositoryPage/graph/utils";
-import Commits from "renderer/app/global/context/Commits";
+import Commits from "renderer/app/utils/git/Commits";
 import BranchBadges from "renderer/app/pages/repositoryPage/BranchBadges";
 
 const useStyles = makeStyles({
@@ -73,7 +73,9 @@ const defaultColumn = {
 const RepoTable: React.FC = () => {
     const classes = useStyles();
 
-    const { commits, refs } = useRepositoryContext();
+    const { repository } = useRepositoryContext();
+    const { commits, refs } = repository;
+
     const data = useMemo<TableRecord[]>(
         () =>
             commits.commits.map((commit) => ({
@@ -81,7 +83,7 @@ const RepoTable: React.FC = () => {
                 message: (
                     <>
                         <BranchBadges
-                            refs={refs.filter((ref) => ref.oid === commit.oid)}
+                            refs={refs.pointTo(commit.oid)}
                             color={commit.color}
                         />
                         <ReactMarkdown>
@@ -93,7 +95,7 @@ const RepoTable: React.FC = () => {
                 time: Commits.getFormattedDate(commit),
                 hash: Commits.abbreviate(commit.oid),
             })),
-        [commits]
+        [commits.commits, refs.refs]
     );
 
     const [graphWidth, setGraphWidth] = useState<number>(150);

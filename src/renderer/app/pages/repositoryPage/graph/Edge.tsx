@@ -19,8 +19,8 @@ interface EdgeProps {
 
 const StraightEdge: React.FC<EdgeProps> = ({ edge }) => {
     const { from, to } = edge;
-    const { x, y: fromY } = toPoint(from.cell);
-    const { y: toY } = toPoint(to.cell);
+    const { x, y: fromY } = toPoint(from);
+    const { y: toY } = toPoint(to);
     const { color } = from;
 
     return (
@@ -37,13 +37,13 @@ const StraightEdge: React.FC<EdgeProps> = ({ edge }) => {
 
 const SplitEdge: React.FC<EdgeProps> = ({ edge }) => {
     const { from, to } = edge;
-    const { x: fromX, y: fromY } = toPoint(from.cell);
-    const { x: toX, y: toY } = toPoint(to.cell);
+    const { x: fromX, y: fromY } = toPoint(from);
+    const { x: toX, y: toY } = toPoint(to);
     const { color } = from;
 
     const linkGridCell: IGridCell = {
-        row: to.cell.row - 1,
-        column: from.cell.column,
+        row: to.row - 1,
+        column: from.column,
     };
     const { x: linkX, y: linkY } = toPoint(linkGridCell);
     const midpointY = (linkY + toY) / 2;
@@ -75,13 +75,13 @@ const SplitEdge: React.FC<EdgeProps> = ({ edge }) => {
 
 const MergeEdge: React.FC<EdgeProps> = ({ edge }) => {
     const { from, to } = edge;
-    const { x: fromX, y: fromY } = toPoint(from.cell);
-    const { x: toX, y: toY } = toPoint(to.cell);
+    const { x: fromX, y: fromY } = toPoint(from);
+    const { x: toX, y: toY } = toPoint(to);
     const { color } = to;
 
     const linkGridCell: IGridCell = {
-        row: from.cell.row + 1,
-        column: to.cell.column,
+        row: from.row + 1,
+        column: to.column,
     };
     const { x: linkX, y: linkY } = toPoint(linkGridCell);
     const midpointY = (fromY + linkY) / 2;
@@ -114,8 +114,8 @@ const MergeEdge: React.FC<EdgeProps> = ({ edge }) => {
 const Edge: React.FC<EdgeProps> = ({ edge }) => {
     const { from, to } = edge;
 
-    const { x: fromX } = toPoint(from.cell);
-    const { x: toX } = toPoint(to.cell);
+    const { x: fromX } = toPoint(from);
+    const { x: toX } = toPoint(to);
 
     if (fromX === toX) {
         return <StraightEdge edge={edge} />;

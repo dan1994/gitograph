@@ -8,8 +8,7 @@ export interface IGridCell {
     column: number;
 }
 
-export interface IVertice {
-    cell: IGridCell;
+export interface IVertice extends IGridCell {
     color: string;
 }
 

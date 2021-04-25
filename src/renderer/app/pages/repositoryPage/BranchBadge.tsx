@@ -2,6 +2,7 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 
 import { ITheme } from "renderer/app/global";
+import { ICombinedRef } from "renderer/app/pages/repositoryPage/BranchBadgesUtils";
 
 const useStyles = makeStyles<ITheme, { color: string }>((theme: ITheme) => ({
     badge: {
@@ -23,20 +24,17 @@ const useStyles = makeStyles<ITheme, { color: string }>((theme: ITheme) => ({
 }));
 
 interface BranchBadgeProps extends React.HTMLProps<HTMLSpanElement> {
-    name: string;
-    remotes: string[];
-    isHead: boolean;
+    reference: ICombinedRef;
     color: string;
 }
 
 const BranchBadge: React.FC<BranchBadgeProps> = ({
-    name,
-    remotes,
-    isHead,
+    reference,
     color,
     ...rest
 }) => {
     const classes = useStyles({ color });
+    const { name, remotes, isHead } = reference;
 
     return (
         <span {...rest} className={classes.badge}>

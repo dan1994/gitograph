@@ -51,8 +51,8 @@ const Toolbar: React.FC = () => {
     const classes = useStyles();
 
     const {
+        repository,
         inRepository,
-        rootDirectory,
         selectDirectory,
     } = useRepositoryContext();
 
@@ -86,7 +86,7 @@ const Toolbar: React.FC = () => {
                 />
             </span>
             <span className={classes.title}>
-                Git O' Graph{inRepository && ` - ${rootDirectory}`}
+                Git O' Graph{inRepository && ` - ${repository.rootDirectory}`}
             </span>
             <span className={classes.windowActions}>
                 <Button

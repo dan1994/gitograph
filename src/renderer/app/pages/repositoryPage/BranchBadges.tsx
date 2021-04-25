@@ -1,8 +1,9 @@
-import { makeStyles, Theme } from "@material-ui/core";
 import * as React from "react";
+import { makeStyles, Theme } from "@material-ui/core";
 
-import BranchBadge from "renderer/app/pages/repositoryPage/BranchBadge";
 import { IRef } from "renderer/app/utils/git/types";
+import BranchBadge from "renderer/app/pages/repositoryPage/BranchBadge";
+import { combineRefs } from "renderer/app/pages/repositoryPage/BranchBadgesUtils";
 
 const useStyles = makeStyles<Theme, { color: string }>({
     detachedHead: {
@@ -15,34 +16,6 @@ const useStyles = makeStyles<Theme, { color: string }>({
         marginRight: "0.2em",
     },
 });
-
-interface CombinedRef {
-    name: string;
-    remotes: string[];
-    isHead: boolean;
-}
-
-const combineRefs: (refs: IRef[]) => CombinedRef[] = (refs) => {
-    const combinedRefs: CombinedRef[] = refs
-        .filter(({ name, isLocal }) => isLocal && name.length > 0)
-        .map(({ name, isHead }) => ({ name, remotes: [], isHead }))
-        .sort((ref1, ref2) => (ref1.isHead ? -1 : ref2.isHead ? 1 : 0));
-
-    refs.filter(({ isLocal }) => !isLocal).forEach(({ name }) => {
-        const matchingLocalRef = combinedRefs.filter(
-            ({ name: localName }) =>
-                name.substring(name.indexOf("/") + 1) === localName
-        )[0];
-
-        if (matchingLocalRef) {
-            matchingLocalRef.remotes.push(name.substring(0, name.indexOf("/")));
-        } else {
-            combinedRefs.push({ name, remotes: [], isHead: false });
-        }
-    });
-
-    return combinedRefs;
-};
 
 interface BranchBadgesProps {
     refs: IRef[];
@@ -63,14 +36,8 @@ const BranchBadges: React.FC<BranchBadgesProps> = ({ refs, color }) => {
                     <span className={classes.detachedHead} />
                 </span>
             )}
-            {combinedRefs.map(({ name, remotes, isHead }) => (
-                <BranchBadge
-                    key={name}
-                    name={name}
-                    remotes={remotes}
-                    isHead={isHead}
-                    color={color}
-                />
+            {combinedRefs.map((ref) => (
+                <BranchBadge key={ref.name} reference={ref} color={color} />
             ))}
         </>
     );

@@ -4,14 +4,6 @@ export interface IUserAction {
     name: string;
     email: string;
     timestamp: number;
-    timezone: number;
-}
-
-export interface IRef {
-    name: string;
-    isLocal: boolean;
-    isHead: boolean;
-    oid: string;
 }
 
 export interface ICommitContent {
@@ -21,4 +13,24 @@ export interface ICommitContent {
     author: IUserAction;
     committer: IUserAction;
     message: string;
+}
+
+export interface IComputedCommitProperties {
+    children: ISha1[];
+    row: number;
+    column: number;
+    color: string;
+}
+
+export type ICommit = ICommitContent & IComputedCommitProperties;
+
+export type ISortOrder = "topological" | "chronological";
+
+export type IRefType = "localBranch" | "remoteBranch" | "tag" | "stash";
+
+export interface IRef {
+    name: string;
+    type: IRefType;
+    isHead: boolean;
+    oid: string;
 }

@@ -9,7 +9,7 @@ import {
     ROW_OFFSET,
     toPoint,
 } from "renderer/app/pages/repositoryPage/graph/utils";
-import Commits from "renderer/app/global/context/Commits";
+import Commits from "renderer/app/utils/git/Commits";
 
 type IEdges = { [id: string]: IEdge };
 
@@ -30,7 +30,7 @@ const getEdges: (commits: Commits) => IEdges = (commits) => {
 
 const calculateWidth: (commits: Commits) => number = (commits) => {
     const rightMostVerticeCenter = Math.max(
-        ...commits.commits.map(({ cell }) => toPoint(cell).x),
+        ...commits.commits.map((commit) => toPoint(commit).x),
         -COLUMN_OFFSET
     );
 
@@ -39,7 +39,7 @@ const calculateWidth: (commits: Commits) => number = (commits) => {
 
 const calculateHeight: (commits: Commits) => number = (commits) => {
     const bottomMostVerticeCenter = Math.max(
-        ...commits.commits.map(({ cell }) => toPoint(cell).y),
+        ...commits.commits.map((commit) => toPoint(commit).y),
         -ROW_OFFSET
     );
 

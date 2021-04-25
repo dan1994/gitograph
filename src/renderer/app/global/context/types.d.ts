@@ -1,21 +1,8 @@
-import { ISha1, ICommitContent, IRef } from "renderer/app/utils/git/types";
-import { IVertice } from "renderer/app/pages/repositoryPage/graph/types";
-import Commits from "renderer/app/global/context/Commits";
+import { Repository } from "renderer/app/utils/git";
 
-export interface IComputedCommitProperties {
-    children: ISha1[];
-}
-
-export type ICommit = ICommitContent & IComputedCommitProperties & IVertice;
-
-export interface IRepositoryState {
-    rootDirectory: string;
-    commits: Commits;
-    refs: IRef[];
-    isLoading: boolean;
-}
-
-export interface IRepository extends IRepositoryState {
-    inRepository: boolean;
+export interface IRepository {
+    repository: Repository;
     selectDirectory: (directory?: string) => void;
+    inRepository: boolean;
+    isLoading: boolean;
 }
