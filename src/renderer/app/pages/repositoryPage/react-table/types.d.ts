@@ -8,7 +8,7 @@ import {
 
 interface TableRecord {
     graph: string;
-    message: string;
+    message: JSX.Element;
     committer: string;
     time: string;
     hash: string;

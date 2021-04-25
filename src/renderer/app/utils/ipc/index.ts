@@ -1,1 +1,1 @@
-export { default as IpcRendererGuard } from "renderer/app/utils/ipc/IpcRendererGuard";
+export { default as IpcRendererWrapper } from "renderer/app/utils/ipc/IpcRendererWrapper";

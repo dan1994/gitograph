@@ -6,7 +6,7 @@ import MinimizeIcon from "@material-ui/icons/Minimize";
 import { useRepositoryContext, ITheme } from "renderer/app/global";
 import { Button } from "renderer/app/components";
 import MenuButton from "renderer/app/global/components/MenuButton";
-import { IpcRendererGuard } from "renderer/app/utils/ipc";
+import { IpcRendererWrapper } from "renderer/app/utils/ipc";
 
 const useStyles = makeStyles((theme: ITheme) => ({
     toolbar: {
@@ -51,17 +51,17 @@ const Toolbar: React.FC = () => {
     const classes = useStyles();
 
     const {
+        repository,
         inRepository,
-        rootDirectory,
         selectDirectory,
     } = useRepositoryContext();
 
     const minimizeApp = () => {
-        IpcRendererGuard.send("minimizeWindow");
+        void IpcRendererWrapper.send("minimizeWindow");
     };
 
     const exitApp = () => {
-        IpcRendererGuard.send("exitApp");
+        void IpcRendererWrapper.send("exitApp");
     };
 
     return (
@@ -86,7 +86,7 @@ const Toolbar: React.FC = () => {
                 />
             </span>
             <span className={classes.title}>
-                Git O' Graph{inRepository && ` - ${rootDirectory}`}
+                Git O' Graph{inRepository && ` - ${repository.rootDirectory}`}
             </span>
             <span className={classes.windowActions}>
                 <Button

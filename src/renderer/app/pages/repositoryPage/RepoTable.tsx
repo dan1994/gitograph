@@ -2,6 +2,8 @@ import * as React from "react";
 import { useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Column } from "react-table";
+import ReactMarkdown from "react-markdown";
+import emoji from "node-emoji";
 
 import { useRepositoryContext } from "renderer/app/global";
 
@@ -12,7 +14,8 @@ import Table from "renderer/app/pages/repositoryPage/react-table/Table";
 
 import CommitGraph from "renderer/app/pages/repositoryPage/graph/CommitGraph";
 import { ROW_HEIGHT } from "renderer/app/pages/repositoryPage/graph/utils";
-import Commits from "renderer/app/global/context/Commits";
+import Commits from "renderer/app/utils/git/Commits";
+import BranchBadges from "renderer/app/pages/repositoryPage/BranchBadges";
 
 const useStyles = makeStyles({
     top: {
@@ -70,17 +73,29 @@ const defaultColumn = {
 const RepoTable: React.FC = () => {
     const classes = useStyles();
 
-    const { commits } = useRepositoryContext();
+    const { repository } = useRepositoryContext();
+    const { commits, refs } = repository;
+
     const data = useMemo<TableRecord[]>(
         () =>
             commits.commits.map((commit) => ({
                 graph: "",
-                message: commit.message.split("\n")[0],
+                message: (
+                    <>
+                        <BranchBadges
+                            refs={refs.pointTo(commit.oid)}
+                            color={commit.color}
+                        />
+                        <ReactMarkdown>
+                            {`${emoji.emojify(commit.message.split("\n")[0])}`}
+                        </ReactMarkdown>
+                    </>
+                ),
                 committer: commit.committer.name,
                 time: Commits.getFormattedDate(commit),
                 hash: Commits.abbreviate(commit.oid),
             })),
-        [commits]
+        [commits.commits, refs.refs]
     );
 
     const [graphWidth, setGraphWidth] = useState<number>(150);

@@ -1,10 +1,6 @@
-import { useState, useEffect } from "react";
-import { IpcRendererEvent } from "electron";
+import { useState } from "react";
 
-import { IpcRendererGuard } from "renderer/app/utils/ipc";
-
-/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
-type IpcRendererCallback = (event: IpcRendererEvent, ...args: any[]) => void;
+import { IpcRendererWrapper } from "renderer/app/utils/ipc";
 
 type IDirectory = [string, () => void];
 type IUseDirectory = () => IDirectory;
@@ -12,28 +8,11 @@ type IUseDirectory = () => IDirectory;
 const useDirectory: IUseDirectory = () => {
     const [directory, setDirectory] = useState<string>(null);
 
-    const eventCallback: IpcRendererCallback = (_, ...args) => {
-        if (typeof args[0] !== "string") {
-            return;
-        }
-
-        const directory = args[0];
-        setDirectory(directory);
-    };
-
-    useEffect(() => {
-        IpcRendererGuard.on("selectDirectory", eventCallback);
-
-        return () => {
-            IpcRendererGuard.removeListener("selectDirectory", eventCallback);
-        };
-    }, []);
-
-    const selectDirectory: (directory?: string) => void = (directory) => {
+    const selectDirectory: (directory?: string) => void = async (directory) => {
         if (directory !== undefined) {
             setDirectory(directory);
         } else {
-            IpcRendererGuard.send("selectDirectory");
+            setDirectory(await IpcRendererWrapper.send("selectDirectory"));
         }
     };
 

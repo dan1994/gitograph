@@ -11,8 +11,8 @@ interface VerticeProps {
 }
 
 const Vertice: React.FC<VerticeProps> = ({ vertice }) => {
-    const { cell, color } = vertice;
-    const { x, y } = toPoint(cell);
+    const { color } = vertice;
+    const { x, y } = toPoint(vertice);
 
     return <circle cx={x} cy={y} r={VERTICE_RADIUS} fill={color} />;
 };
