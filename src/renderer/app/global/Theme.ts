@@ -1,4 +1,4 @@
-import { createMuiTheme, Theme, ThemeOptions } from "@material-ui/core";
+import { createMuiTheme } from "@material-ui/core";
 import "renderer/static/fonts.css";
 
 interface IVscodeStyles {
