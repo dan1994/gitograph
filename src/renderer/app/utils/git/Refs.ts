@@ -14,26 +14,11 @@ class Refs {
     ) => {
         this.clear();
 
-        const refsAsString = (
-            await CommandRunner.run(
-                `git -C "${gitDirectory}" for-each-ref --format="%(HEAD):%(objectname):%(refname:lstrip=1)"`
-            )
-        ).trim();
+        await this.getRefs(gitDirectory);
 
-        refsAsString.split("\n").forEach((line) => {
-            const [headMarker, oid, refName] = split(line, ":", 3);
-
-            const isHead = headMarker === "*";
-            const [preamble, rawName] = split(refName, "/", 2);
-            const type = Refs.preambleToType[preamble];
-            const name = rawName
-                ? rawName.startsWith("(")
-                    ? ""
-                    : rawName
-                : preamble;
-
-            this.refs.push({ name, oid, type, isHead });
-        });
+        if (this.head() === undefined) {
+            await this.getHeadRef(gitDirectory);
+        }
     };
 
     public clear: () => void = () => {
@@ -69,7 +54,47 @@ class Refs {
         );
 
     public static isLocal: (ref: IRef) => boolean = (ref) =>
-        ref.type === "localBranch";
+        ref.type !== "remoteBranch";
+
+    private getRefs: (gitDirectory: string) => Promise<void> = async (
+        gitDirectory
+    ) => {
+        const refsAsString = (
+            await CommandRunner.run(
+                `git -C "${gitDirectory}" for-each-ref --format="%(HEAD):%(objectname):%(refname:lstrip=1)"`
+            )
+        ).trim();
+
+        refsAsString.split("\n").forEach((line) => {
+            const [headMarker, oid, refName] = split(line, ":", 3);
+
+            const isHead = headMarker === "*";
+            const [preamble, rawName] = split(refName, "/", 2);
+            const type = Refs.preambleToType[preamble];
+            const name = rawName
+                ? rawName.startsWith("(")
+                    ? ""
+                    : rawName
+                : preamble;
+
+            this.refs.push({ name, oid, type, isHead });
+        });
+    };
+
+    private getHeadRef: (gitDirectory: string) => Promise<void> = async (
+        gitDirectory
+    ) => {
+        const oid = (
+            await CommandRunner.run(`git -C "${gitDirectory}" rev-parse HEAD`)
+        ).trim();
+
+        this.refs.push({
+            name: "",
+            oid,
+            type: "detachedHead",
+            isHead: true,
+        });
+    };
 
     private static preambleToType: { [preamble: string]: IRefType } = {
         heads: "localBranch",
