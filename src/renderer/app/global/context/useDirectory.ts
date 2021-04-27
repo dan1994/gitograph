@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { IpcRendererWrapper } from "renderer/app/utils/ipc";
 
-type IDirectory = [string, () => void];
+type IDirectory = [string, (directory?: string) => void];
 type IUseDirectory = () => IDirectory;
 
 const useDirectory: IUseDirectory = () => {
