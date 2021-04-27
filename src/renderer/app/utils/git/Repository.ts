@@ -29,8 +29,10 @@ class Repository {
     public refresh: (sortOrder: ISortOrder) => Promise<void> = async (
         sortOrder
     ) => {
-        await this.commits.initOrRefresh(this.rootDirectory, sortOrder);
-        await this.refs.initOrRefresh(this.rootDirectory);
+        await Promise.all([
+            this.commits.initOrRefresh(this.rootDirectory, sortOrder),
+            this.refs.initOrRefresh(this.rootDirectory),
+        ]);
     };
 
     public resolveRef: (refName: string, refType?: IRefType) => ICommit[] = (

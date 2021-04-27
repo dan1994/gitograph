@@ -13,11 +13,12 @@ class IpcMainWrapper {
         channel: ChannelName,
         callback: IpcMainCallback<Args, Ret>
     ) => void = (window, channel, callback) => {
-        ipcMain.on(channel, (event, ...args) => {
+        ipcMain.on(channel, (event, id, ...args) => {
             const channelWrapper = new IpcMainEventChannelWrapper(
                 event,
                 channel,
-                window
+                window,
+                id
             );
 
             channelWrapper.execute(callback, ...args);
@@ -29,15 +30,18 @@ class IpcMainEventChannelWrapper {
     private event: Electron.IpcMainEvent;
     private channel: string;
     private window: BrowserWindow;
+    private id: number;
 
     constructor(
         event: Electron.IpcMainEvent,
         channel: string,
-        window: BrowserWindow
+        window: BrowserWindow,
+        id: number
     ) {
         this.event = event;
         this.channel = channel;
         this.window = window;
+        this.id = id;
     }
 
     public execute: <Args extends unknown[], Ret>(
@@ -55,7 +59,7 @@ class IpcMainEventChannelWrapper {
             );
         }
 
-        this.replyIfNecessary(success, result);
+        this.event.reply(this.channel, this.id, success, result);
     };
 
     private guardCallback: <Args extends unknown[], Ret>(
@@ -76,15 +80,6 @@ class IpcMainEventChannelWrapper {
             return [true, await promise];
         } catch (error) {
             return [false, error];
-        }
-    };
-
-    private replyIfNecessary: <Ret>(
-        success: boolean,
-        result: Ret | Error
-    ) => void = (success, result) => {
-        if (!success || result !== undefined) {
-            this.event.reply(this.channel, success, result);
         }
     };
 
