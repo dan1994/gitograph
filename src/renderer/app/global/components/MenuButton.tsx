@@ -8,10 +8,9 @@ import {
     makeStyles,
 } from "@material-ui/core";
 
-import { ITheme } from "renderer/app/global";
 import { Button } from "renderer/app/components";
 
-const useStyles = makeStyles((theme: ITheme) => ({
+const useStyles = makeStyles((theme) => ({
     menu: {},
     submenu: {
         borderBottom: theme.vscode.border,

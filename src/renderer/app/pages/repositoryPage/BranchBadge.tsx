@@ -1,10 +1,9 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
-import { ITheme } from "renderer/app/global";
 import { ICombinedRef } from "renderer/app/pages/repositoryPage/BranchBadgesUtils";
 
-const useStyles = makeStyles<ITheme, { color: string }>((theme: ITheme) => ({
+const useStyles = makeStyles<Theme, { color: string }>((theme) => ({
     badge: {
         borderRadius: "5px",
         border: (props) => `2px solid ${props.color}`,

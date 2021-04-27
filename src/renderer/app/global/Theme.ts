@@ -25,8 +25,12 @@ interface IExtraThemeOptions {
     vscode: IVscodeStyles;
 }
 
-interface IThemeOptions extends ThemeOptions, IExtraThemeOptions {}
-interface ITheme extends Theme, IExtraThemeOptions {}
+declare module "@material-ui/core/styles/createMuiTheme" {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface Theme extends IExtraThemeOptions {}
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface ThemeOptions extends IExtraThemeOptions {}
+}
 
 const vscodeStyles: IVscodeStyles = {
     background: {
@@ -80,6 +84,6 @@ const theme = createMuiTheme({
             },
         },
     },
-} as IThemeOptions) as ITheme;
+});
 
-export { theme, ITheme };
+export { theme };

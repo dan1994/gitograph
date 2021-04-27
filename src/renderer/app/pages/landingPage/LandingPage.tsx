@@ -1,12 +1,12 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 
-import { ITheme, useRepositoryContext } from "renderer/app/global";
+import { useRepositoryContext } from "renderer/app/global";
 import { Button } from "renderer/app/components";
 import RecentRepositories from "renderer/app/pages/landingPage/RecentRepositories";
 import useRecentRepositories from "./useRecentRepositories";
 
-const useStyles = makeStyles((theme: ITheme) => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
         justifyContent: "center",

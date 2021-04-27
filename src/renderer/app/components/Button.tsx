@@ -1,9 +1,7 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 
-import { ITheme } from "renderer/app/global";
-
-const useStyles = makeStyles((theme: ITheme) => ({
+const useStyles = makeStyles((theme) => ({
     button: {
         "-webkit-user-select": "none",
         cursor: "pointer",
