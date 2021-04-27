@@ -1,4 +1,7 @@
 import { app, BrowserWindow } from "electron";
+import installExtension, {
+    REACT_DEVELOPER_TOOLS,
+} from "electron-devtools-installer";
 
 import registerIpcChannels from "main/ipc/IpcChannelRegisterer";
 
@@ -11,6 +14,14 @@ if (require("electron-squirrel-startup")) {
 }
 
 const createWindow = (): void => {
+    installExtension(REACT_DEVELOPER_TOOLS)
+        .then(() => {
+            console.log("Installed React devtools successfully");
+        })
+        .catch((error) => {
+            console.error("Failed installing React devtools:", error);
+        });
+
     // Create the browser window.
     const mainWindow = new BrowserWindow({
         height: 600,
