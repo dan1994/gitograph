@@ -26,7 +26,7 @@ export type ICommit = ICommitContent & IComputedCommitProperties;
 
 export type ISortOrder = "topological" | "chronological";
 
-export type IRefType = "localBranch" | "remoteBranch" | "tag" | "stash";
+export type IRefType = "localBranch" | "remoteBranch" | "tag" | "stash" | "detachedHead";
 
 export interface IRef {
     name: string;
