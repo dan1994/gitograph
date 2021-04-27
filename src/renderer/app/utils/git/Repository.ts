@@ -35,6 +35,12 @@ class Repository {
         ]);
     };
 
+    public close: () => void = () => {
+        this.commits.clear();
+        this.refs.clear();
+        this.rootDirectory = null;
+    };
+
     public resolveRef: (refName: string, refType?: IRefType) => ICommit[] = (
         refName,
         refType

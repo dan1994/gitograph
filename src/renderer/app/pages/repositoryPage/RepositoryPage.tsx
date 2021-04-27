@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Router: React.FC = () => {
+const RepositoryPage: React.FC = () => {
     const classes = useStyles();
 
     const { isLoading } = useRepositoryContext();
@@ -30,4 +30,4 @@ const Router: React.FC = () => {
     return <RepoTable />;
 };
 
-export default Router;
+export default RepositoryPage;

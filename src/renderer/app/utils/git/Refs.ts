@@ -6,12 +6,14 @@ class Refs {
     public refs: IRef[];
 
     constructor() {
-        this.refs = [];
+        this.clear();
     }
 
     public initOrRefresh: (gitDirectory: string) => Promise<void> = async (
         gitDirectory
     ) => {
+        this.clear();
+
         const refsAsString = (
             await CommandRunner.run(
                 `git -C "${gitDirectory}" for-each-ref --format="%(HEAD):%(objectname):%(refname:lstrip=1)"`
@@ -32,6 +34,10 @@ class Refs {
 
             this.refs.push({ name, oid, type, isHead });
         });
+    };
+
+    public clear: () => void = () => {
+        this.refs = [];
     };
 
     public pointTo: (oid: ISha1) => IRef[] = (oid) =>

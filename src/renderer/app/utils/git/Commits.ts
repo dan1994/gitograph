@@ -12,17 +12,23 @@ class Commits {
     private lookupTable: ILookupTable;
 
     constructor() {
-        this.commits = [];
-        this.lookupTable = {};
+        this.clear();
     }
 
     public initOrRefresh: (
         gitDirectory: string,
         sortOrder: ISortOrder
     ) => Promise<void> = async (gitDirectory, sortOrder) => {
+        this.clear();
+
         await this.getCommits(gitDirectory, sortOrder);
         this.populateChildren();
         new PlacementStrategy(this).apply();
+    };
+
+    public clear: () => void = () => {
+        this.commits = [];
+        this.lookupTable = {};
     };
 
     public byHash: (oid: string) => ICommit = (oid) => {

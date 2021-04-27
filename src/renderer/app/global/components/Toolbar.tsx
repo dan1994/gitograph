@@ -54,6 +54,7 @@ const Toolbar: React.FC = () => {
         repository,
         inRepository,
         selectDirectory,
+        closeRepository,
     } = useRepositoryContext();
 
     const minimizeApp = () => {
@@ -68,12 +69,16 @@ const Toolbar: React.FC = () => {
         <header className={classes.toolbar}>
             <span className={classes.menuArea}>
                 <MenuButton
-                    title="File"
+                    title="Repository"
                     submenus={[
                         [
                             {
                                 name: "Open Repository",
                                 callback: selectDirectory,
+                            },
+                            {
+                                name: "Close Repository",
+                                callback: closeRepository,
                             },
                         ],
                         [
