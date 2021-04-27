@@ -19,6 +19,8 @@ class Commits {
         gitDirectory: string,
         sortOrder: ISortOrder
     ) => Promise<void> = async (gitDirectory, sortOrder) => {
+        this.clear();
+
         await this.getCommits(gitDirectory, sortOrder);
         this.populateChildren();
         new PlacementStrategy(this).apply();

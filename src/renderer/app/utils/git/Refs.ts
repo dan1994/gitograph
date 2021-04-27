@@ -12,6 +12,8 @@ class Refs {
     public initOrRefresh: (gitDirectory: string) => Promise<void> = async (
         gitDirectory
     ) => {
+        this.clear();
+
         const refsAsString = (
             await CommandRunner.run(
                 `git -C "${gitDirectory}" for-each-ref --format="%(HEAD):%(objectname):%(refname:lstrip=1)"`
