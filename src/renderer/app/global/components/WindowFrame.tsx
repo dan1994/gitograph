@@ -1,10 +1,9 @@
 import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 
-import { ITheme } from "renderer/app/global";
 import Toolbar from "renderer/app/global/components/Toolbar";
 
-const useStyles = makeStyles((theme: ITheme) => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         overflowY: "hidden",
     },

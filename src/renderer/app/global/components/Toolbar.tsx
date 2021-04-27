@@ -3,12 +3,12 @@ import { makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import MinimizeIcon from "@material-ui/icons/Minimize";
 
-import { useRepositoryContext, ITheme } from "renderer/app/global";
+import { useRepositoryContext } from "renderer/app/global";
 import { Button } from "renderer/app/components";
 import MenuButton from "renderer/app/global/components/MenuButton";
 import { IpcRendererWrapper } from "renderer/app/utils/ipc";
 
-const useStyles = makeStyles((theme: ITheme) => ({
+const useStyles = makeStyles((theme) => ({
     toolbar: {
         "-webkit-user-select": "none",
         "-webkit-app-region": "drag",

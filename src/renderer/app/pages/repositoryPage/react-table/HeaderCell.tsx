@@ -4,9 +4,8 @@ import { TableHeaderGroup } from "renderer/app/pages/repositoryPage/react-table/
 
 import { useResizeableColumnsContext } from "./useResizeableColumns";
 import Resizer from "renderer/app/pages/repositoryPage/react-table/Resizer";
-import { ITheme } from "renderer/app/global";
 
-const useStyles = makeStyles((theme: ITheme) => ({
+const useStyles = makeStyles((theme) => ({
     headerCell: {
         margin: 0,
         padding: "0.5rem",

@@ -7,9 +7,8 @@ import {
     TableRecord,
 } from "renderer/app/pages/repositoryPage/react-table/types";
 import { useResizeableColumnsContext } from "renderer/app/pages/repositoryPage/react-table/useResizeableColumns";
-import { ITheme } from "renderer/app/global";
 
-const useStyles = makeStyles((theme: ITheme) => ({
+const useStyles = makeStyles((theme) => ({
     dataCell: {
         margin: 0,
         padding: "0.5rem",

@@ -1,7 +1,6 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
 
-import { theme } from "renderer/app/global";
 import { CommitIcon } from "renderer/app/components/icons";
 
 const useStyles = makeStyles({
@@ -23,6 +22,7 @@ const useStyles = makeStyles({
 
 const LoadingAnimation: React.FC = () => {
     const classes = useStyles();
+    const theme = useTheme();
 
     return (
         <CommitIcon

@@ -2,11 +2,11 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
-import { ITheme, useRepositoryContext } from "renderer/app/global";
+import { useRepositoryContext } from "renderer/app/global";
 import { Button } from "renderer/app/components";
 import { RepositoryIcon } from "renderer/app/components/icons";
 
-const useStyles = makeStyles((theme: ITheme) => ({
+const useStyles = makeStyles((theme) => ({
     recentRepo: {
         position: "relative",
         display: "flex",
