@@ -52,10 +52,12 @@ interface CommitGraphProps {
 }
 
 const CommitGraph: React.FC<CommitGraphProps> = ({ commits, maxWidth }) => {
-    const svgWidth = useMemo(() => calculateWidth(commits), [commits]);
-    const svgHeight = useMemo(() => calculateHeight(commits), [commits]);
+    const svgWidth = useMemo(() => calculateWidth(commits), [commits.commits]);
+    const svgHeight = useMemo(() => calculateHeight(commits), [
+        commits.commits,
+    ]);
 
-    const edges = useMemo(() => getEdges(commits), [commits]);
+    const edges = useMemo(() => getEdges(commits), [commits.commits]);
 
     const width = svgWidth > maxWidth ? maxWidth : svgWidth;
 
