@@ -52,23 +52,18 @@ class Repository {
     private updateRootDirectory: (
         directory: string
     ) => Promise<boolean> = async (directory) => {
-        try {
-            const rootDirectory = (
-                await CommandRunner.run(
-                    `git -C "${directory}" rev-parse --show-toplevel`
-                )
-            ).trimEnd();
+        const rootDirectory = (
+            await CommandRunner.run(
+                `git -C "${directory}" rev-parse --show-toplevel`
+            )
+        ).trimEnd();
 
-            if (rootDirectory !== this.rootDirectory) {
-                this.rootDirectory = rootDirectory;
-                return true;
-            }
-
-            return false;
-        } catch (error) {
-            this.rootDirectory = null;
-            throw error;
+        if (rootDirectory !== this.rootDirectory) {
+            this.rootDirectory = rootDirectory;
+            return true;
         }
+
+        return false;
     };
 }
 
