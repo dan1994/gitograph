@@ -17,7 +17,7 @@ const useRepository: () => IRepository = () => {
 
     const { addRecentRepository } = useRecentRepositories();
 
-    const load: () => void = async () => {
+    const load = async () => {
         if (directory === null) {
             repositoryRef.current.close();
             triggerRerender();
@@ -29,20 +29,39 @@ const useRepository: () => IRepository = () => {
         try {
             await repositoryRef.current.load(directory, "chronological");
         } catch (error) {
-            selectDirectory(repositoryRef.current.rootDirectory);
+            void selectDirectory(repositoryRef.current.rootDirectory);
             displayError("Failed to load repository", (error as Error).message);
         }
 
         setIsLoading(false);
     };
 
-    useEffect(load, [directory]);
+    useEffect(() => void load(), [directory]);
 
     useEffect(() => {
         if (repositoryRef.current.rootDirectory !== null) {
             addRecentRepository(repositoryRef.current.rootDirectory);
         }
     }, [repositoryRef.current.rootDirectory]);
+
+    const refreshRepository = async () => {
+        if (directory === null) {
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            await repositoryRef.current.refresh("chronological");
+        } catch (error) {
+            displayError(
+                "Failed to refresh repository",
+                (error as Error).message
+            );
+        }
+
+        setIsLoading(false);
+    };
 
     const closeRepository = () => selectDirectory(null);
 
@@ -51,6 +70,7 @@ const useRepository: () => IRepository = () => {
     return {
         repository: repositoryRef.current,
         selectDirectory,
+        refreshRepository,
         closeRepository,
         inRepository,
         isLoading,
