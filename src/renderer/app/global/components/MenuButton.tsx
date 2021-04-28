@@ -17,12 +17,10 @@ const useStyles = makeStyles((theme) => ({
         "&:last-child": {
             borderBottom: 0,
         },
+        outline: "none",
     },
     item: {
         paddingBottom: "0.5em",
-        "&:hover": {
-            backgroundColor: theme.vscode.background.menuHover,
-        },
         "&:first-child": {
             marginTop: "0.25em",
         },
@@ -30,11 +28,21 @@ const useStyles = makeStyles((theme) => ({
             marginBottom: "0.25em",
         },
     },
+    enabled: {
+        "&:hover": {
+            backgroundColor: theme.vscode.background.menuHover,
+        },
+    },
+    disabled: {
+        cursor: "initial",
+        color: "#565656",
+    },
 }));
 
 interface IMenuItem {
     name: string;
     icon?: React.ReactNode;
+    disabled?: boolean;
     callback: () => void;
 }
 
@@ -93,18 +101,25 @@ const MenuButton: React.FC<MenuButtonProps> = ({ title, submenus }) => {
                 >
                     {submenus.map((submenu, index) => (
                         <div key={index} className={classes.submenu}>
-                            {submenu.map(({ name, icon, callback }) => (
-                                <MenuItem
-                                    key={name}
-                                    onClick={closeMenu(callback)}
-                                    className={classes.item}
-                                >
-                                    {icon && (
-                                        <ListItemIcon>{icon}</ListItemIcon>
-                                    )}
-                                    {name}
-                                </MenuItem>
-                            ))}
+                            {submenu.map(
+                                ({ name, icon, disabled, callback }) => (
+                                    <MenuItem
+                                        key={name}
+                                        disabled={disabled}
+                                        onClick={closeMenu(callback)}
+                                        className={`${classes.item} ${
+                                            disabled
+                                                ? classes.disabled
+                                                : classes.enabled
+                                        }`}
+                                    >
+                                        {icon && (
+                                            <ListItemIcon>{icon}</ListItemIcon>
+                                        )}
+                                        {name}
+                                    </MenuItem>
+                                )
+                            )}
                         </div>
                     ))}
                 </Menu>
