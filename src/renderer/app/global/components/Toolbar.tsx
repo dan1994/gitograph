@@ -80,10 +80,12 @@ const Toolbar: React.FC = () => {
                             {
                                 name: "Refresh",
                                 callback: refreshRepository,
+                                disabled: !inRepository,
                             },
                             {
                                 name: "Close Repository",
                                 callback: closeRepository,
+                                disabled: !inRepository,
                             },
                         ],
                         [
