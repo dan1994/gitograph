@@ -54,6 +54,7 @@ const Toolbar: React.FC = () => {
         repository,
         inRepository,
         selectDirectory,
+        refreshRepository,
         closeRepository,
     } = useRepositoryContext();
 
@@ -75,6 +76,10 @@ const Toolbar: React.FC = () => {
                             {
                                 name: "Open Repository",
                                 callback: selectDirectory,
+                            },
+                            {
+                                name: "Refresh",
+                                callback: refreshRepository,
                             },
                             {
                                 name: "Close Repository",
