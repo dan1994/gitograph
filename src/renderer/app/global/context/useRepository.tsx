@@ -6,12 +6,14 @@ import useDirectory from "renderer/app/global/context/useDirectory";
 import { Repository } from "renderer/app/utils/git";
 import useRecentRepositories from "renderer/app/pages/landingPage/useRecentRepositories";
 import useTriggerRerender from "renderer/app/global/context/useTriggerRerender";
+import { useMessageBoxContext } from "renderer/app/global/components/useMessageBox";
 
 const useRepository: () => IRepository = () => {
     const [directory, selectDirectory] = useDirectory();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const repositoryRef = useRef(new Repository());
     const triggerRerender = useTriggerRerender();
+    const { displayError } = useMessageBoxContext();
 
     const { addRecentRepository } = useRecentRepositories();
 
@@ -24,17 +26,25 @@ const useRepository: () => IRepository = () => {
 
         setIsLoading(true);
 
-        await repositoryRef.current.load(directory, "chronological");
-        addRecentRepository(repositoryRef.current.rootDirectory);
+        try {
+            await repositoryRef.current.load(directory, "chronological");
+        } catch (error) {
+            selectDirectory(repositoryRef.current.rootDirectory);
+            displayError("Failed to load repository", (error as Error).message);
+        }
 
         setIsLoading(false);
     };
 
     useEffect(load, [directory]);
 
-    const closeRepository = () => {
-        selectDirectory(null);
-    };
+    useEffect(() => {
+        if (repositoryRef.current.rootDirectory !== null) {
+            addRecentRepository(repositoryRef.current.rootDirectory);
+        }
+    }, [repositoryRef.current.rootDirectory]);
+
+    const closeRepository = () => selectDirectory(null);
 
     const inRepository = repositoryRef.current.rootDirectory !== null;
 

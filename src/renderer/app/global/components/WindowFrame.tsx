@@ -2,6 +2,7 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core";
 
 import Toolbar from "renderer/app/global/components/Toolbar";
+import MessageBox from "renderer/app/global/components/MessageBox";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,6 +42,7 @@ const WindowFrame: React.FC<WindowFrameProps> = ({ children }) => {
         <div className={classes.root}>
             <Toolbar />
             <div className={classes.content}>{children}</div>
+            <MessageBox />
         </div>
     );
 };

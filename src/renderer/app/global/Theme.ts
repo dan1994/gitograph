@@ -67,6 +67,7 @@ const theme = createMuiTheme({
                     display: "flex",
                     justifyContent: "center",
                     color: vscodeStyles.color.primary,
+                    lineHeight: "1.6",
                 },
                 "#root": {
                     width: "100vw",
