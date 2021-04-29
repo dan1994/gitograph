@@ -10,11 +10,12 @@ const registerIpcChannels: (window: BrowserWindow) => void = (window) => {
     IpcMainWrapper.register(window, "exitApp", exitApp);
     IpcMainWrapper.register(window, "minimizeWindow", minimizeWindow);
     IpcMainWrapper.register(window, "selectDirectory", selectDirectory);
+    IpcMainWrapper.register(window, "relaunchApp", relaunchApp);
     IpcMainWrapper.register(window, "runCommand", runCommand);
 };
 
 const exitApp: IpcMainCallback = () => {
-    app.exit();
+    app.quit();
 };
 
 const minimizeWindow: IpcMainCallback = (window) => {
@@ -32,6 +33,11 @@ const selectDirectory: IpcMainCallback<[], string> = async (window) => {
 
     const directory = filePaths[0];
     return directory;
+};
+
+const relaunchApp: IpcMainCallback = () => {
+    app.relaunch();
+    app.quit();
 };
 
 const runCommand: IpcMainCallback<[string], string> = async (

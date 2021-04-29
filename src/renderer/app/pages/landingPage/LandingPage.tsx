@@ -79,7 +79,7 @@ const LandingPage: React.FC = () => {
                     <Button
                         className={classes.button}
                         onClick={() => {
-                            selectDirectory();
+                            void selectDirectory();
                         }}
                     >
                         Open
