@@ -9,6 +9,7 @@ interface ILookupTable {
 
 class Commits {
     public commits: ICommit[];
+    public hasUncommittedChanges: boolean;
     private lookupTable: ILookupTable;
 
     constructor() {
@@ -21,6 +22,7 @@ class Commits {
     ) => Promise<void> = async (gitDirectory, sortOrder) => {
         this.clear();
 
+        await this.getUncommittedChanges(gitDirectory);
         await this.getCommits(gitDirectory, sortOrder);
         this.populateChildren();
         new PlacementStrategy(this).apply();
@@ -28,6 +30,7 @@ class Commits {
 
     public clear: () => void = () => {
         this.commits = [];
+        this.hasUncommittedChanges = false;
         this.lookupTable = {};
     };
 
@@ -58,6 +61,44 @@ class Commits {
         return toDateString(date);
     };
 
+    public static UNCOMMITTED_CHANGES_OID = "*";
+
+    private getUncommittedChanges: (
+        gitDirectory: string
+    ) => Promise<void> = async (gitDirectory) => {
+        const [statusString, headString] = await Promise.all([
+            CommandRunner.run(`git -C "${gitDirectory}" status --porcelain`),
+            CommandRunner.run(`git -C "${gitDirectory}" rev-parse HEAD`),
+        ]);
+
+        if (statusString.trim().length === 0) {
+            this.hasUncommittedChanges = false;
+            return;
+        }
+
+        this.hasUncommittedChanges = true;
+        this.commits.push({
+            oid: Commits.UNCOMMITTED_CHANGES_OID,
+            tree: "",
+            parents: [headString.trim()],
+            author: {
+                name: "",
+                email: "",
+                timestamp: new Date().getTime() / 1000,
+            },
+            committer: {
+                name: "",
+                email: "",
+                timestamp: new Date().getTime() / 1000,
+            },
+            message: "Uncommitted Changes",
+            children: [],
+            row: 0,
+            column: -1,
+            color: "",
+        });
+    };
+
     private getCommits: (
         gitDirectory: string,
         sortOrder: ISortOrder
@@ -80,6 +121,10 @@ class Commits {
                 ].join("%x10")}`
             )
         ).trim();
+
+        const incrementIfHasUncommittedChanges = this.hasUncommittedChanges
+            ? 1
+            : 0;
 
         logString.split("\n").forEach((commitInfo, index) => {
             const [
@@ -114,7 +159,7 @@ class Commits {
                 },
                 message,
                 children: [],
-                row: index,
+                row: index + incrementIfHasUncommittedChanges,
                 column: -1,
                 color: "",
             });

@@ -50,7 +50,7 @@ const CommitGraph: React.FC<CommitGraphProps> = ({ commits, width }) => {
                 return <Edge key={id} edge={edge} />;
             })}
             {commits.commits.map((commit) => (
-                <Vertice key={commit.oid} vertice={commit} />
+                <Vertice key={commit.oid} commit={commit} />
             ))}
         </svg>
     );
