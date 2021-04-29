@@ -5,6 +5,7 @@ import { promisify } from "util";
 const execAsync = promisify(exec);
 
 import IpcMainWrapper, { IpcMainCallback } from "main/ipc/IpcMainWrapper";
+import RepoWatcher from "main/repoWatcher/RepoWatcher";
 
 const registerIpcChannels: (window: BrowserWindow) => void = (window) => {
     IpcMainWrapper.register(window, "exitApp", exitApp);
@@ -12,6 +13,7 @@ const registerIpcChannels: (window: BrowserWindow) => void = (window) => {
     IpcMainWrapper.register(window, "selectDirectory", selectDirectory);
     IpcMainWrapper.register(window, "relaunchApp", relaunchApp);
     IpcMainWrapper.register(window, "runCommand", runCommand);
+    IpcMainWrapper.register(window, "watchRepository", watchRepository);
 };
 
 const exitApp: IpcMainCallback = () => {
@@ -46,6 +48,19 @@ const runCommand: IpcMainCallback<[string], string> = async (
 ) => {
     const { stdout } = await execAsync(command);
     return stdout;
+};
+
+const repoWatcher = new RepoWatcher();
+const watchRepository: IpcMainCallback<[string], boolean> = (
+    _window,
+    directory
+) => {
+    if (directory === repoWatcher.directory) {
+        return repoWatcher.didChangeOccur();
+    }
+
+    void repoWatcher.watch(directory);
+    return false;
 };
 
 export default registerIpcChannels;

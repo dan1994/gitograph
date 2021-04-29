@@ -7,11 +7,13 @@ import { Repository } from "renderer/app/utils/git";
 import useRecentRepositories from "renderer/app/pages/landingPage/useRecentRepositories";
 import useTriggerRerender from "renderer/app/global/context/useTriggerRerender";
 import { useMessageBoxContext } from "renderer/app/global/components/useMessageBox";
+import { IpcRendererWrapper } from "renderer/app/utils/ipc";
 
 const useRepository: () => IRepository = () => {
     const [directory, selectDirectory] = useDirectory();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const repositoryRef = useRef(new Repository());
+    const repository = repositoryRef.current;
     const triggerRerender = useTriggerRerender();
     const { displayError } = useMessageBoxContext();
 
@@ -27,9 +29,9 @@ const useRepository: () => IRepository = () => {
         setIsLoading(true);
 
         try {
-            await repositoryRef.current.load(directory, "chronological");
+            await repository.load(directory, "chronological");
         } catch (error) {
-            void selectDirectory(repositoryRef.current.rootDirectory);
+            void selectDirectory(repository.rootDirectory);
             displayError("Failed to load repository", (error as Error).message);
         }
 
@@ -39,10 +41,10 @@ const useRepository: () => IRepository = () => {
     useEffect(() => void load(), [directory]);
 
     useEffect(() => {
-        if (repositoryRef.current.rootDirectory !== null) {
-            addRecentRepository(repositoryRef.current.rootDirectory);
+        if (repository.rootDirectory !== null) {
+            addRecentRepository(repository.rootDirectory);
         }
-    }, [repositoryRef.current.rootDirectory]);
+    }, [repository.rootDirectory]);
 
     const refreshRepository = async () => {
         if (directory === null) {
@@ -52,7 +54,7 @@ const useRepository: () => IRepository = () => {
         setIsLoading(true);
 
         try {
-            await repositoryRef.current.refresh("chronological");
+            await repository.refresh("chronological");
         } catch (error) {
             displayError(
                 "Failed to refresh repository",
@@ -63,12 +65,33 @@ const useRepository: () => IRepository = () => {
         setIsLoading(false);
     };
 
+    useEffect(() => {
+        if (repository.rootDirectory === null) {
+            return;
+        }
+
+        const handler = setInterval(() => {
+            void (async () => {
+                const repositoryChanged = await IpcRendererWrapper.send<
+                    [string],
+                    boolean
+                >("watchRepository", repository.rootDirectory);
+
+                if (repositoryChanged) {
+                    void refreshRepository();
+                }
+            })();
+        }, 5000);
+
+        return () => clearInterval(handler);
+    }, [repository.rootDirectory]);
+
     const closeRepository = () => selectDirectory(null);
 
-    const inRepository = repositoryRef.current.rootDirectory !== null;
+    const inRepository = repository.rootDirectory !== null;
 
     return {
-        repository: repositoryRef.current,
+        repository,
         selectDirectory,
         refreshRepository,
         closeRepository,
