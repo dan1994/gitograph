@@ -5,7 +5,7 @@ import { hot } from "react-hot-loader";
 import { RepositoryContextProvider, theme } from "renderer/app/global";
 import { Router, WindowFrame } from "renderer/app/global/components";
 import { MessageBoxContextProvider } from "renderer/app/global/components/useMessageBox";
-import ErrorBoundary from "./global/components/ErrorBoundary";
+import ErrorBoundary from "renderer/app/global/components/ErrorBoundary";
 
 const App: React.FC = () => {
     return (

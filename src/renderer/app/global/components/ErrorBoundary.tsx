@@ -1,6 +1,7 @@
 import * as React from "react";
 import { GetDerivedStateFromError } from "react";
 import { createStyles, withStyles, WithStyles, Theme } from "@material-ui/core";
+
 import { Button } from "renderer/app/components";
 import { IpcRendererWrapper } from "renderer/app/utils/ipc";
 

@@ -1,13 +1,13 @@
 import * as React from "react";
 
-import { IVertice } from "renderer/app/pages/repositoryPage/graph/types";
 import {
     toPoint,
     VERTICE_RADIUS,
 } from "renderer/app/pages/repositoryPage/graph/utils";
+import { ICommit } from "renderer/app/utils/git/types";
 
 interface VerticeProps {
-    vertice: IVertice;
+    vertice: ICommit;
 }
 
 const Vertice: React.FC<VerticeProps> = ({ vertice }) => {

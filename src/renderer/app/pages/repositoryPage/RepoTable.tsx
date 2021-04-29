@@ -108,7 +108,7 @@ const RepoTable: React.FC = () => {
     return (
         <div className={classes.top}>
             <div className={classes.graphContainer}>
-                <CommitGraph commits={commits} maxWidth={graphWidth} />
+                <CommitGraph commits={commits} width={graphWidth} />
             </div>
             <Table
                 id="repoTable"
