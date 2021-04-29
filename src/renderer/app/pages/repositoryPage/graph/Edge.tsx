@@ -1,9 +1,7 @@
 import * as React from "react";
 
-import {
-    IEdge,
-    IGridCell,
-} from "renderer/app/pages/repositoryPage/graph/types";
+import { IGridCell } from "renderer/app/utils/git/types";
+import { IEdge } from "renderer/app/pages/repositoryPage/graph/types";
 import {
     EDGE_THICKNESS,
     toPoint,
