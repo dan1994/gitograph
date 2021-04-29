@@ -1,11 +1,9 @@
 import * as React from "react";
-import { useMemo } from "react";
 
 import { IEdge } from "renderer/app/pages/repositoryPage/graph/types";
 import Vertice from "renderer/app/pages/repositoryPage/graph/Vertice";
 import Edge from "renderer/app/pages/repositoryPage/graph/Edge";
 import {
-    COLUMN_OFFSET,
     ROW_OFFSET,
     toPoint,
 } from "renderer/app/pages/repositoryPage/graph/utils";
@@ -28,15 +26,6 @@ const getEdges: (commits: Commits) => IEdges = (commits) => {
     return edges;
 };
 
-const calculateWidth: (commits: Commits) => number = (commits) => {
-    const rightMostVerticeCenter = Math.max(
-        ...commits.commits.map((commit) => toPoint(commit).x),
-        -COLUMN_OFFSET
-    );
-
-    return rightMostVerticeCenter + COLUMN_OFFSET;
-};
-
 const calculateHeight: (commits: Commits) => number = (commits) => {
     const bottomMostVerticeCenter = Math.max(
         ...commits.commits.map((commit) => toPoint(commit).y),
@@ -48,21 +37,15 @@ const calculateHeight: (commits: Commits) => number = (commits) => {
 
 interface CommitGraphProps {
     commits: Commits;
-    maxWidth: number;
+    width: number;
 }
 
-const CommitGraph: React.FC<CommitGraphProps> = ({ commits, maxWidth }) => {
-    const svgWidth = useMemo(() => calculateWidth(commits), [commits.commits]);
-    const svgHeight = useMemo(() => calculateHeight(commits), [
-        commits.commits,
-    ]);
-
-    const edges = useMemo(() => getEdges(commits), [commits.commits]);
-
-    const width = svgWidth > maxWidth ? maxWidth : svgWidth;
+const CommitGraph: React.FC<CommitGraphProps> = ({ commits, width }) => {
+    const height = calculateHeight(commits);
+    const edges = getEdges(commits);
 
     return (
-        <svg width={width} height={svgHeight}>
+        <svg width={width} height={height}>
             {Object.entries(edges).map(([id, edge]) => {
                 return <Edge key={id} edge={edge} />;
             })}
