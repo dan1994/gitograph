@@ -1,18 +1,11 @@
+import { ICommit } from "renderer/app/utils/git/types";
+
 export interface IPoint {
     x: number;
     y: number;
 }
 
-export interface IGridCell {
-    row: number;
-    column: number;
-}
-
-export interface IVertice extends IGridCell {
-    color: string;
-}
-
 export interface IEdge {
-    from: IVertice;
-    to: IVertice;
+    from: ICommit;
+    to: ICommit;
 }
