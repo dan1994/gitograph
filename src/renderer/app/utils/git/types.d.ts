@@ -15,10 +15,13 @@ export interface ICommitContent {
     message: string;
 }
 
-export interface IComputedCommitProperties {
-    children: ISha1[];
+export interface IGridCell {
     row: number;
     column: number;
+}
+
+export interface IComputedCommitProperties extends IGridCell {
+    children: ISha1[];
     color: string;
 }
 
@@ -26,7 +29,12 @@ export type ICommit = ICommitContent & IComputedCommitProperties;
 
 export type ISortOrder = "topological" | "chronological";
 
-export type IRefType = "localBranch" | "remoteBranch" | "tag" | "stash" | "detachedHead";
+export type IRefType =
+    | "localBranch"
+    | "remoteBranch"
+    | "tag"
+    | "stash"
+    | "detachedHead";
 
 export interface IRef {
     name: string;

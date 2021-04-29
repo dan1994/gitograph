@@ -81,6 +81,10 @@ class PlacementStrategy {
         this.commits.commits.forEach((commit) => {
             commit.color = PlacementStrategy.chooseColor(commit.column);
         });
+
+        if (this.commits.hasUncommittedChanges) {
+            this.commits.commits[0].color = "grey";
+        }
     };
 
     private static chooseColor: (column: number) => string = (column) => {
