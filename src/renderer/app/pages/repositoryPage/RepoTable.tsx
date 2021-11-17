@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core";
-import { Column } from "react-table";
+import { Column, useExpanded } from "react-table";
 import ReactMarkdown from "react-markdown";
 import emoji from "node-emoji";
 
@@ -115,7 +115,11 @@ const RepoTable: React.FC = () => {
                 columns={columns}
                 data={data}
                 defaultColumn={defaultColumn}
-                plugins={[useFullWidthLayout, useSyncSizeWithGraph]}
+                plugins={[
+                    useFullWidthLayout,
+                    useSyncSizeWithGraph,
+                    useExpanded,
+                ]}
                 onResize={onResize}
             />
         </div>
